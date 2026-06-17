@@ -1,0 +1,224 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-06-17T00:00:00Z",
+  "title": "Design System: Simay Ernalbant Portfolio",
+  "extensions": {
+    "colorMeta": {
+      "primary": {
+        "role": "primary",
+        "displayName": "Combustion Orange",
+        "canonical": "oklch(75.0% 0.167 50.5)",
+        "tonalRamp": ["#180600", "#3e1902", "#683008", "#954913", "#c86111", "#f58132", "#ffb68d", "#feeadf"]
+      },
+      "primary-container": {
+        "role": "primary",
+        "displayName": "Combustion Orange Deep",
+        "canonical": "oklch(70.2% 0.199 43.0)",
+        "tonalRamp": ["#180600", "#3e1902", "#683008", "#954913", "#c86111", "#f58132", "#ffb68d", "#feeadf"]
+      },
+      "secondary": {
+        "role": "secondary",
+        "displayName": "Flare Peach",
+        "canonical": "oklch(81.9% 0.129 62.5)",
+        "tonalRamp": ["#150700", "#381e03", "#613602", "#8c5108", "#b86e1b", "#de9146", "#fcb97d", "#ffeada"]
+      },
+      "glow-orange": {
+        "role": "atmosphere",
+        "displayName": "Glow Orange",
+        "canonical": "oklch(70.2% 0.199 43.0)",
+        "tonalRamp": ["#180600", "#3e1902", "#683008", "#954913", "#c86111", "#f58132", "#ffb68d", "#feeadf"]
+      },
+      "glow-amber": {
+        "role": "atmosphere",
+        "displayName": "Glow Amber",
+        "canonical": "oklch(64.4% 0.192 41.7)",
+        "tonalRamp": ["#1a0400", "#421502", "#6f2909", "#a33b01", "#d55413", "#fd7841", "#fdb69b", "#ffe9e1"]
+      },
+      "background": {
+        "role": "neutral",
+        "displayName": "Carbon Black",
+        "canonical": "oklch(13.1% 0.011 73.9)",
+        "tonalRamp": ["#070502", "#0a0704", "#141008", "#181309", "#241c0f", "#2e2820", "#3a342c", "#5a4f44", "#cabba9", "#f1ece4"]
+      },
+      "surface-deep": {
+        "role": "neutral",
+        "displayName": "Carbon Black Deep",
+        "canonical": "oklch(11.7% 0.013 85.1)",
+        "tonalRamp": ["#070502", "#0a0704", "#141008", "#181309", "#241c0f", "#2e2820", "#3a342c", "#5a4f44", "#cabba9", "#f1ece4"]
+      },
+      "surface-container-lowest": {
+        "role": "neutral",
+        "displayName": "Carbon Black",
+        "canonical": "oklch(13.1% 0.011 73.9)",
+        "tonalRamp": ["#070502", "#0a0704", "#141008", "#181309", "#241c0f", "#2e2820", "#3a342c", "#5a4f44", "#cabba9", "#f1ece4"]
+      },
+      "surface-container-low": {
+        "role": "neutral",
+        "displayName": "Ash Brown 01",
+        "canonical": "oklch(17.5% 0.017 84.6)",
+        "tonalRamp": ["#070502", "#0a0704", "#141008", "#181309", "#241c0f", "#2e2820", "#3a342c", "#5a4f44", "#cabba9", "#f1ece4"]
+      },
+      "surface-container": {
+        "role": "neutral",
+        "displayName": "Ash Brown 02",
+        "canonical": "oklch(19.0% 0.020 84.1)",
+        "tonalRamp": ["#070502", "#0a0704", "#141008", "#181309", "#241c0f", "#2e2820", "#3a342c", "#5a4f44", "#cabba9", "#f1ece4"]
+      },
+      "surface-container-high": {
+        "role": "neutral",
+        "displayName": "Ash Brown 03",
+        "canonical": "oklch(23.2% 0.026 79.1)",
+        "tonalRamp": ["#070502", "#0a0704", "#141008", "#181309", "#241c0f", "#2e2820", "#3a342c", "#5a4f44", "#cabba9", "#f1ece4"]
+      },
+      "surface-variant": {
+        "role": "neutral",
+        "displayName": "Ash Brown 04",
+        "canonical": "oklch(28.1% 0.017 74.9)",
+        "tonalRamp": ["#070502", "#0a0704", "#141008", "#181309", "#241c0f", "#2e2820", "#3a342c", "#5a4f44", "#cabba9", "#f1ece4"]
+      },
+      "surface-bright": {
+        "role": "neutral",
+        "displayName": "Ash Brown 05",
+        "canonical": "oklch(32.9% 0.016 75.1)",
+        "tonalRamp": ["#070502", "#0a0704", "#141008", "#181309", "#241c0f", "#2e2820", "#3a342c", "#5a4f44", "#cabba9", "#f1ece4"]
+      },
+      "surface-glass": {
+        "role": "neutral",
+        "displayName": "Smoked Glass",
+        "canonical": "rgba(24, 18, 11, 0.7)",
+        "tonalRamp": ["#070502", "#0a0704", "#141008", "#181309", "#241c0f", "#2e2820", "#3a342c", "#5a4f44", "#cabba9", "#f1ece4"]
+      },
+      "outline": {
+        "role": "neutral",
+        "displayName": "Soot",
+        "canonical": "oklch(43.5% 0.023 67.2)",
+        "tonalRamp": ["#070502", "#0a0704", "#141008", "#181309", "#241c0f", "#2e2820", "#3a342c", "#5a4f44", "#cabba9", "#f1ece4"]
+      },
+      "outline-variant": {
+        "role": "neutral",
+        "displayName": "Soot Deep",
+        "canonical": "oklch(29.5% 0.018 67.0)",
+        "tonalRamp": ["#070502", "#0a0704", "#141008", "#181309", "#241c0f", "#2e2820", "#3a342c", "#5a4f44", "#cabba9", "#f1ece4"]
+      },
+      "on-surface": {
+        "role": "neutral",
+        "displayName": "Bone White",
+        "canonical": "oklch(94.5% 0.012 79.8)",
+        "tonalRamp": ["#070502", "#0a0704", "#141008", "#181309", "#241c0f", "#2e2820", "#3a342c", "#5a4f44", "#cabba9", "#f1ece4"]
+      },
+      "on-surface-variant": {
+        "role": "neutral",
+        "displayName": "Warm Parchment",
+        "canonical": "oklch(80.0% 0.030 72.4)",
+        "tonalRamp": ["#070502", "#0a0704", "#141008", "#181309", "#241c0f", "#2e2820", "#3a342c", "#5a4f44", "#cabba9", "#f1ece4"]
+      }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "The hero headline only (.hero-title). The one place the system goes maximally loud." },
+      "headline": { "displayName": "Headline", "purpose": "Every section h2 — scales from 36px to 48px at md, 60px for the climactic contact-section headline." },
+      "body": { "displayName": "Body", "purpose": "Reading copy. 16px is the page's typographic floor; 18px is reserved for the one substantial About paragraph." },
+      "label": { "displayName": "Label", "purpose": "System chrome: nav links, buttons, the language toggle, eyebrows, and section-index numerals (02 / 03 / 04)." }
+    },
+    "shadows": [
+      { "name": "focal-glow", "value": "0 0 10px #ff6a1a", "purpose": "Tight halo confirming \"this is alive/active\" — the brand dot and the active nav-link underline." },
+      { "name": "button-glow", "value": "0 12px 30px rgba(255,106,26,.28)", "purpose": "Resting elevation for the primary button. Intensifies to 0 14px 38px rgba(255,106,26,.4) on hover — the only elevation state that changes on interaction." },
+      { "name": "structural-float", "value": "inset 0 1px rgba(255,255,255,.06), 0 15px 55px rgba(0,0,0,.55), 0 0 24px rgba(255,106,26,.08)", "purpose": "Glass-panel and the floating nav bar: a soft inset highlight plus a large ambient drop, plus a whisper of orange glow at the same radius." },
+      { "name": "cursor-halo", "value": "0 0 12px 5px rgba(255,122,41,.7), 0 0 35px rgba(255,122,41,.5)", "purpose": "The custom cursor's signature double-ring glow." },
+      { "name": "orbit-core-glow", "value": "0 0 60px 20px rgba(255,106,26,.35)", "purpose": "The single brightest point on the page, marking the orbit diagram's center." },
+      { "name": "ember-glow", "value": "0 0 8px 2px rgba(255,138,61,.7)", "purpose": "The ambient floating particles drifting up from the lower viewport." }
+    ],
+    "motion": [
+      { "name": "ease-out", "value": "cubic-bezier(0.23, 1, 0.32, 1)", "purpose": "Default easing for nav-link underlines, buttons, the nav-cta, and every scroll-reveal transition." },
+      { "name": "reveal-duration", "value": "0.9s", "purpose": "Duration for the fade + rise + blur-clear scroll-reveal pattern (.reveal-on-scroll / .animate-fade-up)." },
+      { "name": "press-feedback", "value": "transform: scale(0.97)", "purpose": "Identical :active press feedback across every interactive element — buttons, nav-cta, social pills." }
+    ],
+    "breakpoints": [
+      { "name": "sm", "value": "640px" },
+      { "name": "md", "value": "768px" },
+      { "name": "lg", "value": "1024px" },
+      { "name": "structural", "value": "900px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The loudest action on any given screen. Used for the hero and contact CTAs.",
+      "html": "<a class=\"ds-btn-primary\" href=\"#\">Contact on WhatsApp<svg class=\"ds-btn-icon\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><line x1=\"7\" y1=\"17\" x2=\"17\" y2=\"7\"></line><polyline points=\"7 7 17 7 17 17\"></polyline></svg></a>",
+      "css": ".ds-btn-primary { display: inline-flex; align-items: center; justify-content: center; gap: 8px; background: linear-gradient(135deg, #ff8a3d, #ff6a1a); color: #ffffff; font-family: 'Geist Mono', monospace; font-size: 13px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; line-height: 1.4; padding: 12px 32px; border-radius: 9999px; border: none; box-shadow: 0 12px 30px rgba(255,106,26,.28); transition: box-shadow 200ms cubic-bezier(0.23, 1, 0.32, 1), transform 160ms cubic-bezier(0.23, 1, 0.32, 1); } .ds-btn-primary:hover, .ds-btn-primary:focus-visible { box-shadow: 0 14px 38px rgba(255,106,26,.4); } .ds-btn-primary:active { transform: scale(0.97); } .ds-btn-icon { width: 16px; height: 16px; }"
+    },
+    {
+      "name": "Outline Button",
+      "kind": "button",
+      "refersTo": "button-outline",
+      "description": "Secondary action. Never gains a glow on hover — glow stays reserved for the primary variant.",
+      "html": "<a class=\"ds-btn-outline\" href=\"#\">Let's Talk<svg class=\"ds-btn-icon\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><line x1=\"7\" y1=\"17\" x2=\"17\" y2=\"7\"></line><polyline points=\"7 7 17 7 17 17\"></polyline></svg></a>",
+      "css": ".ds-btn-outline { display: inline-flex; align-items: center; justify-content: center; gap: 8px; background: transparent; color: #ffffff; font-family: 'Geist Mono', monospace; font-size: 13px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; line-height: 1.4; padding: 12px 32px; border-radius: 9999px; border: 1px solid rgba(255,150,86,.3); transition: background-color 200ms cubic-bezier(0.23, 1, 0.32, 1), border-color 200ms cubic-bezier(0.23, 1, 0.32, 1), transform 160ms cubic-bezier(0.23, 1, 0.32, 1); } .ds-btn-outline:hover, .ds-btn-outline:focus-visible { background: rgba(255,138,61,.08); border-color: rgba(255,150,86,.55); } .ds-btn-outline:active { transform: scale(0.97); } .ds-btn-icon { width: 16px; height: 16px; }"
+    },
+    {
+      "name": "Social Pill",
+      "kind": "chip",
+      "refersTo": "social-pill",
+      "description": "Identity marks for third-party links (WhatsApp, LinkedIn, Behance) — deliberately skip the Geist Mono / uppercase chrome treatment since they're brand names, not UI labels.",
+      "html": "<a class=\"ds-social-pill\" href=\"#\"><svg class=\"ds-pill-icon\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z\"></path></svg>WhatsApp</a>",
+      "css": ".ds-social-pill { display: inline-flex; align-items: center; gap: 8px; padding: 12px 24px; border-radius: 9999px; border: 1px solid rgba(255,255,255,.1); background: rgba(255,255,255,.05); color: #f1ece4; font-family: 'Inter', sans-serif; font-size: 14px; text-decoration: none; transition: background-color 200ms cubic-bezier(0.23, 1, 0.32, 1); } .ds-social-pill:hover, .ds-social-pill:focus-visible { background: rgba(255,255,255,.1); } .ds-social-pill:active { transform: scale(0.97); } .ds-pill-icon { width: 16px; height: 16px; }"
+    },
+    {
+      "name": "Glass Card",
+      "kind": "card",
+      "refersTo": "card-glass",
+      "description": "The base surface for orbit-diagram cards and stat callouts: smoked glass over ambient glow, never opaque.",
+      "html": "<div class=\"ds-card-glass\"><p class=\"ds-card-eyebrow\">02</p><p class=\"ds-card-body\">UX/UI Design</p></div>",
+      "css": ".ds-card-glass { background: linear-gradient(145deg, rgba(28,20,11,.62), rgba(8,6,3,.42)); border: 1px solid rgba(255,150,86,.14); border-radius: 1.5rem; padding: 16px; box-shadow: inset 0 1px rgba(255,255,255,.05), 0 30px 80px rgba(0,0,0,.35), 0 0 30px rgba(255,106,26,.05); backdrop-filter: blur(20px); } .ds-card-eyebrow { font-family: 'Geist Mono', monospace; font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: #cabba9; margin: 0 0 6px; } .ds-card-body { font-family: 'Inter', sans-serif; font-size: 16px; color: #f1ece4; margin: 0; }"
+    },
+    {
+      "name": "Floating Nav",
+      "kind": "nav",
+      "refersTo": "nav-cta",
+      "description": "A floating glass capsule inset from the viewport edge. Gains a darker, more opaque background once the page scrolls past the hero.",
+      "html": "<nav class=\"ds-topnav\"><a class=\"ds-brand\"><span class=\"ds-brand-dot\"></span>SİMAY ERNALBANT</a><a class=\"ds-nav-link ds-nav-active\">About</a><a class=\"ds-nav-cta\">Let's Talk<svg class=\"ds-btn-icon\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><line x1=\"7\" y1=\"17\" x2=\"17\" y2=\"7\"></line><polyline points=\"7 7 17 7 17 17\"></polyline></svg></a></nav>",
+      "css": ".ds-topnav { display: flex; align-items: center; gap: 28px; padding: 0 24px; height: 64px; border-radius: 18px; border: 1px solid rgba(255,138,61,.2); background: linear-gradient(180deg, rgba(20,15,9,.78), rgba(8,6,3,.62)); box-shadow: inset 0 1px rgba(255,255,255,.06), 0 15px 55px rgba(0,0,0,.55), 0 0 24px rgba(255,106,26,.08); } .ds-brand { display: flex; align-items: center; gap: 10px; font-family: 'Sora', sans-serif; font-weight: 700; font-size: 16px; letter-spacing: 0.06em; color: #f4ece2; text-decoration: none; } .ds-brand-dot { width: 6px; height: 6px; border-radius: 50%; background: #ff6a1a; box-shadow: 0 0 10px #ff6a1a; } .ds-nav-link { position: relative; font-family: 'Geist Mono', monospace; font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; color: #fff; text-decoration: none; } .ds-nav-link::after { content: ''; position: absolute; left: 0; bottom: -4px; height: 1px; width: 0; background: #ff8a3d; box-shadow: 0 0 10px #ff8a3d; transition: width 250ms cubic-bezier(0.23, 1, 0.32, 1); } .ds-nav-link:hover::after, .ds-nav-active::after { width: 100%; } .ds-nav-active { color: #ff8a3d; } .ds-nav-cta { display: inline-flex; align-items: center; gap: 8px; margin-left: auto; padding: 8px 20px; border-radius: 9999px; border: 1px solid rgba(255,150,86,.35); color: #fff; font-family: 'Geist Mono', monospace; font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; text-decoration: none; transition: background-color 200ms cubic-bezier(0.23, 1, 0.32, 1); } .ds-nav-cta:hover, .ds-nav-cta:focus-visible { background: rgba(255,138,61,.1); } .ds-nav-cta:active { transform: scale(0.97); } .ds-btn-icon { width: 14px; height: 14px; }"
+    },
+    {
+      "name": "Orbit Core",
+      "kind": "custom",
+      "refersTo": "orbit-diagram",
+      "description": "Signature component: the glowing core of the Education & Past orbit diagram — the single brightest point on the page, geometry standing in for decoration.",
+      "html": "<div class=\"ds-orbit-wrap\"><div class=\"ds-orbit-ring\" style=\"width:60%;height:60%;\"></div><div class=\"ds-orbit-ring\" style=\"width:84%;height:84%;\"></div><div class=\"ds-orbit-core\"></div></div>",
+      "css": ".ds-orbit-wrap { position: relative; width: 240px; height: 240px; } .ds-orbit-ring { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); border: 1px solid rgba(255,150,86,.12); border-radius: 50%; } .ds-orbit-core { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 14%; height: 14%; border-radius: 50%; background: radial-gradient(circle, #ffb066, #ff6a1a 55%, transparent 80%); filter: blur(2px); box-shadow: 0 0 60px 20px rgba(255,106,26,.35); }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Director's Cut",
+    "overview": "This system reads like a colorist's final grade on a film: every glow, blend mode, and motion timing is a deliberate, exact choice, never an accident or a default left untouched. The portfolio's job is to convert a skeptical hiring lead into outreach within a few seconds of scrolling, so the page itself has to perform as evidence of craft — the same precision that compiles a brand identity or interface also compiles this site's mix-blend-mode video compositing, its orbit-diagram geometry, and its scroll-reveal timing. Drama comes from light and motion concentrated on a small number of focal elements (the cursor halo, the hero video, the orbit core), never from decoration spread evenly across the page.\n\nThe palette is deliberately monochromatic at the hue level: one combustion-orange family against a near-black carbon base, because restraint is the confidence signal this brand is built on. The system explicitly rejects the generic AI-portfolio toolkit — tiny uppercase eyebrows stacked on every section, gradient-filled headline text, glassmorphism used as a default rather than a deliberate accent, identical icon-card grids, and the \"hero metric\" template (oversized stat + label, repeated three times). Where this system uses a glass surface, a glow, or an uppercase label, it is because that specific element earns it, not because the template calls for it everywhere.",
+    "keyCharacteristics": [
+      "One accent hue (combustion orange), expressed at multiple intensities, never joined by a second hue.",
+      "Near-black, warm-tinted carbon base — never a cool gray or pure #000.",
+      "Glow stands in for shadow as the entire elevation language.",
+      "Three typefaces, each locked to one role: display/headline structure, reading copy, or mono \"chrome\" (labels, numerals, nav).",
+      "Motion is restrained and directional (fade + rise + blur-clear), not bouncy or playful."
+    ],
+    "rules": [
+      { "name": "The Single-Accent Rule", "body": "Exactly one hue family (combustion orange) carries the system. If a UI element needs a second color to read correctly, the fix is a different orange intensity or a neutral, never a new hue.", "section": "colors" },
+      { "name": "The Ambient-Glow Rule", "body": "glow-orange (#FF6A1A) and glow-amber (#E8590C) are reserved for atmosphere, not interface: the two fixed .ambient-glow blobs (blurred 150px, 14% opacity) and the .ember particles. They never appear on a clickable element or a text color — that's primary / primary-container's job. Keeping atmosphere and interaction on separate token pairs is what stops the glow from reading as noise.", "section": "colors" },
+      { "name": "The Three-Voice Rule", "body": "Sora speaks only for display/headline structure, Inter only for reading copy, Geist Mono only for chrome. None of the three ever covers for another — if a piece of UI needs a label treatment, it gets Geist Mono and uppercase tracking, not a small Sora heading.", "section": "typography" },
+      { "name": "The Glow-Not-Shadow Rule", "body": "Depth comes from a colored or white glow at an element's edge, never a plain dark drop shadow. If a new component needs to feel \"raised,\" reach for a glow token above before reaching for box-shadow: 0 4px 8px rgba(0,0,0,.X).", "section": "elevation" }
+    ],
+    "dos": [
+      "Do keep every new accent color inside the Combustion Orange family (primary #ff8a3d / primary-container #ff6a1a) at a different lightness or opacity rather than introducing a new hue.",
+      "Do use a glow (colored or white, per the Elevation shadow vocabulary) as the only depth cue for anything meant to feel \"raised\" or \"alive.\"",
+      "Do keep the three-typeface role split absolute: Sora for display/headline, Inter for reading copy, Geist Mono uppercase for all chrome (nav, labels, numerals, buttons).",
+      "Do add a prefers-reduced-motion: reduce alternative for every opacity/transform/blur-based reveal and for the .ember particle animation. PRODUCT.md commits this project to WCAG 2.1 AA, which requires it, and index.html currently has zero prefers-reduced-motion handling anywhere — this is an open gap, not a style choice.",
+      "Do treat the numbered section markers (02 / 03 / 04) as acceptable, per PRODUCT.md's Anti-references: they trace a real, ordered path through the portfolio (Expertise → Web → Education), not decorative scaffolding."
+    ],
+    "donts": [
+      "Don't add a tiny uppercase eyebrow to every section by reflex — PRODUCT.md names this directly as a generic AI-template tell. Use one only where it does real wayfinding work (as the existing eyebrows already do).",
+      "Don't fill headline text with a gradient (background-clip: text). The system's existing technique for a \"hot\" headline word — solid Bone White or Combustion Orange plus a text-shadow glow (.text-glow-orange, .text-glow) — is the correct, already-established way to add drama to type.",
+      "Don't make glassmorphism (backdrop-filter: blur) the default surface treatment for every container. It's reserved for glass-panel contexts (cards floating over video/ambient glow); a plain surface-container flat fill is correct everywhere else.",
+      "Don't build identical icon-card grids or repeat the \"hero metric\" template (oversized stat + label, ×3). PRODUCT.md calls both out by name as anti-references for this brand.",
+      "Don't introduce a second shadow vocabulary (standard gray Material elevation steps). Every \"raised\" surface in this system goes through the Glow-Not-Shadow Rule instead.",
+      "Don't wire up the dead display-2xl / display-xl / headline-lg / headline-lg-mobile Tailwind tokens without also auditing whether .hero-title and the text-4xl/md:text-5xl pattern should be replaced by them — right now both systems exist and only one is real; adding a third sizing source would make it worse, not better."
+    ]
+  }
+}
