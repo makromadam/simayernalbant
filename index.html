@@ -64,7 +64,7 @@
     --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
     --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
   }
-  body { background:#07050300; background-color:#08060300; background-image: radial-gradient(ellipse 90% 60% at 50% 0%, rgba(255,106,26,0.07), transparent 60%); background-color:#070502; color:#f1ece4; overflow-x:hidden; position:relative; cursor:none; }
+  body { background-color:#000; background-image: radial-gradient(ellipse 90% 60% at 50% 0%, rgba(255,106,26,0.07), transparent 60%); color:#f1ece4; overflow-x:hidden; position:relative; cursor:none; }
   html { scroll-behavior:smooth; }
   @media (max-width: 900px) { body { cursor:auto; } #cursor { display:none; } }
   ::selection { background: rgba(255,106,26,0.35); color:#fff; }
@@ -144,9 +144,8 @@
     .orbit-card { position:static; transform:none; width:100%; }
   }
 
-  /* ===== Embers (lightweight ambient particles, transform/opacity only) ===== */
-  .ember { position:fixed; width:3px; height:3px; border-radius:50%; background:#ff8a3d; box-shadow:0 0 8px 2px rgba(255,138,61,.7); pointer-events:none; z-index:-1; opacity:0; animation: emberFloat 9s linear infinite; }
-  @keyframes emberFloat { 0%{ transform:translateY(0) translateX(0); opacity:0;} 10%{opacity:.7;} 90%{opacity:.4;} 100%{ transform:translateY(-90vh) translateX(20px); opacity:0;} }
+  /* ===== Embers (lightweight ambient particles, JS-driven, pointer-reactive) ===== */
+  .ember { position:fixed; left:0; top:0; width:3px; height:3px; border-radius:50%; background:#ff8a3d; box-shadow:0 0 8px 2px rgba(255,138,61,.7); pointer-events:none; z-index:-1; opacity:0; will-change: transform, opacity; }
 
   /* ===== Footer glow ===== */
   .footer-glow { position:absolute; inset:0; background: radial-gradient(ellipse 60% 50% at 50% 30%, rgba(255,106,26,.18), transparent 70%); pointer-events:none; }
@@ -163,7 +162,7 @@
   @media (prefers-reduced-motion: reduce) {
     .reveal-on-scroll, .animate-fade-up { transition: none; }
     .js-on .animate-fade-up, .js-on .reveal-on-scroll { opacity:1; transform:none; filter:none; }
-    .ember { animation: none; display: none; }
+    .ember { display: none; }
     .scroll-dot { animation: none; }
   }
   .lang-pill { color: #9ca3af; transition: background-color .2s, color .2s; }
@@ -230,9 +229,8 @@
       </div>
     </div>
 
-    <div class="w-full md:w-1/2 flex items-center justify-center relative min-h-[40vh] md:min-h-[60vh] [perspective:1000px]">
-      <div class="video-frame tilt-card w-full max-w-md mx-auto">
-        <div class="video-glow"></div>
+    <div class="w-full md:w-1/2 flex items-center justify-center md:justify-end relative min-h-[40vh] md:min-h-[60vh] [perspective:1000px]">
+      <div class="video-frame tilt-card w-full max-w-lg">
         <video autoplay loop muted playsinline preload="auto">
           <source src="head.mp4" type="video/mp4">
         </video>
@@ -250,7 +248,7 @@
     <div class="grid md:grid-cols-12 gap-10 items-center">
       <div class="md:col-span-5">
         <span class="font-label-sm text-orange-500 uppercase block mb-2 tracking-widest" data-i18n="about.label">About</span>
-        <h2 class="text-4xl md:text-5xl" data-i18n="about.title">Design, Technology<br>&amp; Experience</h2>
+        <h2 class="text-4xl md:text-5xl" data-i18n-html="about.title">Design, Technology<br>&amp; Experience</h2>
       </div>
       <div class="md:col-span-7 flex flex-col gap-6 glass-panel p-8 rounded-2xl">
         <p class="text-gray-300 text-base" data-i18n="about.p1">I am a Web Designer, Graphic Designer, and Illustrator, working at the intersection of design, technology, and digital experience. I graduated from Hacettepe University in 2014. During my studies, I joined the Erasmus program and spent my third year at ESA Saint-Luc in Belgium, studying entirely in French. This experience shaped my design perspective and strengthened my adaptability across different creative cultures.</p>
@@ -399,15 +397,15 @@ const translations = {
     "about.p2": "I began my career in advertising agencies in Marmaris, building a strong foundation in visual communication and production. I later transitioned into freelance work, collaborating with agencies and direct clients on a wide range of design projects. Today, my focus is web design and modern web experiences. I design and build user-centered digital products and AI-assisted, code-supported websites that combine clarity, function, and visual precision.",
     "appDesign.index": "02", "appDesign.title": "App Design",
     "appDesign.desc": "I craft mobile and web app interfaces that feel intuitive, elegant and alive — from user flows to high-fidelity visual systems.",
-    "appDesign.f1": "UI/UX Strategy", "appDesign.f2": "Interaction Design", "appDesign.f3": "Prototyping &amp; Motion", "appDesign.f4": "Design Systems",
+    "appDesign.f1": "UI/UX Strategy", "appDesign.f2": "Interaction Design", "appDesign.f3": "Prototyping & Motion", "appDesign.f4": "Design Systems",
     "appDesign.stat": "Interaction Flow", "appDesign.footer": "Designing intuitive journeys",
     "webDesign.index": "03", "webDesign.title": "Web Design",
     "webDesign.desc": "I build cinematic, responsive and conversion-focused websites where structure, storytelling and motion work as one experience.",
     "webDesign.f1": "Information Architecture", "webDesign.f2": "Responsive Design", "webDesign.f3": "Workflow Development", "webDesign.f4": "Performance Optimization",
     "webDesign.stat2": "Cognitive Sync", "webDesign.stat2val": "100%", "webDesign.footer": "Performance · Storytelling · Conversion",
-    "education.index": "04", "education.title": "Education &amp; Past", "education.subtitle": "Experiences that shaped the journey",
+    "education.index": "04", "education.title": "Education & Past", "education.subtitle": "Experiences that shaped the journey",
     "resume.now": "Now", "resume.r1.title": "Web Designer", "resume.r1.org": "Independent · Freelance",
-    "resume.r2.title": "Freelance Designer", "resume.r2.org": "Agencies &amp; Direct Clients", "resume.r2.year": "2016 — 2023",
+    "resume.r2.title": "Freelance Designer", "resume.r2.org": "Agencies & Direct Clients", "resume.r2.year": "2016 — 2023",
     "resume.r3.title": "Visual Designer", "resume.r3.org": "Advertising Agencies · Marmaris", "resume.r3.year": "2014 — 2016",
     "resume.r4.title": "Erasmus Exchange", "resume.r4.org": "ESA Saint-Luc · Belgium", "resume.r4.year": "2012 — 2013",
     "resume.r5.title": "BFA, Design", "resume.r5.org": "Hacettepe University", "resume.r5.year": "2014",
@@ -425,15 +423,15 @@ const translations = {
     "about.p2": "Kariyerime Marmaris'teki reklam ajanslarında başlayarak görsel iletişim ve üretim konularında güçlü bir temel oluşturdum. Daha sonra serbest çalışmaya yöneldim. Bugün odak noktam web tasarımı ve modern web deneyimleri. Netlik, işlev ve görsel hassasiyeti bir araya getiren dijital ürünler ile yapay zeka destekli web siteleri tasarlıyorum.",
     "appDesign.index": "02", "appDesign.title": "Uygulama Tasarımı",
     "appDesign.desc": "Kullanıcı akışlarından yüksek kaliteli görsel sistemlere kadar sezgisel, zarif ve canlı hissettiren mobil ve web uygulama arayüzleri tasarlıyorum.",
-    "appDesign.f1": "UI/UX Stratejisi", "appDesign.f2": "Etkileşim Tasarımı", "appDesign.f3": "Prototipleme &amp; Hareket", "appDesign.f4": "Tasarım Sistemleri",
+    "appDesign.f1": "UI/UX Stratejisi", "appDesign.f2": "Etkileşim Tasarımı", "appDesign.f3": "Prototipleme & Hareket", "appDesign.f4": "Tasarım Sistemleri",
     "appDesign.stat": "Etkileşim Akışı", "appDesign.footer": "Sezgisel yolculuklar tasarlamak",
     "webDesign.index": "03", "webDesign.title": "Web Tasarımı",
     "webDesign.desc": "Yapı, hikaye anlatımı ve hareketin tek bir deneyim olarak çalıştığı sinematik, duyarlı ve dönüşüm odaklı web siteleri kuruyorum.",
     "webDesign.f1": "Bilgi Mimarisi", "webDesign.f2": "Duyarlı Tasarım", "webDesign.f3": "İş Akışı Geliştirme", "webDesign.f4": "Performans Optimizasyonu",
     "webDesign.stat2": "Bilişsel Senkron", "webDesign.stat2val": "%100", "webDesign.footer": "Performans · Hikaye Anlatımı · Dönüşüm",
-    "education.index": "04", "education.title": "Eğitim &amp; Geçmiş", "education.subtitle": "Bu yolculuğu şekillendiren deneyimler",
+    "education.index": "04", "education.title": "Eğitim & Geçmiş", "education.subtitle": "Bu yolculuğu şekillendiren deneyimler",
     "resume.now": "Şimdi", "resume.r1.title": "Web Tasarımcısı", "resume.r1.org": "Bağımsız · Serbest",
-    "resume.r2.title": "Serbest Tasarımcı", "resume.r2.org": "Ajanslar &amp; Doğrudan Müşteriler", "resume.r2.year": "2016 — 2023",
+    "resume.r2.title": "Serbest Tasarımcı", "resume.r2.org": "Ajanslar & Doğrudan Müşteriler", "resume.r2.year": "2016 — 2023",
     "resume.r3.title": "Görsel Tasarımcı", "resume.r3.org": "Reklam Ajansları · Marmaris", "resume.r3.year": "2014 — 2016",
     "resume.r4.title": "Erasmus Değişimi", "resume.r4.org": "ESA Saint-Luc · Belçika", "resume.r4.year": "2012 — 2013",
     "resume.r5.title": "Tasarım Lisansı", "resume.r5.org": "Hacettepe Üniversitesi", "resume.r5.year": "2014",
@@ -451,15 +449,15 @@ const translations = {
     "about.p2": "J'ai commencé ma carrière dans des agences de publicité à Marmaris, me bâtissant de solides fondations en communication visuelle. Aujourd'hui, je me concentre sur le design web et les expériences web modernes. Je conçois et développe des produits numériques centrés sur l'utilisateur.",
     "appDesign.index": "02", "appDesign.title": "Design d'Application",
     "appDesign.desc": "Je conçois des interfaces mobiles et web intuitives, élégantes et vivantes — des parcours utilisateurs aux systèmes visuels haute fidélité.",
-    "appDesign.f1": "Stratégie UI/UX", "appDesign.f2": "Design d'Interaction", "appDesign.f3": "Prototypage &amp; Mouvement", "appDesign.f4": "Systèmes de Design",
+    "appDesign.f1": "Stratégie UI/UX", "appDesign.f2": "Design d'Interaction", "appDesign.f3": "Prototypage & Mouvement", "appDesign.f4": "Systèmes de Design",
     "appDesign.stat": "Flux d'Interaction", "appDesign.footer": "Concevoir des parcours intuitifs",
     "webDesign.index": "03", "webDesign.title": "Design Web",
     "webDesign.desc": "Je construis des sites web cinématographiques, responsifs et orientés conversion où structure, narration et mouvement fonctionnent comme une seule expérience.",
     "webDesign.f1": "Architecture de l'Information", "webDesign.f2": "Design Responsive", "webDesign.f3": "Développement de Flux", "webDesign.f4": "Optimisation des Performances",
     "webDesign.stat2": "Synchro Cognitive", "webDesign.stat2val": "100%", "webDesign.footer": "Performance · Narration · Conversion",
-    "education.index": "04", "education.title": "Formation &amp; Parcours", "education.subtitle": "Les expériences qui ont façonné ce parcours",
+    "education.index": "04", "education.title": "Formation & Parcours", "education.subtitle": "Les expériences qui ont façonné ce parcours",
     "resume.now": "Maintenant", "resume.r1.title": "Designer Web", "resume.r1.org": "Indépendante · Freelance",
-    "resume.r2.title": "Designer Freelance", "resume.r2.org": "Agences &amp; Clients Directs", "resume.r2.year": "2016 — 2023",
+    "resume.r2.title": "Designer Freelance", "resume.r2.org": "Agences & Clients Directs", "resume.r2.year": "2016 — 2023",
     "resume.r3.title": "Designer Visuelle", "resume.r3.org": "Agences de Publicité · Marmaris", "resume.r3.year": "2014 — 2016",
     "resume.r4.title": "Échange Erasmus", "resume.r4.org": "ESA Saint-Luc · Belgique", "resume.r4.year": "2012 — 2013",
     "resume.r5.title": "Licence, Design", "resume.r5.org": "Université Hacettepe", "resume.r5.year": "2014",
@@ -576,18 +574,108 @@ if (!reduceMotion && window.innerWidth > 900) {
   });
 }
 
-// Ambient embers (decorative, transform/opacity only)
+// Scroll-driven hero video: head.mp4 scrubs with scroll position through the hero section
+const heroVideo = document.querySelector('#hero video');
+const heroSection = document.getElementById('hero');
+if (heroVideo && heroSection && !reduceMotion && window.innerWidth > 900) {
+  heroVideo.loop = false;
+  heroVideo.pause();
+
+  let duration = 0;
+  let ticking = false;
+
+  function updateScrub() {
+    ticking = false;
+    if (!duration) return;
+    const rect = heroSection.getBoundingClientRect();
+    const progress = Math.min(1, Math.max(0, -rect.top / rect.height));
+    heroVideo.currentTime = progress * duration;
+  }
+
+  function onHeroVideoMetadata() {
+    duration = heroVideo.duration || 0;
+    updateScrub();
+  }
+  if (heroVideo.readyState >= 1 && heroVideo.duration) {
+    onHeroVideoMetadata();
+  } else {
+    heroVideo.addEventListener('loadedmetadata', onHeroVideoMetadata);
+  }
+
+  window.addEventListener('scroll', () => {
+    if (!ticking) {
+      ticking = true;
+      requestAnimationFrame(updateScrub);
+    }
+  }, { passive: true });
+}
+
+// Ambient embers (decorative, transform/opacity only, reacts to pointer/touch proximity)
 const emberHost = document.getElementById('embers');
 if (emberHost && window.innerWidth > 900 && !reduceMotion) {
-  for (let i = 0; i < 8; i++) {
-    const e = document.createElement('span');
-    e.className = 'ember';
-    e.style.left = `${Math.random() * 100}vw`;
-    e.style.bottom = `${-10 - Math.random() * 20}vh`;
-    e.style.animationDelay = `${Math.random() * 9}s`;
-    e.style.animationDuration = `${8 + Math.random() * 6}s`;
-    emberHost.appendChild(e);
+  const COUNT = 36;
+  const REPEL_RADIUS = 120;
+  const REPEL_PUSH = 46;
+  const particles = [];
+
+  function spawn(p) {
+    p.baseX = Math.random() * window.innerWidth;
+    p.baseY = window.innerHeight + Math.random() * 200;
+    p.vy = -(70 + Math.random() * 50);
+    p.drift = (Math.random() - 0.5) * 24;
+    p.life = 0;
+    p.maxLife = 7 + Math.random() * 6;
   }
+
+  const pointer = { x: -9999, y: -9999, active: false };
+  window.addEventListener('pointermove', (e) => { pointer.x = e.clientX; pointer.y = e.clientY; pointer.active = true; });
+  window.addEventListener('pointerleave', () => { pointer.active = false; });
+  window.addEventListener('touchmove', (e) => {
+    const t = e.touches[0];
+    if (t) { pointer.x = t.clientX; pointer.y = t.clientY; pointer.active = true; }
+  }, { passive: true });
+
+  for (let i = 0; i < COUNT; i++) {
+    const el = document.createElement('span');
+    el.className = 'ember';
+    emberHost.appendChild(el);
+    const p = { el };
+    spawn(p);
+    p.life = Math.random() * p.maxLife;
+    particles.push(p);
+  }
+
+  let last = performance.now();
+  function tick(now) {
+    const dt = Math.min((now - last) / 1000, 0.05);
+    last = now;
+    for (const p of particles) {
+      p.life += dt;
+      if (p.life > p.maxLife) spawn(p);
+
+      p.baseX += p.drift * dt;
+      p.baseY += p.vy * dt;
+
+      let ox = 0, oy = 0;
+      if (pointer.active) {
+        const dx = p.baseX - pointer.x;
+        const dy = p.baseY - pointer.y;
+        const dist = Math.hypot(dx, dy);
+        if (dist < REPEL_RADIUS && dist > 0.01) {
+          const force = (1 - dist / REPEL_RADIUS) * REPEL_PUSH;
+          ox = (dx / dist) * force;
+          oy = (dy / dist) * force;
+        }
+      }
+
+      const t = p.life / p.maxLife;
+      const fade = t < 0.12 ? t / 0.12 : t > 0.85 ? (1 - t) / 0.15 : 1;
+      p.el.style.opacity = Math.max(0, Math.min(1, fade * 0.7)).toFixed(2);
+      p.el.style.transform = `translate3d(${(p.baseX + ox).toFixed(1)}px, ${(p.baseY + oy).toFixed(1)}px, 0)`;
+    }
+    requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
 }
 
 document.documentElement.classList.add('js-on');
