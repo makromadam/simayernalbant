@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html class="dark scroll-smooth" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SMY - Web, App &amp; Branding Designer</title>
+<meta name="description" content="Simay Ernalbant creates cinematic web experiences, mobile applications, and premium brand identities."/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Inter:wght@400;500;600&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        colors: {
+          "outline": "#958ea0", "outline-variant": "#494454",
+          "glow-purple": "#6D28D9", "glow-pink": "#DB2777",
+          "secondary": "#ffb0cd", "tertiary": "#ff8fbd",
+          "surface-bright": "#393939", "surface-variant": "#353535",
+          "surface-container-low": "#1b1b1b", "surface-container": "#1f1f1f",
+          "surface-container-high": "#2a2a2a", "surface-container-lowest": "#0e0e0e",
+          "surface-deep": "#0A0A0A", "surface-glass": "rgba(29, 29, 31, 0.7)",
+          "background": "#131313", "on-surface": "#e2e2e2",
+          "on-surface-variant": "#cbc3d7", "primary": "#d0bcff",
+          "primary-container": "#a078ff"
+        },
+        borderRadius: { "DEFAULT": "0.5rem", "lg": "0.75rem", "xl": "1.5rem", "full": "9999px" },
+        spacing: { "base": "8px", "gutter": "32px", "margin-edge": "64px", "section-gap-mobile": "80px", "section-gap-desktop": "160px", "container-max": "1440px" },
+        fontFamily: {
+          "display-2xl": ["'Sora'", "sans-serif"], "display-xl": ["'Sora'", "sans-serif"],
+          "headline-lg": ["'Sora'", "sans-serif"], "headline-lg-mobile": ["'Sora'", "sans-serif"],
+          "body-lg": ["'Inter'", "sans-serif"], "body-md": ["'Inter'", "sans-serif"],
+          "label-md": ["'Geist Mono'", "monospace"], "label-sm": ["'Geist Mono'", "monospace"]
+        },
+        fontSize: {
+          "display-2xl": ["72px", { lineHeight: "1.1", letterSpacing: "-0.04em", fontWeight: "700" }],
+          "display-xl": ["56px", { lineHeight: "1.1", letterSpacing: "-0.03em", fontWeight: "700" }],
+          "headline-lg": ["40px", { lineHeight: "1.2", letterSpacing: "-0.02em", fontWeight: "600" }],
+          "headline-lg-mobile": ["32px", { lineHeight: "1.2", letterSpacing: "-0.02em", fontWeight: "600" }],
+          "body-lg": ["18px", { lineHeight: "1.6", letterSpacing: "-0.01em", fontWeight: "400" }],
+          "body-md": ["16px", { lineHeight: "1.6", letterSpacing: "0", fontWeight: "400" }],
+          "label-md": ["13px", { lineHeight: "1.4", letterSpacing: "0.12em", fontWeight: "500" }],
+          "label-sm": ["11px", { lineHeight: "1.4", letterSpacing: "0.16em", fontWeight: "500" }]
+        }
+      }
+    }
+  }
+</script>
+<style>
+  body { background:#030105; color:#e2e2e2; overflow-x:hidden; position:relative; cursor:none; }
+  html { scroll-behavior:smooth; }
+  @media (max-width: 900px) { body { cursor:auto; } #cursor { display:none; } }
+  ::selection { background: rgba(219,39,119,0.35); color:#fff; }
+
+  .text-glow-pink { color:#ff4fa3; }
+  .text-glow { text-shadow: 0 0 28px rgba(219,39,119,0.45); }
+  
+  .ambient-glow { position:fixed; border-radius:50%; filter:blur(150px); opacity:0.12; z-index:-1; pointer-events:none; }
+  .glow-1 { width:620px; height:620px; background:#DB2777; top:-120px; left:-220px; }
+  .glow-2 { width:520px; height:520px; background:#6D28D9; bottom:-120px; right:-120px; }
+
+  #cursor { width:14px; height:14px; background:#fff; border:3px solid #ff3f91; border-radius:50%;
+    position:fixed; left:50%; top:50%; pointer-events:none; z-index:9999;
+    transform:translate(-50%,-50%); transition:width .2s,height .2s,background-color .2s;
+    box-shadow: 0 0 12px 5px rgba(255,48,136,.7), 0 0 35px rgba(255,48,136,.55); }
+  #cursor::after { content: ""; position: absolute; inset: -16px; border: 1px solid rgba(255,77,151,.38); border-radius: 50%; transition: transform .2s; }
+  #cursor.cursor-hover::after { transform: scale(1.35); }
+
+  #topnav { transition:background-color .4s, box-shadow .4s, border-color .4s; top: 14px; width: calc(100% - 28px); left: 14px; border: 1px solid rgba(255,139,194,.24) !important; border-radius: 18px; background: linear-gradient(180deg, rgba(22,17,26,.78), rgba(8,5,11,.62)); box-shadow: inset 0 1px rgba(255,255,255,.08), 0 15px 55px rgba(0,0,0,.55), 0 0 24px rgba(255,56,143,.08); }
+  #topnav.nav-scrolled { background: rgba(7,4,10,.88); border-color: rgba(255,85,155,.34) !important; }
+  .nav-link { position:relative; }
+  .nav-link::after { content:""; position:absolute; left:0; bottom:-4px; height:1px; width:0; background:#ff4fa3; transition:width .3s; box-shadow:0 0 10px #ff4fa3; }
+  .nav-link:hover::after, .nav-link.nav-active::after { width:100%; }
+  .nav-link.nav-active { color:#ff4fa3; }
+
+  #topnav > div > a:first-child, .footer-name { font: 500 clamp(13px, 1.4vw, 20px)/1 "Cormorant Garamond", serif; color: #eadde5; letter-spacing: .19em; text-shadow: 0 0 20px rgba(255,93,160,.24); }
+
+  .glass-panel { background: linear-gradient(145deg, rgba(27,16,28,.62), rgba(8,5,11,.42)) !important; border: 1px solid rgba(255,113,179,.18) !important; box-shadow: inset 0 1px rgba(255,255,255,.06), 0 30px 80px rgba(0,0,0,.35), 0 0 30px rgba(255,45,132,.06); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); }
+
+  #cinematic-world { position: fixed; inset: 0; z-index: 0; overflow: hidden; background: #030105; pointer-events: none; }
+  #world-canvas { width: 100%; height: 100%; display: block; }
+  .world-vignette { position: absolute; inset: 0; background: radial-gradient(circle at 50% 50%, transparent 20%, rgba(3,1,5,.8) 100%); }
+  
+  .hero-title { font: 500 clamp(58px, 7.2vw, 110px)/.82 "Cormorant Garamond", serif; letter-spacing: -.035em; color: #f1e5eb; text-shadow: 0 0 34px rgba(255,80,147,.12); }
+  .hero-title span { display: inline-block; margin-top: .45em; font: 600 clamp(18px, 2vw, 30px)/1.35 "Sora", sans-serif; letter-spacing: .24em; color: #ff9bc6; text-shadow: 0 0 20px rgba(255,58,142,.45); }
+
+  .tilt-card { transition:transform .1s ease-out; transform-style:preserve-3d; }
+  @keyframes scrollDot { 0%{transform:translateY(0);opacity:0} 30%{opacity:1} 70%{opacity:1} 100%{transform:translateY(14px);opacity:0} }
+  .scroll-dot { animation:scrollDot 1.8s infinite; }
+
+  .reveal-on-scroll, .animate-fade-up { transition: opacity .9s cubic-bezier(.25,1,.3,1), transform .9s cubic-bezier(.25,1,.3,1), filter .9s; will-change: transform, opacity, filter; }
+  .js-on .animate-fade-up, .js-on .reveal-on-scroll { opacity:0; transform:translate3d(0, 42px, -40px); filter: blur(8px); }
+  .js-on .animate-fade-up.is-revealed, .js-on .reveal-on-scroll.is-revealed { opacity:1; transform:none; filter: blur(0); }
+
+  #about h2, #expertise h2, #resume h2, .contact-portal h2 { font-family: "Cormorant Garamond", serif !important; font-weight: 500; letter-spacing: -.025em; color: #eadde5; }
+
+  .mobile-menu { display: grid; gap: 16px; padding: 18px 22px 24px; border-top: 1px solid rgba(255,97,164,.14); color: #eadde5; font: 500 11px/1.2 "Geist Mono", monospace; letter-spacing: .13em; text-transform: uppercase; background: #0c0812; position: absolute; top: 70px; left: 0; width: 100%; }
+  .mobile-menu[hidden] { display: none; }
+
+  @media (max-width: 900px) {
+    #topnav { top: 8px; left: 8px; width: calc(100% - 16px); }
+    .hero-title { font-size: clamp(42px, 11.7vw, 58px); }
+    .resume-orbit { min-height: auto; }
+  }
+</style>
+</head>
+<body class="font-body-md antialiased min-h-screen flex flex-col">
+
+<div id="cinematic-world" aria-hidden="true">
+  <canvas id="world-canvas"></canvas>
+  <div class="world-vignette"></div>
+</div>
+
+<div class="ambient-glow glow-1"></div>
+<div class="ambient-glow glow-2"></div>
+<div id="cursor"></div>
+
+<!-- ===== NAV ===== -->
+<nav id="topnav" class="fixed z-50 border-white/5 animate-fade-up">
+  <div class="flex justify-between items-center px-6 md:px-64 h-16 w-full mx-auto">
+    <a href="#hero" class="hover:scale-105 transition-transform duration-300 whitespace-nowrap">SİMAY ERNALBANT</a>
+    <div class="hidden lg:flex items-center gap-9 font-label-md text-label-md uppercase text-on-surface-variant">
+      <a class="nav-link hover:text-glow-pink transition-colors text-white" data-i18n="nav.about" href="#about">About</a>
+      <a class="nav-link hover:text-glow-pink transition-colors text-white" data-i18n="nav.expertise" href="#expertise">Expertise</a>
+      <a class="nav-link hover:text-glow-pink transition-colors text-white" data-i18n="nav.resume" href="#resume">Resume</a>
+      <a class="nav-link hover:text-glow-pink transition-colors text-white" data-i18n="nav.behance" href="https://www.behance.net/simayernalbant" target="_blank" rel="noopener">Behance</a>
+    </div>
+    <div class="hidden md:flex items-center gap-5">
+      <div class="flex items-center bg-black/40 rounded-full p-1 border border-white/10">
+        <button class="lang-toggle px-3 py-0.5 rounded-full font-label-sm text-label-sm bg-gradient-to-r from-pink-500 to-purple-600 text-white" data-lang="en">EN</button>
+        <button class="lang-toggle px-3 py-0.5 rounded-full font-label-sm text-label-sm text-gray-400" data-lang="tr">TR</button>
+        <button class="lang-toggle px-3 py-0.5 rounded-full font-label-sm text-label-sm text-gray-400" data-lang="fr">FR</button>
+      </div>
+      <a class="inline-flex items-center justify-center px-5 py-2 rounded-full bg-gradient-to-r from-pink-500 to-purple-600 text-white font-label-md text-label-md uppercase hover:scale-105 transition-transform duration-300" data-i18n="nav.getInTouch" href="https://wa.me/905442701157" target="_blank" rel="noopener">Get in Touch</a>
+    </div>
+    <button id="mobile-menu-toggle" class="lg:hidden text-white" aria-expanded="false" aria-label="Menu"><span class="material-symbols-outlined">menu</span></button>
+  </div>
+  <div id="mobile-menu" class="mobile-menu" hidden>
+    <a data-i18n="nav.about" href="#about">About</a>
+    <a data-i18n="nav.expertise" href="#expertise">Expertise</a>
+    <a data-i18n="nav.resume" href="#resume">Resume</a>
+    <div class="flex gap-2">
+      <button class="lang-toggle text-white font-bold" data-lang="en">EN</button>
+      <button class="lang-toggle text-gray-400" data-lang="tr">TR</button>
+      <button class="lang-toggle text-gray-400" data-lang="fr">FR</button>
+    </div>
+  </div>
+</nav>
+
+<main class="flex-grow w-full mx-auto px-6 md:px-32 relative z-10">
+
+  <!-- ===== HERO ===== -->
+  <section id="hero" class="min-h-screen flex flex-col md:flex-row items-center justify-between gap-12 pt-32 pb-24 relative">
+    <div class="w-full md:w-1/2 flex flex-col items-start gap-6">
+      <h1 class="hero-title text-on-surface animate-fade-up" data-i18n="hero.hello">SIMAY ERNALBANT<br><span>WHERE DESIGN<br>MEETS DIMENSION</span></h1>
+      <p class="font-label-md uppercase tracking-widest text-pink-400 animate-fade-up" data-i18n="hero.role">Web, App &amp; Branding</p>
+      <p class="font-body-lg text-body-lg text-gray-300 max-w-md animate-fade-up" data-i18n="hero.description">Crafting cinematic digital experiences and high-fidelity interfaces for the next generation of web and product design.</p>
+      <div class="mt-4 animate-fade-up">
+        <a class="inline-flex items-center justify-center px-8 py-3 rounded-full bg-white/5 border border-white/10 text-white font-label-md uppercase hover:bg-white/10 transition-all" data-i18n="hero.getInTouch" href="#contact">Get in Touch</a>
+      </div>
+    </div>
+    <div class="w-full md:w-1/2 min-h-[40vh] md:min-h-[60vh]"></div>
+
+    <div class="hidden md:flex absolute bottom-6 left-1/2 -translate-x-1/2 flex-col items-center gap-2 text-gray-500">
+      <span class="font-label-sm text-xs uppercase tracking-widest" data-i18n="hero.scroll">Scroll to explore</span>
+      <span class="w-5 h-8 rounded-full border border-white/20 flex justify-center pt-1"><span class="w-1 h-1 rounded-full bg-pink-500 scroll-dot"></span></span>
+    </div>
+  </section>
+
+  <!-- ===== ABOUT ===== -->
+  <section id="about" class="py-24 reveal-on-scroll">
+    <div class="grid md:grid-cols-12 gap-10 items-center">
+      <div class="md:col-span-5">
+        <span class="font-label-sm text-pink-500 uppercase block mb-2 tracking-widest" data-i18n="about.label">About</span>
+        <h2 class="text-4xl md:text-5xl text-white font-serif" data-i18n="about.title">Design, Technology<br>&amp; Experience</h2>
+      </div>
+      <div class="md:col-span-7 flex flex-col gap-6 glass-panel p-8 rounded-2xl">
+        <p class="text-gray-300 text-base" data-i18n="about.p1">I am a Web Designer, Graphic Designer, and Illustrator, working at the intersection of design, technology, and digital experience. I graduated from Hacettepe University in 2014. During my studies, I joined the Erasmus program and spent my third year at ESA Saint-Luc in Belgium, studying entirely in French. This experience shaped my design perspective and strengthened my adaptability across different creative cultures.</p>
+        <p class="text-gray-300 text-base" data-i18n="about.p2">I began my career in advertising agencies in Marmaris, building a strong foundation in visual communication and production. I later transitioned into freelance work, collaborating with agencies and direct clients on a wide range of design projects. Today, my focus is web design and modern web experiences. I design and build user-centered digital products and AI-assisted, code-supported websites that combine clarity, function, and visual precision.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== EXPERTISE ===== -->
+  <section id="expertise" class="py-24 relative">
+    <div class="mb-16 flex flex-col items-center text-center reveal-on-scroll">
+      <span class="font-label-sm text-pink-500 uppercase mb-2 tracking-widest" data-i18n="expertise.label">Expertise</span>
+      <h2 class="text-4xl md:text-5xl text-white font-serif" data-i18n="expertise.title">Premium Interaction Design</h2>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <!-- Web Design -->
+      <div class="glass-panel rounded-xl p-8 group relative overflow-hidden flex flex-col reveal-on-scroll tilt-card">
+        <div class="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center mb-6 text-pink-400"><span class="material-symbols-outlined">web</span></div>
+        <h3 class="text-2xl text-white mb-3 font-serif" data-i18n="expertise.web.title">Web Design</h3>
+        <p class="text-gray-400 text-sm flex-grow" data-i18n="expertise.web.desc">Architecting intuitive, high-fidelity interfaces that bridge technical complexity with cinematic beauty.</p>
+      </div>
+      <!-- App Design -->
+      <div class="glass-panel rounded-xl p-8 group relative overflow-hidden flex flex-col reveal-on-scroll tilt-card">
+        <div class="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center mb-6 text-purple-400"><span class="material-symbols-outlined">smartphone</span></div>
+        <h3 class="text-2xl text-white mb-3 font-serif" data-i18n="expertise.app.title">App Design</h3>
+        <p class="text-gray-400 text-sm flex-grow" data-i18n="expertise.app.desc">Designing user-centered mobile and desktop applications optimized for seamless interactions and modern utility.</p>
+      </div>
+      <!-- Branding -->
+      <div class="glass-panel rounded-xl p-8 group relative overflow-hidden flex flex-col reveal-on-scroll tilt-card">
+        <div class="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center mb-6 text-pink-300"><span class="material-symbols-outlined">layers</span></div>
+        <h3 class="text-2xl text-white mb-3 font-serif" data-i18n="expertise.branding.title">Branding</h3>
+        <p class="text-gray-400 text-sm flex-grow" data-i18n="expertise.branding.desc">Creating compelling visual narratives, corporate identities, and design systems that resonate across the digital landscape.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== RESUME ===== -->
+  <section id="resume" class="py-24 relative">
+    <div class="mb-16 flex flex-col items-center text-center reveal-on-scroll">
+      <span class="font-label-sm text-pink-500 uppercase mb-2 tracking-widest" data-i18n="resume.label">Trajectory</span>
+      <h2 class="text-4xl md:text-5xl text-white font-serif" data-i18n="resume.title">Experience &amp; Education</h2>
+    </div>
+
+    <div class="max-w-3xl mx-auto flex flex-col gap-8 relative border-l border-white/10 pl-6 md:pl-12">
+      <!-- Item -->
+      <div class="relative reveal-on-scroll">
+        <span class="absolute -left-[31px] md:-left-[55px] top-1.5 w-4 h-4 rounded-full bg-pink-500 shadow-[0_0_15px_#ff3f91]"></span>
+        <span class="text-xs font-mono text-pink-400 uppercase" data-i18n="resume.now">Now</span>
+        <h3 class="text-xl text-white font-serif mt-1" data-i18n="resume.r1.title">Web Designer</h3>
+        <p class="text-xs text-gray-400" data-i18n="resume.r1.org">Independent · Freelance</p>
+        <p class="text-gray-400 text-sm mt-2" data-i18n="resume.r1.desc">Designing and building user-centered digital products and AI-assisted, code-supported websites that combine clarity, function, and visual precision.</p>
+      </div>
+      <!-- Item -->
+      <div class="relative reveal-on-scroll">
+        <span class="absolute -left-[31px] md:-left-[55px] top-1.5 w-4 h-4 rounded-full bg-purple-500"></span>
+        <span class="text-xs font-mono text-gray-400">2016 — 2023</span>
+        <h3 class="text-xl text-white font-serif mt-1" data-i18n="resume.r2.title">Freelance Designer</h3>
+        <p class="text-xs text-gray-400" data-i18n="resume.r2.org">Agencies &amp; Direct Clients</p>
+        <p class="text-gray-400 text-sm mt-2" data-i18n="resume.r2.desc">Collaborating with agencies and direct clients across a wide range of branding, digital, and product design projects.</p>
+      </div>
+      <!-- Item -->
+      <div class="relative reveal-on-scroll">
+        <span class="absolute -left-[31px] md:-left-[55px] top-1.5 w-4 h-4 rounded-full bg-purple-500"></span>
+        <span class="text-xs font-mono text-gray-400">2014 — 2016</span>
+        <h3 class="text-xl text-white font-serif mt-1" data-i18n="resume.r3.title">Visual Designer</h3>
+        <p class="text-xs text-gray-400" data-i18n="resume.r3.org">Advertising Agencies · Marmaris</p>
+        <p class="text-gray-400 text-sm mt-2" data-i18n="resume.r3.desc">Built a strong foundation in visual communication and production across print and digital campaigns.</p>
+      </div>
+      <!-- Item -->
+      <div class="relative reveal-on-scroll">
+        <span class="absolute -left-[31px] md:-left-[55px] top-1.5 w-4 h-4 rounded-full bg-purple-500"></span>
+        <span class="text-xs font-mono text-gray-400">2012 — 2013</span>
+        <h3 class="text-xl text-white font-serif mt-1" data-i18n="resume.r4.title">Erasmus Exchange</h3>
+        <p class="text-xs text-gray-400" data-i18n="resume.r4.org">ESA Saint-Luc · Belgium</p>
+        <p class="text-gray-400 text-sm mt-2" data-i18n="resume.r4.desc">Spent the third year of study entirely in French, broadening design perspective across creative cultures.</p>
+      </div>
+      <!-- Item -->
+      <div class="relative reveal-on-scroll">
+        <span class="absolute -left-[31px] md:-left-[55px] top-1.5 w-4 h-4 rounded-full bg-purple-500"></span>
+        <span class="text-xs font-mono text-gray-400">2014</span>
+        <h3 class="text-xl text-white font-serif mt-1" data-i18n="resume.r5.title">BFA, Design</h3>
+        <p class="text-xs text-gray-400" data-i18n="resume.r5.org">Hacettepe University</p>
+        <p class="text-gray-400 text-sm mt-2" data-i18n="resume.r5.desc">Graduated in 2014 with a foundation spanning graphic design, illustration, and visual communication.</p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ===== FOOTER ===== -->
+<footer id="contact" class="py-24 border-t border-white/10 bg-black/30 relative z-10">
+  <div class="max-w-4xl mx-auto text-center px-6 reveal-on-scroll">
+    <span class="font-mono text-pink-500 uppercase tracking-widest text-sm" data-i18n="nav.contact">Contact</span>
+    <h2 class="text-4xl md:text-6xl text-white font-serif mt-4" data-i18n="contact.title">Let’s Build<br>Something Cool</h2>
+    <div class="flex flex-wrap justify-center gap-6 mt-12">
+      <a class="px-6 py-3 rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 transition-all text-sm" href="https://wa.me/905442701157" target="_blank" rel="noopener">WhatsApp</a>
+      <a class="px-6 py-3 rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 transition-all text-sm" href="https://www.linkedin.com/in/simayernalbant/" target="_blank" rel="noopener">LinkedIn</a>
+      <a class="px-6 py-3 rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 transition-all text-sm" href="https://www.behance.net/simayernalbant" target="_blank" rel="noopener">Behance</a>
+    </div>
+    <p class="text-xs text-gray-500 mt-16">&copy; 2026 SİMAY ERNALBANT. Cinematic interfaces, engineered.</p>
+  </div>
+</footer>
+
+<script>
+const translations = {
+  en: {
+    "nav.about": "About", "nav.expertise": "Expertise", "nav.resume": "Resume", "nav.contact": "Contact", "nav.behance": "Behance", "nav.getInTouch": "Get in Touch",
+    "hero.hello": "SIMAY ERNALBANT<br><span>WHERE DESIGN<br>MEETS DIMENSION</span>", "hero.role": "Web, App &amp; Branding",
+    "hero.description": "Crafting cinematic digital experiences and high-fidelity interfaces for the next generation of web and product design.", "hero.scroll": "Scroll to explore",
+    "about.label": "About", "about.title": "Design, Technology<br>&amp; Experience",
+    "about.p1": "I am a Web Designer, Graphic Designer, and Illustrator, working at the intersection of design, technology, and digital experience. I graduated from Hacettepe University in 2014. During my studies, I joined the Erasmus program and spent my third year at ESA Saint-Luc in Belgium, studying entirely in French. This experience shaped my design perspective and strengthened my adaptability across different creative cultures.",
+    "about.p2": "I began my career in advertising agencies in Marmaris, building a strong foundation in visual communication and production. I later transitioned into freelance work, collaborating with agencies and direct clients on a wide range of design projects. Today, my focus is web design and modern web experiences. I design and build user-centered digital products and AI-assisted, code-supported websites that combine clarity, function, and visual precision.",
+    "expertise.label": "Expertise", "expertise.title": "Premium Interaction Design",
+    "expertise.web.title": "Web Design", "expertise.web.desc": "Architecting intuitive, high-fidelity interfaces that bridge technical complexity with cinematic beauty.",
+    "expertise.app.title": "App Design", "expertise.app.desc": "Designing user-centered mobile and desktop applications optimized for seamless interactions and modern utility.",
+    "expertise.branding.title": "Branding", "expertise.branding.desc": "Creating compelling visual narratives, corporate identities, and design systems that resonate across the digital landscape.",
+    "resume.label": "Trajectory", "resume.title": "Experience & Education",
+    "resume.now": "Now", "resume.r1.title": "Web Designer", "resume.r1.org": "Independent · Freelance", "resume.r1.desc": "Designing and building user-centered digital products and AI-assisted, code-supported websites that combine clarity, function, and visual precision.",
+    "resume.r2.title": "Freelance Designer", "resume.r2.org": "Agencies & Direct Clients", "resume.r2.desc": "Collaborating with agencies and direct clients across a wide range of branding, digital, and product design projects.",
+    "resume.r3.title": "Visual Designer", "resume.r3.org": "Advertising Agencies · Marmaris", "resume.r3.desc": "Built a strong foundation in visual communication and production across print and digital campaigns.",
+    "resume.r4.title": "Erasmus Exchange", "resume.r4.org": "ESA Saint-Luc · Belgium", "resume.r4.desc": "Spent the third year of study entirely in French, broadening design perspective across creative cultures.",
+    "resume.r5.title": "BFA, Design", "resume.r5.org": "Hacettepe University", "resume.r5.desc": "Graduated in 2014 with a foundation spanning graphic design, illustration, and visual communication.",
+    "contact.title": "Let’s Build<br>Something Cool"
+  },
+  tr: {
+    "nav.about": "Hakkımda", "nav.expertise": "Uzmanlık", "nav.resume": "Özgeçmiş", "nav.contact": "İletişim", "nav.behance": "Behance", "nav.getInTouch": "İletişime Geç",
+    "hero.hello": "SİMAY ERNALBANT<br><span>TASARIMIN<br>BOYUTLA BULUŞTUĞU YER</span>", "hero.role": "Web, Uygulama &amp; Marka",
+    "hero.description": "Yeni nesil web ve ürün tasarımı için sinematik dijital deneyimler ve yüksek kaliteli arayüzler üretiyorum.", "hero.scroll": "Keşfetmek için kaydır",
+    "about.label": "Hakkımda", "about.title": "Tasarım, Teknoloji<br>&amp; Deneyim",
+    "about.p1": "Ben bir Web Tasarımcısı, Grafik Tasarımcı ve İllüstratörüm. Tasarım, teknoloji ve dijital deneyimin kesişim noktasında çalışıyorum. 2014 yılında Hacettepe Üniversitesi'nden mezun oldum. Öğrenimim sırasında Erasmus programına katıldım ve üçüncü yılımı Belçika'da tamamen Fransızca eğitim veren ESA Saint-Luc'ta geçirdim.",
+    "about.p2": "Kariyerime Marmaris'teki reklam ajanslarında başlayarak görsel iletişim ve üretim konularında güçlü bir temel oluşturdum. Daha sonra serbest çalışmaya yöneldim. Bugün odak noktam web tasarımı ve modern web deneyimleri. Netlik, işlev ve görsel hassasiyeti bir araya getiren dijital ürünler ile yapay zeka destekli web siteleri tasarlıyorum.",
+    "expertise.label": "Uzmanlık Alanları", "expertise.title": "Premium Etkileşim Tasarımı",
+    "expertise.web.title": "Web Tasarımı", "expertise.web.desc": "Teknik karmaşıklığı sinematik güzelle birleştiren, sezgisel ve yüksek kaliteli dijital arayüzler kurguluyorum.",
+    "expertise.app.title": "Uygulama Tasarımı", "expertise.app.desc": "Sorunsuz etkileşimler ve modern kullanım için optimize edilmiş, kullanıcı odaklı mobil ve masaüstü uygulamaları tasarlıyorum.",
+    "expertise.branding.title": "Marka Yönetimi &amp; Kimlik", "expertise.branding.desc": "Dijital dünyada derin yankı uyandıran etkileyici görsel hikayeler, kurumsal kimlikler ve tasarım sistemleri oluşturuyorum.",
+    "resume.label": "Yörünge", "resume.title": "Deneyim &amp; Eğitim",
+    "resume.now": "Şimdi", "resume.r1.title": "Web Tasarımcısı", "resume.r1.org": "Bağımsız · Serbest", "resume.r1.desc": "Netlik, işlev ve görsel hassasiyeti birleştiren kullanıcı odaklı dijital ürünler ve yapay zeka destekli web siteleri tasarlıyorum.",
+    "resume.r2.title": "Serbest Tasarımcı", "resume.r2.org": "Ajanslar &amp; Doğrudan Müşteriler", "resume.r2.desc": "Geniş bir marka, dijital ve ürün tasarımı yelpazesinde ajanslar ve doğrudan müşterilerle işbirliği.",
+    "resume.r3.title": "Görsel Tasarımcı", "resume.r3.org": "Reklam Ajansları · Marmaris", "resume.r3.desc": "Baskı ve dijital kampanyalarda görsel iletişim ve üretim konularında güçlü bir temel.",
+    "resume.r4.title": "Erasmus Değişimi", "resume.r4.org": "ESA Saint-Luc · Belçika", "resume.r4.desc": "Öğrenimin üçüncü yılını tamamen Fransızca geçirerek tasarım bakış açısını genişletti.",
+    "resume.r5.title": "Tasarım Lisansı", "resume.r5.org": "Hacettepe Üniversitesi", "resume.r5.desc": "2014'te grafik tasarım, illüstrasyon ve görsel iletişimi kapsayan bir temelle mezun oldu.",
+    "contact.title": "Birlikte Harika İşler<br>Yatalım"
+  },
+  fr: {
+    "nav.about": "À Propos", "nav.expertise": "Expertise", "nav.resume": "CV", "nav.contact": "Contact", "nav.behance": "Behance", "nav.getInTouch": "Contactez-moi",
+    "hero.hello": "SIMAY ERNALBANT<br><span>LÀ OÙ LE DESIGN<br>RENCONTRE LA DIMENSION</span>", "hero.role": "Web, App &amp; Branding",
+    "hero.description": "Création d'expériences numériques cinématographiques et d'interfaces haute fidélité pour la prochaine génération de conception web et de produits.", "hero.scroll": "Défiler pour explorer",
+    "about.label": "À Propos", "about.title": "Design, Technologie<br>&amp; Expérience",
+    "about.p1": "Je suis Designer Web, Designer Graphique et Illustratrice, travaillant à l'intersection du design, de la technologie et de l'expérience numérique. J'ai obtenu mon diplôme de l'Université Hacettepe en 2014. Pendant mes études, j'ai participé au programme Erasmus et passé ma troisième année à l'ESA Saint-Luc en Belgique, en étudiant entièrement en français.",
+    "about.p2": "J'ai commencé ma carrière dans des agences de publicité à Marmaris, me bâtissant de solides fondations en communication visuelle. Aujourd'hui, je me concentre sur le design web et les expériences web modernes. Je conçois et développe des produits numériques centrés sur l'utilisateur.",
+    "expertise.label": "Expertise", "expertise.title": "Design d'Interaction Premium",
+    "expertise.web.title": "Design Web", "expertise.web.desc": "Architecture d'interfaces intuitives et haute fidélité qui relient la complexité technique à la beauté cinématographique.",
+    "expertise.app.title": "Design d'Application", "expertise.app.desc": "Conception d'applications mobiles et de bureau centrées sur l'utilisateur, optimisées pour des interactions fluides.",
+    "expertise.branding.title": "Image de Marque", "expertise.branding.desc": "Création de récits visuels captivants, d'identités d'entreprise et de systèmes de design qui résonnent dans l'espace numérique.",
+    "resume.label": "Trajectoire", "resume.title": "Expérience &amp; Formation",
+    "resume.now": "Maintenant", "resume.r1.title": "Designer Web", "resume.r1.org": "Indépendante · Freelance", "resume.r1.desc": "Conception et développement de produits numériques centrés sur l'utilisateur et de sites assistés par l'IA.",
+    "resume.r2.title": "Designer Freelance", "resume.r2.org": "Agences &amp; Clients Directs", "resume.r2.desc": "Collaboration avec des agences et des clients directs sur un large éventail de projets.",
+    "resume.r3.title": "Designer Visuelle", "resume.r3.org": "Agences de Publicité · Marmaris", "resume.r3.desc": "Solides fondations en communication visuelle.",
+    "resume.r4.title": "Échange Erasmus", "resume.r4.org": "ESA Saint-Luc · Belgique", "resume.r4.desc": "Troisième année d'étude entièrement en français.",
+    "resume.r5.title": "Licence, Design", "resume.r5.org": "Université Hacettepe", "resume.r5.desc": "Diplômée en 2014 avec une base couvrant le design graphique.",
+    "contact.title": "Let’s Build<br>Something Cool"
+  }
+};
+
+const HTML_KEYS = new Set(["hero.hello", "about.title", "contact.title"]);
+
+function setLanguage(lang) {
+  document.querySelectorAll('.lang-toggle').forEach((t) => {
+    const on = t.dataset.lang === lang;
+    t.className = `lang-toggle px-3 py-0.5 rounded-full font-label-sm text-label-sm ${on ? 'bg-gradient-to-r from-pink-500 to-purple-600 text-white' : 'text-gray-400'}`;
+  });
+  document.querySelectorAll('[data-i18n]').forEach((el) => {
+    const v = translations[lang] && translations[lang][el.dataset.i18n];
+    if (v == null) return;
+    if (HTML_KEYS.has(el.dataset.i18n)) el.innerHTML = v; else el.textContent = v;
+  });
+  document.documentElement.lang = lang;
+}
+
+document.querySelectorAll('.lang-toggle').forEach((t) =>
+  t.addEventListener('click', () => setLanguage(t.dataset.lang)));
+
+// Mobile Menu
+const menuToggle = document.getElementById('mobile-menu-toggle');
+const mobileMenu = document.getElementById('mobile-menu');
+if (menuToggle && mobileMenu) {
+  menuToggle.addEventListener('click', () => {
+    const open = menuToggle.getAttribute('aria-expanded') === 'true';
+    menuToggle.setAttribute('aria-expanded', String(!open));
+    mobileMenu.hidden = open;
+  });
+}
+
+// Scroll Reveals
+const revealEls = [...document.querySelectorAll('.reveal-on-scroll, .animate-fade-up')];
+function revealCheck() {
+  const vh = window.innerHeight;
+  for (let i = revealEls.length - 1; i >= 0; i--) {
+    const r = revealEls[i].getBoundingClientRect();
+    if (r.top < vh * 0.92) {
+      revealEls[i].classList.add('is-revealed');
+      revealEls.splice(i, 1);
+    }
+  }
+}
+window.addEventListener('scroll', revealCheck);
+window.addEventListener('load', revealCheck);
+
+// Cursor
+const cursor = document.getElementById('cursor');
+if (cursor) {
+  document.addEventListener('mousemove', (e) => {
+    cursor.style.left = e.clientX + 'px';
+    cursor.style.top = e.clientY + 'px';
+  });
+}
+</script>
+
+<!-- ===== THREE.JS ENGINE FOR THE PROXIMAL NEBULA EYE ===== -->
+<script type="module">
+import * as THREE from 'https://unpkg.com/three@0.160.0/build/three.module.js';
+
+const canvas = document.getElementById('world-canvas');
+if (canvas) {
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+  camera.position.z = 12;
+
+  const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+  // Base Cosmic Group
+  const eyeGroup = new THREE.Group();
+  scene.add(eyeGroup);
+
+  // 1. Cosmic Pupil / Core (The Glowing Sphere Inside)
+  const coreGeo = new THREE.SphereGeometry(1.0, 32, 32);
+  const coreMat = new THREE.MeshBasicMaterial({
+    color: 0xff3f91,
+    wireframe: true,
+    transparent: true,
+    opacity: 0.4
+  });
+  const core = new THREE.Mesh(coreGeo, coreMat);
+  eyeGroup.add(core);
+
+  // 2. Nebula Particle Clouds (Eye Shape Distribution)
+  const pCount = 5000;
+  const geometry = new THREE.BufferGeometry();
+  const positions = new Float32Array(pCount * 3);
+  const colors = new Float32Array(pCount * 3);
+
+  const cPink = new THREE.Color('#ff3f91');
+  const cPurple = new THREE.Color('#6D28D9');
+
+  for (let i = 0; i < pCount; i++) {
+    const angle = Math.random() * Math.PI * 2;
+    // Mathematically forcing an eye/elliptical shape
+    const radiusX = (Math.random() * 3.5 + 1.2) * (Math.random() > 0.5 ? 1.3 : 1.0);
+    const radiusY = radiusX * 0.45 * (Math.random() * 0.5 + 0.75);
+
+    const x = Math.cos(angle) * radiusX;
+    const y = Math.sin(angle) * radiusY;
+    const z = (Math.random() - 0.5) * 1.2;
+
+    positions[i * 3] = x;
+    positions[i * 3 + 1] = y;
+    positions[i * 3 + 2] = z;
+
+    // Generative color blending
+    const mixed = cPink.clone().lerp(cPurple, Math.random());
+    colors[i * 3] = mixed.r;
+    colors[i * 3 + 1] = mixed.g;
+    colors[i * 3 + 2] = mixed.b;
+  }
+
+  geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+  geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+
+  const pMat = new THREE.PointsMaterial({
+    size: 0.05,
+    vertexColors: true,
+    transparent: true,
+    opacity: 0.75,
+    blending: THREE.AdditiveBlending,
+    depthWrite: false
+  });
+
+  const nebula = new THREE.Points(geometry, pMat);
+  eyeGroup.add(nebula);
+
+  // 3. Meteorite Outer Debris Ring
+  const rCount = 2000;
+  const ringGeo = new THREE.BufferGeometry();
+  const ringPositions = new Float32Array(rCount * 3);
+
+  for (let i = 0; i < rCount; i++) {
+    const theta = Math.random() * Math.PI * 2;
+    const r = 5.2 + Math.random() * 2.0; 
+    ringPositions[i * 3] = Math.cos(theta) * r;
+    ringPositions[i * 3 + 1] = Math.sin(theta) * r * 0.35; // Tilted disk
+    ringPositions[i * 3 + 2] = (Math.random() - 0.5) * 1.5;
+  }
+
+  ringGeo.setAttribute('position', new THREE.BufferAttribute(ringPositions, 3));
+  const ringMat = new THREE.PointsMaterial({
+    size: 0.03,
+    color: 0xeadde5,
+    transparent: true,
+    opacity: 0.4,
+    blending: THREE.AdditiveBlending
+  });
+
+  const debrisRing = new THREE.Points(ringGeo, ringMat);
+  eyeGroup.add(debrisRing);
+
+  // Position dynamic layout adjustment (Right-side anchor for text balance)
+  function alignScene() {
+    if (window.innerWidth > 900) {
+      eyeGroup.position.x = 2.8;
+      eyeGroup.position.y = 0;
+    } else {
+      eyeGroup.position.x = 0;
+      eyeGroup.position.y = -1.5; // push down below text on mobile
+    }
+  }
+  alignScene();
+
+  // Interactive Mouse Tracking
+  const mouse = { x: 0, y: 0 };
+  const target = { x: 0, y: 0 };
+  
+  window.addEventListener('mousemove', (e) => {
+    mouse.x = (e.clientX / window.innerWidth) - 0.5;
+    mouse.y = (e.clientY / window.innerHeight) - 0.5;
+  });
+
+  // Loop
+  const clock = new THREE.Clock();
+  function loop() {
+    requestAnimationFrame(loop);
+    const time = clock.getElapsedTime();
+
+    // Constant rotations
+    core.rotation.y = time * 0.25;
+    nebula.rotation.z = time * 0.03;
+    debrisRing.rotation.z = -time * 0.015;
+
+    // Organic breathing scale
+    const dynamicScale = 1.0 + Math.sin(time * 1.5) * 0.04;
+    core.scale.set(dynamicScale, dynamicScale, dynamicScale);
+
+    // Cinematic look-at tracking (Lagged fluid interpolation)
+    target.x += (mouse.x - target.x) * 0.05;
+    target.y += (mouse.y - target.y) * 0.05;
+
+    eyeGroup.rotation.y = target.x * 0.6;
+    eyeGroup.rotation.x = -target.y * 0.6;
+
+    renderer.render(scene, camera);
+  }
+  loop();
+
+  window.addEventListener('resize', () => {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    alignScene();
+  });
+}
+</script>
+</body>
+</html>
