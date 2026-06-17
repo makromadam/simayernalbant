@@ -72,9 +72,6 @@
   .text-glow-orange { color:#ff8a3d; }
   .text-glow { text-shadow: 0 0 30px rgba(255,106,26,0.45); }
 
-  .ambient-glow { position:fixed; border-radius:50%; filter:blur(150px); opacity:0.14; z-index:-1; pointer-events:none; }
-  .glow-1 { width:620px; height:620px; background:#E8590C; top:-120px; left:-220px; }
-  .glow-2 { width:520px; height:520px; background:#FF6A1A; bottom:-120px; right:-120px; }
 
   #cursor { width:14px; height:14px; background:#fff; border:3px solid #ff7a29; border-radius:50%;
     position:fixed; left:50%; top:50%; pointer-events:none; z-index:9999;
@@ -173,8 +170,6 @@
 </head>
 <body class="font-body-md antialiased min-h-screen flex flex-col">
 
-<div class="ambient-glow glow-1"></div>
-<div class="ambient-glow glow-2"></div>
 <div id="cursor"></div>
 <div id="embers"></div>
 
@@ -221,7 +216,7 @@
   <section id="hero" class="min-h-screen flex flex-col md:flex-row items-center justify-between gap-10 pt-32 pb-24 relative">
     <div class="w-full md:w-1/2 flex flex-col items-start gap-6">
       <p class="eyebrow flex items-center animate-fade-up" data-i18n="hero.eyebrow"><span class="brand-dot"></span>Web · App · Branding</p>
-      <h1 class="hero-title animate-fade-up" data-i18n-html="hero.hello">CINEMATIC<br><span class="text-glow-orange text-glow">DIGITAL</span><br>EXPERIENCES</h1>
+      <h1 class="hero-title animate-fade-up" data-i18n-html="hero.hello">DESIGNING<br><span class="text-glow-orange text-glow">PERCEPTIONS.</span></h1>
       <p class="font-body-lg text-body-lg text-gray-300 max-w-md animate-fade-up" data-i18n="hero.description">I design immersive websites, app interfaces, and brand experiences — combining clarity, depth, and emotional precision.</p>
       <div class="mt-2 flex flex-wrap gap-4 animate-fade-up">
         <a class="btn-primary inline-flex items-center justify-center gap-2 px-8 py-3 rounded-full text-surface-deep font-label-md uppercase" data-i18n="hero.startProject" href="#contact">Start a Project <span class="material-symbols-outlined text-base">north_east</span></a>
@@ -389,7 +384,7 @@ const translations = {
   en: {
     "nav.about": "About", "nav.expertise": "Expertise", "nav.resume": "Education", "nav.contact": "Contact", "nav.behance": "Behance", "nav.getInTouch": "Let's Talk",
     "hero.eyebrow": "Web · App · Branding",
-    "hero.hello": "CINEMATIC<br><span class=\"text-glow-orange text-glow\">DIGITAL</span><br>EXPERIENCES",
+    "hero.hello": "DESIGNING<br><span class=\"text-glow-orange text-glow\">PERCEPTIONS.</span>",
     "hero.description": "I design immersive websites, app interfaces, and brand experiences — combining clarity, depth, and emotional precision.",
     "hero.startProject": "Start a Project", "hero.viewExpertise": "View Expertise", "hero.scroll": "Scroll to explore",
     "about.label": "About", "about.title": "Design, Technology<br>&amp; Experience",
@@ -415,7 +410,7 @@ const translations = {
   tr: {
     "nav.about": "Hakkımda", "nav.expertise": "Uzmanlık", "nav.resume": "Eğitim", "nav.contact": "İletişim", "nav.behance": "Behance", "nav.getInTouch": "İletişime Geç",
     "hero.eyebrow": "Web · Uygulama · Marka",
-    "hero.hello": "SİNEMATİK<br><span class=\"text-glow-orange text-glow\">DİJİTAL</span><br>DENEYİMLER",
+    "hero.hello": "DESIGNING<br><span class=\"text-glow-orange text-glow\">PERCEPTIONS.</span>",
     "hero.description": "Netlik, derinlik ve duygusal hassasiyeti birleştiren sürükleyici web siteleri, uygulama arayüzleri ve marka deneyimleri tasarlıyorum.",
     "hero.startProject": "Projeye Başla", "hero.viewExpertise": "Uzmanlığı Gör", "hero.scroll": "Keşfetmek için kaydır",
     "about.label": "Hakkımda", "about.title": "Tasarım, Teknoloji<br>&amp; Deneyim",
@@ -441,7 +436,7 @@ const translations = {
   fr: {
     "nav.about": "À Propos", "nav.expertise": "Expertise", "nav.resume": "Formation", "nav.contact": "Contact", "nav.behance": "Behance", "nav.getInTouch": "Discutons",
     "hero.eyebrow": "Web · App · Branding",
-    "hero.hello": "EXPÉRIENCES<br><span class=\"text-glow-orange text-glow\">NUMÉRIQUES</span><br>CINÉMATOGRAPHIQUES",
+    "hero.hello": "DESIGNING<br><span class=\"text-glow-orange text-glow\">PERCEPTIONS.</span>",
     "hero.description": "Je conçois des sites web immersifs, des interfaces d'application et des expériences de marque — alliant clarté, profondeur et précision émotionnelle.",
     "hero.startProject": "Démarrer un Projet", "hero.viewExpertise": "Voir l'Expertise", "hero.scroll": "Défiler pour explorer",
     "about.label": "À Propos", "about.title": "Design, Technologie<br>&amp; Expérience",
