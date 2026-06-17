@@ -577,7 +577,7 @@ if (!reduceMotion && window.innerWidth > 900) {
 // Scroll-driven hero video: head.mp4 scrubs with scroll position through the hero section
 const heroVideo = document.querySelector('#hero video');
 const heroSection = document.getElementById('hero');
-if (heroVideo && heroSection && !reduceMotion && window.innerWidth > 900) {
+if (heroVideo && heroSection && !reduceMotion) {
   heroVideo.loop = false;
   heroVideo.pause();
 
