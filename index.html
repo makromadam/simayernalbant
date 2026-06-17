@@ -63,6 +63,10 @@
   :root {
     --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
     --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+    --c-accent: #ff8a3d;
+    --c-accent-strong: #ff6a1a;
+    --c-accent-soft: rgba(255,138,61,.4);
+    --c-accent-dim: rgba(255,138,61,.16);
   }
   body { background-color:#000; color:#f1ece4; overflow-x:hidden; position:relative; cursor:none; }
   html { scroll-behavior:smooth; }
@@ -94,7 +98,7 @@
 
   .glass-panel { background: linear-gradient(145deg, rgba(28,20,11,.62), rgba(8,6,3,.42)) !important; border: 1px solid rgba(255,150,86,.14) !important; box-shadow: inset 0 1px rgba(255,255,255,.05), 0 30px 80px rgba(0,0,0,.35), 0 0 30px rgba(255,106,26,.05); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); }
 
-  .hero-title { font: 800 clamp(46px, 7.4vw, 96px)/.96 "Sora", sans-serif; letter-spacing: -.02em; text-transform: uppercase; color: #f3ece4; }
+  .hero-title { font: 800 clamp(46px, 7.4vw, 96px)/.96 "Sora", sans-serif; letter-spacing: -.02em; text-transform: uppercase; color: #f3ece4; transition: opacity .35s var(--ease-out); }
   .eyebrow { font: 500 12px/1 "Geist Mono", monospace; letter-spacing:.22em; text-transform:uppercase; color:#c9bba6; }
   .eyebrow .brand-dot { margin-right:10px; }
 
@@ -166,12 +170,82 @@
   .lang-pill.lang-on { background: linear-gradient(135deg, #ff8a3d, #ff6a1a); color: #fff; }
   .lang-plain { color: #9ca3af; }
   .lang-plain.lang-on { color: #fff; font-weight: 700; }
+
+  /* ===== Shared background canvas (parallax particles/lines + expertise micro-visuals) ===== */
+  #bg-canvas { position:fixed; inset:0; width:100%; height:100%; pointer-events:none; z-index:0; }
+  @media (max-width:900px) { #bg-canvas { display:none; } }
+
+  /* ===== Hero shader-distortion canvas (hover/touch only) ===== */
+  .hero-title-wrap { position:relative; display:inline-block; }
+  #hero-distort-canvas { position:absolute; inset:0; pointer-events:none; opacity:0; transition:opacity .35s var(--ease-out); }
+  #hero-distort-canvas.is-active { opacity:1; }
+  .hero-title-wrap.is-distorting .hero-title { opacity:0; }
+
+  /* ===== Cursor light-trail particles (DOM, same technique as embers) ===== */
+  .cursor-trail { position:fixed; left:0; top:0; width:5px; height:5px; border-radius:50%; pointer-events:none; z-index:9998; opacity:0; will-change:transform,opacity; background:#ff9a52; box-shadow:0 0 8px 2px rgba(255,138,61,.65); }
+  @media (max-width:900px) { #cursor-trail-host { display:none; } }
+
+  /* ===== Magnetic CTAs ===== */
+  .magnetic { position:relative; }
+  .magnetic.btn-primary, .magnetic.btn-outline, .magnetic.nav-cta { overflow:hidden; }
+  .magnetic::before {
+    content:""; position:absolute; inset:0; border-radius:inherit; pointer-events:none;
+    background: radial-gradient(circle 90px at var(--mx,50%) var(--my,50%), rgba(255,178,120,.5), transparent 70%);
+    opacity:0; transition:opacity .3s var(--ease-out); mix-blend-mode:screen;
+  }
+  .magnetic:hover::before, .magnetic.magnetic-near::before { opacity:1; }
+  .magnetic .magnetic-arrow { display:inline-flex; transition: transform .3s var(--ease-out); }
+  .magnetic:hover .magnetic-arrow, .magnetic.magnetic-near .magnetic-arrow { transform: translate(2px,-2px); }
+
+  /* ===== Holographic scanline section reveals ===== */
+  .scan-reveal { position:relative; overflow:hidden; }
+  .scan-reveal::after {
+    content:""; position:absolute; inset:0; pointer-events:none;
+    background: linear-gradient(90deg, transparent, rgba(255,168,110,.55), transparent);
+    transform: translateX(-110%); opacity:0;
+  }
+  .scan-reveal.scan-play::after { animation: scanSweep 1.1s var(--ease-out) forwards; }
+  @keyframes scanSweep { 0% { transform:translateX(-110%); opacity:.9; } 60% { opacity:.5; } 100% { transform:translateX(110%); opacity:0; } }
+
+  .scan-index { position:relative; display:inline-block; overflow:hidden; }
+  .scan-index::before {
+    content:""; position:absolute; left:0; top:0; bottom:0; width:2px; background:#ff8a3d; box-shadow:0 0 8px #ff8a3d;
+    transform:scaleY(0); transform-origin:top;
+  }
+  .scan-index.scan-play::before { animation: scanIndexLine .7s var(--ease-out) forwards; }
+  @keyframes scanIndexLine { 0% { transform:scaleY(0); } 50% { transform:scaleY(1); } 100% { transform:scaleY(1); opacity:0; } }
+
+  .js-on .mask-reveal.mask-pending { clip-path: inset(0 0 100% 0); }
+  .mask-reveal.mask-play { animation: maskReveal .9s var(--ease-out) forwards; }
+  @keyframes maskReveal { from { clip-path: inset(0 0 100% 0); } to { clip-path: inset(0 0 0 0); } }
+
+  .js-on .stagger-card { opacity:0; transform:translate3d(0,28px,0); transition:opacity .7s var(--ease-out), transform .7s var(--ease-out); }
+  .stagger-card.stagger-in { opacity:1; transform:none; }
+
+  /* ===== Contact energy pulse ===== */
+  @keyframes contactPulse { 0%,100% { opacity:.55; transform:scale(1); } 50% { opacity:1; transform:scale(1.08); } }
+  .footer-glow { animation: contactPulse 6s ease-in-out infinite; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cursor-trail { display:none; }
+    #hero-distort-canvas { display:none; }
+    .hero-title-wrap.is-distorting .hero-title { opacity:1; }
+    .scan-reveal::after { display:none; }
+    .scan-index::before { display:none; }
+    .js-on .mask-reveal.mask-pending { clip-path:none; }
+    .js-on .stagger-card { opacity:1; transform:none; transition:none; }
+    .footer-glow { animation:none; }
+    .magnetic { transform:none !important; }
+    #bg-canvas { display:none; }
+  }
 </style>
 </head>
 <body class="font-body-md antialiased min-h-screen flex flex-col">
 
 <div id="cursor"></div>
 <div id="embers"></div>
+<div id="cursor-trail-host"></div>
+<canvas id="bg-canvas" aria-hidden="true"></canvas>
 
 <!-- ===== NAV ===== -->
 <nav id="topnav" class="fixed z-50 border-white/5 animate-fade-up">
@@ -193,7 +267,7 @@
         <button class="lang-toggle lang-pill px-3 py-0.5 rounded-full font-label-sm text-label-sm" data-lang="tr" aria-pressed="false">TR</button>
         <button class="lang-toggle lang-pill px-3 py-0.5 rounded-full font-label-sm text-label-sm" data-lang="fr" aria-pressed="false">FR</button>
       </div>
-      <a class="nav-cta inline-flex items-center justify-center gap-2 px-5 py-2 rounded-full text-white font-label-md text-label-md uppercase" data-i18n="nav.getInTouch" href="#contact">Let's Talk <span class="material-symbols-outlined text-base">north_east</span></a>
+      <a class="magnetic nav-cta inline-flex items-center justify-center gap-2 px-5 py-2 rounded-full text-white font-label-md text-label-md uppercase" data-i18n="nav.getInTouch" href="#contact">Let's Talk <span class="material-symbols-outlined text-base magnetic-arrow">north_east</span></a>
     </div>
     <button id="mobile-menu-toggle" class="lg:hidden text-white" aria-expanded="false" aria-label="Menu"><span class="material-symbols-outlined">menu</span></button>
   </div>
@@ -216,11 +290,14 @@
   <section id="hero" class="min-h-screen flex flex-col md:flex-row items-center justify-between gap-10 pt-32 pb-24 relative">
     <div class="w-full md:w-1/2 flex flex-col items-start gap-6">
       <p class="eyebrow flex items-center animate-fade-up" data-i18n="hero.eyebrow"><span class="brand-dot"></span>Web · App · Branding</p>
-      <h1 class="hero-title animate-fade-up" data-i18n-html="hero.hello">DESIGNING<br><span class="text-glow-orange text-glow">PERCEPTIONS.</span></h1>
+      <div class="hero-title-wrap animate-fade-up">
+        <h1 class="hero-title" id="hero-title" data-i18n-html="hero.hello">DESIGNING<br><span class="text-glow-orange text-glow">PERCEPTIONS.</span></h1>
+        <canvas id="hero-distort-canvas" aria-hidden="true"></canvas>
+      </div>
       <p class="font-body-lg text-body-lg text-gray-300 max-w-md animate-fade-up" data-i18n="hero.description">I design immersive websites, app interfaces, and brand experiences — combining clarity, depth, and emotional precision.</p>
       <div class="mt-2 flex flex-wrap gap-4 animate-fade-up">
-        <a class="btn-primary inline-flex items-center justify-center gap-2 px-8 py-3 rounded-full text-surface-deep font-label-md uppercase" data-i18n="hero.startProject" href="#contact">Start a Project <span class="material-symbols-outlined text-base">north_east</span></a>
-        <a class="btn-outline inline-flex items-center justify-center px-8 py-3 rounded-full text-white font-label-md uppercase" data-i18n="hero.viewExpertise" href="#app-design">View Expertise</a>
+        <a class="magnetic btn-primary inline-flex items-center justify-center gap-2 px-8 py-3 rounded-full text-surface-deep font-label-md uppercase" data-i18n="hero.startProject" href="#contact">Start a Project <span class="material-symbols-outlined text-base magnetic-arrow">north_east</span></a>
+        <a class="magnetic btn-outline inline-flex items-center justify-center px-8 py-3 rounded-full text-white font-label-md uppercase" data-i18n="hero.viewExpertise" href="#app-design">View Expertise</a>
       </div>
     </div>
 
@@ -242,10 +319,10 @@
   <section id="about" class="py-24 reveal-on-scroll">
     <div class="grid md:grid-cols-12 gap-10 items-center">
       <div class="md:col-span-5">
-        <span class="font-label-sm text-orange-500 uppercase block mb-2 tracking-widest" data-i18n="about.label">About</span>
-        <h2 class="text-4xl md:text-5xl" data-i18n-html="about.title">Design, Technology<br>&amp; Experience</h2>
+        <span class="scan-index font-label-sm text-orange-500 uppercase block mb-2 tracking-widest" data-i18n="about.label">About</span>
+        <h2 class="mask-reveal mask-pending text-4xl md:text-5xl" data-i18n-html="about.title">Design, Technology<br>&amp; Experience</h2>
       </div>
-      <div class="md:col-span-7 flex flex-col gap-6 glass-panel p-8 rounded-2xl">
+      <div class="stagger-card scan-reveal md:col-span-7 flex flex-col gap-6 glass-panel p-8 rounded-2xl">
         <p class="text-gray-300 text-base" data-i18n="about.p1">I am a Web Designer, Graphic Designer, and Illustrator, working at the intersection of design, technology, and digital experience. I graduated from Hacettepe University in 2014. During my studies, I joined the Erasmus program and spent my third year at ESA Saint-Luc in Belgium, studying entirely in French. This experience shaped my design perspective and strengthened my adaptability across different creative cultures.</p>
         <p class="text-gray-300 text-base" data-i18n="about.p2">I began my career in advertising agencies in Marmaris, building a strong foundation in visual communication and production. I later transitioned into freelance work, collaborating with agencies and direct clients on a wide range of design projects. Today, my focus is web design and modern web experiences. I design and build user-centered digital products and AI-assisted, code-supported websites that combine clarity, function, and visual precision.</p>
       </div>
@@ -261,15 +338,15 @@
           <video autoplay loop muted playsinline preload="auto">
             <source src="hand.mp4" type="video/mp4">
           </video>
-          <div class="stat-card glass-panel -bottom-4 -left-4 hidden sm:block">
+          <div class="stat-card stagger-card scan-reveal glass-panel -bottom-4 -left-4 hidden sm:block">
             <p class="text-2xl font-bold text-orange-400">+76%</p>
             <p class="text-[10px] uppercase tracking-widest text-gray-400" data-i18n="appDesign.stat">Interaction Flow</p>
           </div>
         </div>
       </div>
       <div class="order-1 md:order-2 reveal-on-scroll">
-        <span class="section-index" data-i18n="appDesign.index">02</span>
-        <h2 class="text-4xl md:text-5xl mt-2 mb-5" data-i18n="appDesign.title">App Design</h2>
+        <span class="section-index scan-index" data-i18n="appDesign.index">02</span>
+        <h2 class="mask-reveal mask-pending text-4xl md:text-5xl mt-2 mb-5" data-i18n="appDesign.title">App Design</h2>
         <p class="text-gray-300 text-base mb-8 max-w-lg" data-i18n="appDesign.desc">I craft mobile and web app interfaces that feel intuitive, elegant and alive — from user flows to high-fidelity visual systems.</p>
         <div class="grid grid-cols-2 gap-6 mb-8">
           <div class="flex items-start gap-3"><span class="material-symbols-outlined text-orange-400">design_services</span><span class="text-sm text-gray-300" data-i18n="appDesign.f1">UI/UX Strategy</span></div>
@@ -286,8 +363,8 @@
   <section id="web-design" class="py-24 relative">
     <div class="grid md:grid-cols-2 gap-14 items-center">
       <div class="reveal-on-scroll">
-        <span class="section-index" data-i18n="webDesign.index">03</span>
-        <h2 class="text-4xl md:text-5xl mt-2 mb-5" data-i18n="webDesign.title">Web Design</h2>
+        <span class="section-index scan-index" data-i18n="webDesign.index">03</span>
+        <h2 class="mask-reveal mask-pending text-4xl md:text-5xl mt-2 mb-5" data-i18n="webDesign.title">Web Design</h2>
         <p class="text-gray-300 text-base mb-8 max-w-lg" data-i18n="webDesign.desc">I build cinematic, responsive and conversion-focused websites where structure, storytelling and motion work as one experience.</p>
         <div class="grid grid-cols-2 gap-6 mb-8">
           <div class="flex items-start gap-3"><span class="material-symbols-outlined text-orange-400">architecture</span><span class="text-sm text-gray-300" data-i18n="webDesign.f1">Information Architecture</span></div>
@@ -303,7 +380,7 @@
           <video autoplay loop muted playsinline preload="auto">
             <source src="brain.mp4" type="video/mp4">
           </video>
-          <div class="stat-card glass-panel -top-4 -right-4 hidden sm:block text-right">
+          <div class="stat-card stagger-card scan-reveal glass-panel -top-4 -right-4 hidden sm:block text-right">
             <p class="text-sm font-semibold text-orange-400" data-i18n="webDesign.stat2val">100%</p>
             <p class="text-[10px] uppercase tracking-widest text-gray-400" data-i18n="webDesign.stat2">Cognitive Sync</p>
           </div>
@@ -315,8 +392,8 @@
   <!-- ===== EDUCATION & PAST ===== -->
   <section id="education" class="py-24 relative">
     <div class="mb-16 flex flex-col items-center text-center reveal-on-scroll">
-      <span class="section-index mb-2" data-i18n="education.index">04</span>
-      <h2 class="text-4xl md:text-5xl" data-i18n="education.title">Education &amp; Past</h2>
+      <span class="section-index scan-index mb-2" data-i18n="education.index">04</span>
+      <h2 class="mask-reveal mask-pending text-4xl md:text-5xl" data-i18n="education.title">Education &amp; Past</h2>
       <p class="text-gray-400 text-sm mt-3 uppercase tracking-widest" data-i18n="education.subtitle">Experiences that shaped the journey</p>
     </div>
 
@@ -332,27 +409,27 @@
       </svg>
       <div class="orbit-core"></div>
 
-      <div class="orbit-card glass-panel rounded-xl p-4" style="top:8%; left:50%;">
+      <div class="orbit-card stagger-card scan-reveal glass-panel rounded-xl p-4" style="top:8%; left:50%;">
         <span class="text-[10px] font-mono text-orange-400 uppercase" data-i18n="resume.r5.org">Hacettepe University</span>
         <h3 class="text-base text-white mt-1" data-i18n="resume.r5.title">BFA, Design</h3>
         <p class="text-xs text-gray-400" data-i18n="resume.r5.year">2014</p>
       </div>
-      <div class="orbit-card glass-panel rounded-xl p-4" style="top:37%; left:90%;">
+      <div class="orbit-card stagger-card scan-reveal glass-panel rounded-xl p-4" style="top:37%; left:90%;">
         <span class="text-[10px] font-mono text-orange-400 uppercase" data-i18n="resume.r4.org">ESA Saint-Luc · Belgium</span>
         <h3 class="text-base text-white mt-1" data-i18n="resume.r4.title">Erasmus Exchange</h3>
         <p class="text-xs text-gray-400" data-i18n="resume.r4.year">2012 — 2013</p>
       </div>
-      <div class="orbit-card glass-panel rounded-xl p-4" style="top:84%; left:75%;">
+      <div class="orbit-card stagger-card scan-reveal glass-panel rounded-xl p-4" style="top:84%; left:75%;">
         <span class="text-[10px] font-mono text-orange-400 uppercase" data-i18n="resume.r1.title">Web Designer</span>
         <h3 class="text-base text-white mt-1" data-i18n="resume.r1.org">Independent · Freelance</h3>
         <p class="text-xs text-gray-400" data-i18n="resume.now">Now</p>
       </div>
-      <div class="orbit-card glass-panel rounded-xl p-4" style="top:84%; left:25%;">
+      <div class="orbit-card stagger-card scan-reveal glass-panel rounded-xl p-4" style="top:84%; left:25%;">
         <span class="text-[10px] font-mono text-orange-400 uppercase" data-i18n="resume.r2.org">Agencies &amp; Direct Clients</span>
         <h3 class="text-base text-white mt-1" data-i18n="resume.r2.title">Freelance Designer</h3>
         <p class="text-xs text-gray-400" data-i18n="resume.r2.year">2016 — 2023</p>
       </div>
-      <div class="orbit-card glass-panel rounded-xl p-4" style="top:37%; left:10%;">
+      <div class="orbit-card stagger-card scan-reveal glass-panel rounded-xl p-4" style="top:37%; left:10%;">
         <span class="text-[10px] font-mono text-orange-400 uppercase" data-i18n="resume.r3.org">Advertising Agencies · Marmaris</span>
         <h3 class="text-base text-white mt-1" data-i18n="resume.r3.title">Visual Designer</h3>
         <p class="text-xs text-gray-400" data-i18n="resume.r3.year">2014 — 2016</p>
@@ -366,14 +443,14 @@
 <footer id="contact" class="py-24 border-t border-white/10 relative z-10 overflow-hidden">
   <div class="footer-glow"></div>
   <div class="max-w-4xl mx-auto text-center px-6 reveal-on-scroll relative z-10">
-    <span class="font-mono text-orange-500 uppercase tracking-widest text-sm" data-i18n="nav.contact">Contact</span>
-    <h2 class="text-4xl md:text-6xl mt-4 leading-tight" data-i18n-html="contact.title">LET'S BUILD<br>SOMETHING<br><span class="text-glow-orange text-glow">IMPOSSIBLE</span><br>TO IGNORE.</h2>
+    <span class="scan-index font-mono text-orange-500 uppercase tracking-widest text-sm" data-i18n="nav.contact">Contact</span>
+    <h2 class="mask-reveal mask-pending text-4xl md:text-6xl mt-4 leading-tight" data-i18n-html="contact.title">LET'S BUILD<br>SOMETHING<br><span class="text-glow-orange text-glow">IMPOSSIBLE</span><br>TO IGNORE.</h2>
     <div class="flex flex-wrap justify-center gap-4 mt-12">
-      <a class="social-pill px-6 py-3 rounded-full border border-white/10 bg-white/5 hover:bg-white/10 transition-all text-sm flex items-center gap-2" href="https://wa.me/905442701157" target="_blank" rel="noopener"><span class="material-symbols-outlined text-base">chat</span>WhatsApp</a>
-      <a class="social-pill px-6 py-3 rounded-full border border-white/10 bg-white/5 hover:bg-white/10 transition-all text-sm flex items-center gap-2" href="https://www.linkedin.com/in/simayernalbant/" target="_blank" rel="noopener"><span class="material-symbols-outlined text-base">work</span>LinkedIn</a>
-      <a class="social-pill px-6 py-3 rounded-full border border-white/10 bg-white/5 hover:bg-white/10 transition-all text-sm flex items-center gap-2" href="https://www.behance.net/simayernalbant" target="_blank" rel="noopener"><span class="material-symbols-outlined text-base">palette</span>Behance</a>
+      <a class="social-pill stagger-card scan-reveal px-6 py-3 rounded-full border border-white/10 bg-white/5 hover:bg-white/10 transition-all text-sm flex items-center gap-2" href="https://wa.me/905442701157" target="_blank" rel="noopener"><span class="material-symbols-outlined text-base">chat</span>WhatsApp</a>
+      <a class="social-pill stagger-card scan-reveal px-6 py-3 rounded-full border border-white/10 bg-white/5 hover:bg-white/10 transition-all text-sm flex items-center gap-2" href="https://www.linkedin.com/in/simayernalbant/" target="_blank" rel="noopener"><span class="material-symbols-outlined text-base">work</span>LinkedIn</a>
+      <a class="social-pill stagger-card scan-reveal px-6 py-3 rounded-full border border-white/10 bg-white/5 hover:bg-white/10 transition-all text-sm flex items-center gap-2" href="https://www.behance.net/simayernalbant" target="_blank" rel="noopener"><span class="material-symbols-outlined text-base">palette</span>Behance</a>
     </div>
-    <a class="btn-primary inline-flex items-center justify-center gap-2 mt-8 px-10 py-4 rounded-full text-surface-deep font-label-md uppercase" data-i18n="contact.cta" href="https://wa.me/905442701157" target="_blank" rel="noopener">Contact on WhatsApp <span class="material-symbols-outlined text-base">north_east</span></a>
+    <a class="magnetic btn-primary inline-flex items-center justify-center gap-2 mt-8 px-10 py-4 rounded-full text-surface-deep font-label-md uppercase" data-i18n="contact.cta" href="https://wa.me/905442701157" target="_blank" rel="noopener">Contact on WhatsApp <span class="material-symbols-outlined text-base magnetic-arrow">north_east</span></a>
     <p class="text-xs text-on-surface-variant mt-16 footer-name">SİMAY ERNALBANT</p>
     <p class="text-xs text-on-surface-variant mt-1">&copy; 2026 SİMAY ERNALBANT. Cinematic interfaces, engineered.</p>
   </div>
@@ -671,6 +748,447 @@ if (emberHost && window.innerWidth > 900 && !reduceMotion) {
     requestAnimationFrame(tick);
   }
   requestAnimationFrame(tick);
+}
+
+// Magnetic CTA buttons: proximity attraction toward cursor, radial cursor-follow highlight, mobile tap feedback
+const magneticEls = [...document.querySelectorAll('.magnetic')];
+if (magneticEls.length) {
+  const finePointer = window.matchMedia('(pointer: fine)').matches;
+  if (finePointer && !reduceMotion) {
+    const REACH = 90;
+    const STRENGTH = 0.3;
+    let lastX = -9999, lastY = -9999, magScheduled = false;
+    function applyMagnetic() {
+      magScheduled = false;
+      magneticEls.forEach((el) => {
+        const r = el.getBoundingClientRect();
+        const cx = r.left + r.width / 2, cy = r.top + r.height / 2;
+        const dx = lastX - cx, dy = lastY - cy;
+        const dist = Math.hypot(dx, dy);
+        const reach = Math.max(r.width, r.height) / 2 + REACH;
+        if (dist < reach) {
+          const pull = 1 - dist / reach;
+          el.style.transform = `translate(${(dx * STRENGTH * pull).toFixed(1)}px, ${(dy * STRENGTH * pull).toFixed(1)}px)`;
+          el.style.setProperty('--mx', (lastX - r.left).toFixed(0) + 'px');
+          el.style.setProperty('--my', (lastY - r.top).toFixed(0) + 'px');
+          el.classList.add('magnetic-near');
+        } else if (el.classList.contains('magnetic-near')) {
+          el.style.transform = '';
+          el.classList.remove('magnetic-near');
+        }
+      });
+    }
+    window.addEventListener('mousemove', (e) => {
+      lastX = e.clientX; lastY = e.clientY;
+      if (!magScheduled) { magScheduled = true; requestAnimationFrame(applyMagnetic); }
+    }, { passive: true });
+  } else {
+    magneticEls.forEach((el) => {
+      el.addEventListener('touchstart', () => el.classList.add('magnetic-near'), { passive: true });
+      el.addEventListener('touchend', () => el.classList.remove('magnetic-near'), { passive: true });
+    });
+  }
+}
+
+// Orange light-trail cursor particles (DOM-based, same technique as embers; disabled on touch + reduced motion)
+const trailHost = document.getElementById('cursor-trail-host');
+if (trailHost && window.matchMedia('(pointer: fine)').matches && window.innerWidth > 900 && !reduceMotion) {
+  const TRAIL_COUNT = 14;
+  const dots = [];
+  for (let i = 0; i < TRAIL_COUNT; i++) {
+    const el = document.createElement('span');
+    el.className = 'cursor-trail';
+    trailHost.appendChild(el);
+    dots.push({ el, x: -9999, y: -9999 });
+  }
+  let mouseX = -9999, mouseY = -9999, hasMoved = false;
+  window.addEventListener('mousemove', (e) => { mouseX = e.clientX; mouseY = e.clientY; hasMoved = true; }, { passive: true });
+
+  const head = { x: -9999, y: -9999 };
+  function tickTrail() {
+    if (hasMoved) {
+      head.x += (mouseX - head.x) * 0.5;
+      head.y += (mouseY - head.y) * 0.5;
+      for (let i = dots.length - 1; i > 0; i--) {
+        dots[i].x = dots[i - 1].x;
+        dots[i].y = dots[i - 1].y;
+      }
+      dots[0].x = head.x;
+      dots[0].y = head.y;
+      dots.forEach((d, i) => {
+        const t = i / dots.length;
+        d.el.style.opacity = ((1 - t) * 0.55).toFixed(2);
+        d.el.style.transform = `translate3d(${d.x.toFixed(1)}px, ${d.y.toFixed(1)}px, 0) scale(${(1 - t * 0.6).toFixed(2)})`;
+      });
+    }
+    requestAnimationFrame(tickTrail);
+  }
+  requestAnimationFrame(tickTrail);
+}
+
+// Holographic scanline section reveals: scan-line on labels, masked heading reveal, staggered cards
+const scanSections = document.querySelectorAll('#about, #app-design, #web-design, #education, #contact');
+if (scanSections.length) {
+  function playScanReveal(root) {
+    root.querySelectorAll('.scan-index').forEach((el) => el.classList.add('scan-play'));
+    root.querySelectorAll('.scan-reveal').forEach((el) => el.classList.add('scan-play'));
+    root.querySelectorAll('.mask-reveal').forEach((el) => { el.classList.remove('mask-pending'); el.classList.add('mask-play'); });
+    root.querySelectorAll('.stagger-card').forEach((el, i) => {
+      el.style.transitionDelay = (i * 90) + 'ms';
+      requestAnimationFrame(() => el.classList.add('stagger-in'));
+    });
+  }
+  if (reduceMotion || !('IntersectionObserver' in window)) {
+    scanSections.forEach((s) => s.querySelectorAll('.mask-reveal').forEach((el) => el.classList.remove('mask-pending')));
+  } else {
+    const scanObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        playScanReveal(entry.target);
+        scanObserver.unobserve(entry.target);
+      });
+    }, { threshold: 0.2 });
+    scanSections.forEach((s) => scanObserver.observe(s));
+  }
+}
+
+// Shared background canvas: depth parallax particle/line layers + Expertise particle-morph micro-visuals
+const bgCanvas = document.getElementById('bg-canvas');
+if (bgCanvas && window.innerWidth > 900 && !reduceMotion) {
+  const bctx = bgCanvas.getContext('2d');
+  let dpr = Math.min(window.devicePixelRatio || 1, 2);
+  let vw = window.innerWidth, vh = window.innerHeight;
+  let dh = Math.max(document.documentElement.scrollHeight, vh);
+  let wrapH = dh + vh;
+
+  function resizeBgCanvas() {
+    vw = window.innerWidth; vh = window.innerHeight;
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    dh = Math.max(document.documentElement.scrollHeight, vh);
+    wrapH = dh + vh;
+    bgCanvas.width = Math.round(vw * dpr);
+    bgCanvas.height = Math.round(vh * dpr);
+    bctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+
+  const LAYERS = [
+    { count: 22, speed: 0.04, size: 1.1, alpha: 0.28 },
+    { count: 16, speed: 0.09, size: 1.6, alpha: 0.4 },
+    { count: 10, speed: 0.16, size: 2.2, alpha: 0.55 },
+  ];
+  let layerParticles = [];
+  function buildLayers() {
+    layerParticles = [];
+    LAYERS.forEach((layer, li) => {
+      for (let i = 0; i < layer.count; i++) {
+        layerParticles.push({ layer: li, x: Math.random() * vw, y: Math.random() * wrapH, phase: Math.random() * Math.PI * 2 });
+      }
+    });
+  }
+
+  const LINE_COUNT = 6;
+  let lines = [];
+  function buildLines() {
+    lines = [];
+    for (let i = 0; i < LINE_COUNT; i++) {
+      lines.push({
+        y: Math.random() * wrapH, x: Math.random() * vw,
+        len: 120 + Math.random() * 180, angle: (Math.random() - 0.5) * 0.6,
+        speed: 0.05 + Math.random() * 0.08, alpha: 0.06 + Math.random() * 0.06,
+      });
+    }
+  }
+
+  resizeBgCanvas();
+  buildLayers();
+  buildLines();
+  window.addEventListener('resize', () => { resizeBgCanvas(); buildLayers(); buildLines(); });
+
+  let scrollY = window.scrollY;
+  window.addEventListener('scroll', () => { scrollY = window.scrollY; }, { passive: true });
+
+  function drawLines() {
+    lines.forEach((ln) => {
+      let sy = (ln.y - scrollY * ln.speed) % wrapH;
+      if (sy < 0) sy += wrapH;
+      if (sy < -200 || sy > vh + 200) return;
+      bctx.save();
+      bctx.translate(ln.x, sy);
+      bctx.rotate(ln.angle);
+      const grad = bctx.createLinearGradient(-ln.len / 2, 0, ln.len / 2, 0);
+      grad.addColorStop(0, 'rgba(255,138,61,0)');
+      grad.addColorStop(0.5, `rgba(255,138,61,${ln.alpha})`);
+      grad.addColorStop(1, 'rgba(255,138,61,0)');
+      bctx.strokeStyle = grad;
+      bctx.lineWidth = 1;
+      bctx.beginPath(); bctx.moveTo(-ln.len / 2, 0); bctx.lineTo(ln.len / 2, 0); bctx.stroke();
+      bctx.restore();
+    });
+  }
+
+  function drawParallaxLayer(t) {
+    layerParticles.forEach((p) => {
+      const layer = LAYERS[p.layer];
+      let sy = (p.y - scrollY * layer.speed) % wrapH;
+      if (sy < 0) sy += wrapH;
+      if (sy < -20 || sy > vh + 20) return;
+      const twinkle = 0.6 + 0.4 * Math.sin(t * 0.6 + p.phase);
+      bctx.beginPath();
+      bctx.arc(p.x, sy, layer.size, 0, Math.PI * 2);
+      bctx.fillStyle = `rgba(255,140,70,${(layer.alpha * twinkle).toFixed(3)})`;
+      bctx.fill();
+    });
+  }
+
+  const appSection = document.getElementById('app-design');
+  const webSection = document.getElementById('web-design');
+  const appFrame = appSection ? appSection.querySelector('.video-frame') : null;
+  const webFrame = webSection ? webSection.querySelector('.video-frame') : null;
+
+  function inView(section) {
+    if (!section) return false;
+    const r = section.getBoundingClientRect();
+    return r.bottom > 0 && r.top < vh;
+  }
+
+  function drawMobileGrid(cx, cy, scale, t) {
+    const cols = 4, rows = 6, gap = 14 * scale;
+    bctx.save();
+    bctx.translate(cx, cy);
+    bctx.globalCompositeOperation = 'lighter';
+    for (let r = 0; r < rows; r++) {
+      for (let c = 0; c < cols; c++) {
+        const x = (c - (cols - 1) / 2) * gap;
+        const y = (r - (rows - 1) / 2) * gap;
+        const pulse = 0.5 + 0.5 * Math.sin(t * 1.4 + r * 0.6 + c * 0.4);
+        bctx.beginPath();
+        bctx.arc(x, y, 1.4 * scale, 0, Math.PI * 2);
+        bctx.fillStyle = `rgba(255,150,80,${(0.18 + 0.22 * pulse).toFixed(2)})`;
+        bctx.fill();
+      }
+    }
+    bctx.strokeStyle = 'rgba(255,130,60,0.18)';
+    bctx.lineWidth = 1;
+    for (let r = 0; r < rows - 1; r++) {
+      const x1 = (1 - (cols - 1) / 2) * gap, y1 = (r - (rows - 1) / 2) * gap;
+      const x2 = (2 - (cols - 1) / 2) * gap, y2 = (r + 1 - (rows - 1) / 2) * gap;
+      bctx.beginPath(); bctx.moveTo(x1, y1); bctx.lineTo(x2, y2); bctx.stroke();
+    }
+    bctx.restore();
+  }
+
+  function drawBrowserGrid(cx, cy, scale, t) {
+    const w = 90 * scale, h = 60 * scale;
+    bctx.save();
+    bctx.translate(cx, cy);
+    bctx.globalCompositeOperation = 'lighter';
+    bctx.strokeStyle = 'rgba(255,140,70,0.22)';
+    bctx.lineWidth = 1;
+    bctx.strokeRect(-w / 2, -h / 2, w, h);
+    bctx.beginPath(); bctx.moveTo(-w / 2, -h / 2 + 12 * scale); bctx.lineTo(w / 2, -h / 2 + 12 * scale); bctx.stroke();
+    for (let i = 0; i < 3; i++) {
+      bctx.beginPath();
+      bctx.arc(-w / 2 + (8 + i * 8) * scale, -h / 2 + 6 * scale, 1.6 * scale, 0, Math.PI * 2);
+      bctx.fillStyle = 'rgba(255,150,80,0.3)';
+      bctx.fill();
+    }
+    const ringR = 26 * scale, dotsOnRing = 10;
+    for (let i = 0; i < dotsOnRing; i++) {
+      const a = (i / dotsOnRing) * Math.PI * 2 + t * 0.5;
+      const x = Math.cos(a) * ringR, y = Math.sin(a) * ringR * 0.55 + h / 2 + 14 * scale;
+      const pulse = 0.5 + 0.5 * Math.sin(t * 2 + i);
+      bctx.beginPath();
+      bctx.arc(x, y, 1.3 * scale, 0, Math.PI * 2);
+      bctx.fillStyle = `rgba(255,160,90,${(0.15 + 0.3 * pulse).toFixed(2)})`;
+      bctx.fill();
+    }
+    bctx.restore();
+  }
+
+  function drawExpertiseVisuals(t) {
+    if (appFrame && inView(appSection)) {
+      const r = appFrame.getBoundingClientRect();
+      drawMobileGrid(r.left - 46, r.top + r.height * 0.5, Math.min(1.3, r.width / 260), t);
+    }
+    if (webFrame && inView(webSection)) {
+      const r = webFrame.getBoundingClientRect();
+      drawBrowserGrid(r.right + 60, r.top + r.height * 0.42, Math.min(1.3, r.width / 260), t);
+    }
+  }
+
+  let bgVisible = true;
+  document.addEventListener('visibilitychange', () => { bgVisible = document.visibilityState === 'visible'; });
+
+  function bgFrame() {
+    if (bgVisible) {
+      bctx.clearRect(0, 0, vw, vh);
+      bctx.globalCompositeOperation = 'source-over';
+      drawLines();
+      drawParallaxLayer(performance.now() * 0.001);
+      drawExpertiseVisuals(performance.now() * 0.001);
+      bctx.globalCompositeOperation = 'source-over';
+    }
+    requestAnimationFrame(bgFrame);
+  }
+  requestAnimationFrame(bgFrame);
+}
+
+// Hero headline shader-style text distortion / particle dissolve (hover or touch, then smooth reassembly)
+const heroWrap = document.querySelector('.hero-title-wrap');
+const heroTitleEl = document.getElementById('hero-title');
+const distortCanvas = document.getElementById('hero-distort-canvas');
+if (heroWrap && heroTitleEl && distortCanvas && !reduceMotion) {
+  const dctx = distortCanvas.getContext('2d');
+  const hdpr = Math.min(window.devicePixelRatio || 1, 2);
+  let cw = 0, ch = 0;
+  let offscreen = null, octx = null;
+  let edgePoints = [];
+  let particles = [];
+  let amplitude = 0;
+  let targetAmplitude = 0;
+  let active = false;
+  let rafId = null;
+  let startTime = 0;
+  let lastFrame = 0;
+  let lastSpawn = 0;
+
+  function buildTextBuffer() {
+    const r = heroWrap.getBoundingClientRect();
+    cw = Math.max(1, Math.round(r.width));
+    ch = Math.max(1, Math.round(r.height));
+    distortCanvas.width = Math.round(cw * hdpr);
+    distortCanvas.height = Math.round(ch * hdpr);
+    dctx.setTransform(hdpr, 0, 0, hdpr, 0, 0);
+
+    offscreen = document.createElement('canvas');
+    offscreen.width = distortCanvas.width;
+    offscreen.height = distortCanvas.height;
+    octx = offscreen.getContext('2d');
+    octx.setTransform(hdpr, 0, 0, hdpr, 0, 0);
+
+    const cs = getComputedStyle(heroTitleEl);
+    const fontSize = parseFloat(cs.fontSize);
+    const lineHeight = fontSize * 0.96;
+    octx.textBaseline = 'alphabetic';
+    octx.font = `${cs.fontWeight} ${fontSize}px ${cs.fontFamily}`;
+    if ('letterSpacing' in octx) octx.letterSpacing = cs.letterSpacing || '0px';
+
+    const span = heroTitleEl.querySelector('span');
+    const line1 = ((heroTitleEl.childNodes[0] && heroTitleEl.childNodes[0].textContent) || '').trim();
+    const line2 = span ? span.textContent : '';
+    const ascent = fontSize * 0.74;
+
+    octx.fillStyle = '#f3ece4';
+    octx.fillText(line1, 0, ascent);
+    if (line2) {
+      octx.fillStyle = '#ff8a3d';
+      octx.shadowColor = 'rgba(255,106,26,0.55)';
+      octx.shadowBlur = 18;
+      octx.fillText(line2, 0, ascent + lineHeight);
+      octx.shadowBlur = 0;
+    }
+
+    edgePoints = [];
+    try {
+      const img = octx.getImageData(0, 0, offscreen.width, offscreen.height).data;
+      const step = Math.max(2, Math.round(3 * hdpr));
+      for (let y = step; y < offscreen.height - step; y += step) {
+        for (let x = step; x < offscreen.width - step; x += step) {
+          const i = (y * offscreen.width + x) * 4;
+          const a = img[i + 3];
+          if (a > 120) {
+            const right = img[i + 4 * step + 3];
+            const down = img[i + offscreen.width * step * 4 + 3];
+            if (right < 40 || down < 40) edgePoints.push({ x: x / hdpr, y: y / hdpr });
+          }
+        }
+      }
+    } catch (e) { edgePoints = []; }
+  }
+
+  function spawnParticle() {
+    if (!edgePoints.length) return;
+    const p = edgePoints[Math.floor(Math.random() * edgePoints.length)];
+    const angle = Math.random() * Math.PI * 2;
+    particles.push({
+      x: p.x, y: p.y,
+      vx: Math.cos(angle) * (10 + Math.random() * 18),
+      vy: Math.sin(angle) * (10 + Math.random() * 18) - 6,
+      life: 0, maxLife: 0.5 + Math.random() * 0.4,
+      size: 1 + Math.random() * 1.4,
+    });
+  }
+
+  function draw(now) {
+    const dt = Math.min((now - lastFrame) / 1000, 0.05) || 0;
+    lastFrame = now;
+    const t = (now - startTime) / 1000;
+    amplitude += (targetAmplitude - amplitude) * Math.min(1, dt * 6);
+
+    dctx.clearRect(0, 0, cw, ch);
+    if (amplitude > 0.01) {
+      const stripH = 3;
+      for (let y = 0; y < ch; y += stripH) {
+        const wave = Math.sin(y * 0.18 + t * 3.2) * amplitude;
+        dctx.drawImage(offscreen, 0, y * hdpr, offscreen.width, stripH * hdpr, wave, y, cw, stripH);
+      }
+    } else {
+      dctx.drawImage(offscreen, 0, 0, offscreen.width, offscreen.height, 0, 0, cw, ch);
+    }
+
+    if (active && now - lastSpawn > 70 && particles.length < 40) {
+      lastSpawn = now;
+      spawnParticle();
+    }
+    dctx.globalCompositeOperation = 'lighter';
+    for (let i = particles.length - 1; i >= 0; i--) {
+      const p = particles[i];
+      p.life += dt;
+      if (p.life > p.maxLife) { particles.splice(i, 1); continue; }
+      p.x += p.vx * dt;
+      p.y += p.vy * dt;
+      const fade = 1 - p.life / p.maxLife;
+      dctx.beginPath();
+      dctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+      dctx.fillStyle = `rgba(255,154,82,${(fade * 0.85).toFixed(2)})`;
+      dctx.fill();
+    }
+    dctx.globalCompositeOperation = 'source-over';
+
+    if (active || amplitude > 0.01 || particles.length) {
+      rafId = requestAnimationFrame(draw);
+    } else {
+      rafId = null;
+      distortCanvas.classList.remove('is-active');
+      heroWrap.classList.remove('is-distorting');
+    }
+  }
+
+  function activate() {
+    if (!offscreen) buildTextBuffer();
+    active = true;
+    targetAmplitude = 2.6;
+    distortCanvas.classList.add('is-active');
+    heroWrap.classList.add('is-distorting');
+    if (!rafId) {
+      startTime = performance.now();
+      lastFrame = startTime;
+      rafId = requestAnimationFrame(draw);
+    }
+  }
+  function deactivate() {
+    active = false;
+    targetAmplitude = 0;
+  }
+
+  heroWrap.addEventListener('mouseenter', activate);
+  heroWrap.addEventListener('mouseleave', deactivate);
+  heroWrap.addEventListener('touchstart', activate, { passive: true });
+  heroWrap.addEventListener('touchend', deactivate);
+  heroWrap.addEventListener('focusin', activate);
+  heroWrap.addEventListener('focusout', deactivate);
+  window.addEventListener('resize', () => { offscreen = null; });
+  document.querySelectorAll('.lang-toggle').forEach((t) => t.addEventListener('click', () => { offscreen = null; }));
 }
 
 document.documentElement.classList.add('js-on');
