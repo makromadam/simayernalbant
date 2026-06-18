@@ -291,9 +291,9 @@
       </div>
     </div>
 
-    <div class="lg:col-span-5 flex items-center justify-center lg:justify-end relative min-h-[40vh] lg:min-h-[60vh]">
+    <div class="lg:col-span-5 flex items-center justify-center lg:justify-start relative min-h-[40vh] lg:min-h-[60vh]">
       <div class="reveal w-full max-w-lg" style="transition-delay:.1s">
-        <div class="lg:scale-150 origin-left [perspective:1100px]">
+        <div class="lg:scale-125 origin-left [perspective:1100px]">
           <div class="video-frame tilt-card">
             <video autoplay loop muted playsinline preload="auto">
               <source src="head.mp4" type="video/mp4">
@@ -648,26 +648,44 @@ if (!reduceMotion && window.innerWidth > 900) {
   });
 }
 
-// Hero video: smooth autoplay loop on every device (mobile + desktop), played faster.
-// Replaces the old scroll-scrub, which seeked the video frame-by-frame on scroll and
-// stuttered badly on mobile. Looping playback is buttery on both, and playbackRate
-// gives the "faster" feel without re-encoding the asset.
+// Hero video: fast scroll-scrub on desktop (scrubbed by scroll, races through frames),
+// with a smooth fast autoplay-loop fallback on mobile, where frame-seeking stutters.
 const heroVideo = document.querySelector('#hero video');
-if (heroVideo) {
-  const HERO_SPEED = reduceMotion ? 1 : 1.5;
-  heroVideo.loop = true;
+const heroSection = document.getElementById('hero');
+if (heroVideo && heroSection && !reduceMotion) {
   heroVideo.muted = true;
   heroVideo.playsInline = true;
-  const applyRate = () => { try { heroVideo.playbackRate = HERO_SPEED; } catch (e) {} };
-  const tryPlay = () => { const p = heroVideo.play(); if (p && p.catch) p.catch(() => {}); };
-  applyRate();
-  tryPlay();
-  heroVideo.addEventListener('loadedmetadata', applyRate);
-  heroVideo.addEventListener('play', applyRate);
-  // Re-assert speed/playback when returning to the tab (browsers can reset rate or pause in background).
-  document.addEventListener('visibilitychange', () => {
-    if (!document.hidden) { applyRate(); tryPlay(); }
-  });
+
+  if (window.innerWidth > 900) {
+    // Desktop: drive currentTime from scroll. SCRUB_SPEED > 1 makes the clip flow fast —
+    // it runs through all its frames within the first slice of the hero scroll.
+    const SCRUB_SPEED = 2.6;
+    heroVideo.loop = false;
+    heroVideo.pause();
+    let duration = 0, ticking = false;
+    function updateScrub() {
+      ticking = false;
+      if (!duration) return;
+      const rect = heroSection.getBoundingClientRect();
+      const raw = -rect.top / rect.height;
+      const t = Math.min(1, Math.max(0, raw * SCRUB_SPEED));
+      heroVideo.currentTime = t * duration;
+    }
+    function onMeta() { duration = heroVideo.duration || 0; updateScrub(); }
+    if (heroVideo.readyState >= 1 && heroVideo.duration) onMeta();
+    else heroVideo.addEventListener('loadedmetadata', onMeta);
+    const req = () => { if (!ticking) { ticking = true; requestAnimationFrame(updateScrub); } };
+    window.addEventListener('scroll', req, { passive: true });
+    window.addEventListener('resize', req);
+  } else {
+    // Mobile: keep it buttery — fast looping autoplay, no seeking.
+    heroVideo.loop = true;
+    const applyRate = () => { try { heroVideo.playbackRate = 1.5; } catch (e) {} };
+    const tryPlay = () => { const p = heroVideo.play(); if (p && p.catch) p.catch(() => {}); };
+    applyRate(); tryPlay();
+    heroVideo.addEventListener('loadedmetadata', applyRate);
+    heroVideo.addEventListener('play', applyRate);
+  }
 }
 
 // Ambient embers — drift harmoniously from right to left across the black field, each on
