@@ -192,6 +192,19 @@
     #topnav { top: 8px; left: 8px; width: calc(100% - 16px); }
   }
 
+  /* ===== About — scroll-driven 3D typography tunnel (vanishing point) ===== */
+  .about-tunnel { position: relative; height: 340vh; }
+  .about-sticky { position: sticky; top: 0; height: 100vh; overflow: hidden; perspective: 1000px; }
+  .about-stage { position: absolute; inset: 0; display: grid; place-items: center; transform-style: preserve-3d; padding: 0 24px; }
+  .tunnel-moment { grid-area: 1 / 1; max-width: min(900px, 92vw); margin: 0; text-align: center; opacity: 0; will-change: transform, opacity; backface-visibility: hidden; }
+  .tunnel-title { font-family: "Clash Display","Sora",sans-serif; font-weight: 700; text-transform: uppercase; color: #ff7200; line-height: .96; letter-spacing: -.02em; font-size: clamp(40px, 9vw, 150px); text-shadow: 0 0 70px rgba(255,114,0,.4); }
+  .tunnel-text { font-family: "Plus Jakarta Sans", system-ui, sans-serif; font-weight: 500; color: #ece6da; line-height: 1.5; letter-spacing: -.005em; font-size: clamp(18px, 2.4vw, 29px); }
+  .about-dots { position: absolute; inset: -10%; pointer-events: none;
+    background-image: radial-gradient(rgba(255,114,0,.55) 1px, transparent 1.7px);
+    background-size: 48px 48px; opacity: .1; animation: about-dots-drift 26s linear infinite; }
+  @keyframes about-dots-drift { from { background-position: 0 0; } to { background-position: 120px 90px; } }
+  @media (max-width: 768px) { .about-tunnel { height: 300vh; } }
+
   a:focus-visible, button:focus-visible {
     outline: 2px solid #ff8a3d;
     outline-offset: 3px;
@@ -203,6 +216,12 @@
     .ember { display: none; }
     .scroll-dot { animation: none; }
     html { scroll-behavior:auto; }
+    /* About tunnel collapses to a calm, readable centered stack */
+    .about-tunnel { height: auto !important; }
+    .about-sticky { position: static; height: auto; padding: 96px 24px; perspective: none; }
+    .about-stage { position: static; display: grid; gap: 56px; place-items: center; }
+    .tunnel-moment { opacity: 1 !important; transform: none !important; }
+    .about-dots { display: none; }
   }
   .lang-pill { color: #9ca3af; transition: background-color .3s var(--ease-fluid), color .3s var(--ease-fluid); }
   .lang-pill.lang-on { background: linear-gradient(135deg, #ff8a3d, #ff6a1a); color: #fff; }
@@ -290,18 +309,14 @@
     </div>
   </section>
 
-  <!-- ===== ABOUT (Editorial Split: heading left, copy in double-bezel) ===== -->
-  <section id="about" class="py-24 lg:py-40">
-    <div class="grid lg:grid-cols-12 gap-10 lg:gap-16 items-start">
-      <div class="lg:col-span-5 reveal">
-        <span class="pill-eyebrow mb-6" data-i18n="about.label">About</span>
-        <h2 class="text-4xl md:text-5xl mt-6 leading-[1.05]" data-i18n-html="about.title">Design, Technology<br>&amp; Experience</h2>
-      </div>
-      <div class="lg:col-span-7 bezel reveal" style="transition-delay:.08s">
-        <div class="bezel-core p-8 md:p-10 flex flex-col gap-6">
-          <p class="font-body text-base md:text-lg text-on-surface-variant leading-relaxed" data-i18n="about.p1">I am a Web Designer, Graphic Designer, and Illustrator, working at the intersection of design, technology, and digital experience. I graduated from Hacettepe University in 2014. During my studies, I joined the Erasmus program and spent my third year at ESA Saint-Luc in Belgium, studying entirely in French. This experience shaped my design perspective and strengthened my adaptability across different creative cultures.</p>
-          <p class="font-body text-base md:text-lg text-on-surface-variant leading-relaxed" data-i18n="about.p2">I began my career in advertising agencies in Marmaris, building a strong foundation in visual communication and production. I later transitioned into freelance work, collaborating with agencies and direct clients on a wide range of design projects. Today, my focus is web design and modern web experiences. I design and build user-centered digital products and AI-assisted, code-supported websites that combine clarity, function, and visual precision.</p>
-        </div>
+  <!-- ===== ABOUT — scroll-driven 3D typography tunnel (vanishing point) ===== -->
+  <section id="about" class="about-tunnel">
+    <div class="about-sticky">
+      <div class="about-dots" aria-hidden="true"></div>
+      <div class="about-stage">
+        <h2 class="tunnel-moment tunnel-title" data-i18n-html="about.title">Design,<br>Technology<br>&amp; Experience</h2>
+        <p class="tunnel-moment tunnel-text" data-i18n="about.p1">I am a Web Designer, Graphic Designer, and Illustrator, working at the intersection of design, technology, and digital experience. I graduated from Hacettepe University in 2014. During my studies, I joined the Erasmus program and spent my third year at ESA Saint-Luc in Belgium, studying entirely in French. This experience shaped my design perspective and strengthened my adaptability across different creative cultures.</p>
+        <p class="tunnel-moment tunnel-text" data-i18n="about.p2">I began my career in advertising agencies in Marmaris, building a strong foundation in visual communication and production. I later transitioned into freelance work, collaborating with agencies and direct clients on a wide range of design projects. Today, my focus is web design and modern web experiences. I design and build user-centered digital products and AI-assisted, code-supported websites that combine clarity, function, and visual precision.</p>
       </div>
     </div>
   </section>
@@ -453,7 +468,7 @@ const translations = {
     "hero.hello": "CINEMATIC<br><span class=\"accent\">Digital</span><br>EXPERIENCES",
     "hero.description": "I design immersive websites, app interfaces, and brand experiences — combining clarity, depth, and emotional precision.",
     "hero.startProject": "Start a Project", "hero.viewExpertise": "View Expertise", "hero.scroll": "Scroll to explore",
-    "about.label": "About", "about.title": "Design, Technology<br>&amp; Experience",
+    "about.label": "About", "about.title": "Design,<br>Technology<br>&amp; Experience",
     "about.p1": "I am a Web Designer, Graphic Designer, and Illustrator, working at the intersection of design, technology, and digital experience. I graduated from Hacettepe University in 2014. During my studies, I joined the Erasmus program and spent my third year at ESA Saint-Luc in Belgium, studying entirely in French. This experience shaped my design perspective and strengthened my adaptability across different creative cultures.",
     "about.p2": "I began my career in advertising agencies in Marmaris, building a strong foundation in visual communication and production. I later transitioned into freelance work, collaborating with agencies and direct clients on a wide range of design projects. Today, my focus is web design and modern web experiences. I design and build user-centered digital products and AI-assisted, code-supported websites that combine clarity, function, and visual precision.",
     "appDesign.index": "02", "appDesign.title": "App Design",
@@ -479,7 +494,7 @@ const translations = {
     "hero.hello": "SİNEMATİK<br><span class=\"accent\">Dijital</span><br>DENEYİMLER",
     "hero.description": "Netlik, derinlik ve duygusal hassasiyeti birleştiren sürükleyici web siteleri, uygulama arayüzleri ve marka deneyimleri tasarlıyorum.",
     "hero.startProject": "Projeye Başla", "hero.viewExpertise": "Uzmanlığı Gör", "hero.scroll": "Keşfetmek için kaydır",
-    "about.label": "Hakkımda", "about.title": "Tasarım, Teknoloji<br>&amp; Deneyim",
+    "about.label": "Hakkımda", "about.title": "Tasarım,<br>Teknoloji<br>&amp; Deneyim",
     "about.p1": "Ben bir Web Tasarımcısı, Grafik Tasarımcı ve İllüstratörüm. Tasarım, teknoloji ve dijital deneyimin kesişim noktasında çalışıyorum. 2014 yılında Hacettepe Üniversitesi'nden mezun oldum. Öğrenimim sırasında Erasmus programına katıldım ve üçüncü yılımı Belçika'da tamamen Fransızca eğitim veren ESA Saint-Luc'ta geçirdim.",
     "about.p2": "Kariyerime Marmaris'teki reklam ajanslarında başlayarak görsel iletişim ve üretim konularında güçlü bir temel oluşturdum. Daha sonra serbest çalışmaya yöneldim. Bugün odak noktam web tasarımı ve modern web deneyimleri. Netlik, işlev ve görsel hassasiyeti bir araya getiren dijital ürünler ile yapay zeka destekli web siteleri tasarlıyorum.",
     "appDesign.index": "02", "appDesign.title": "Uygulama Tasarımı",
@@ -505,7 +520,7 @@ const translations = {
     "hero.hello": "EXPÉRIENCES<br><span class=\"accent\">Numériques</span><br>CINÉMATOGRAPHIQUES",
     "hero.description": "Je conçois des sites web immersifs, des interfaces d'application et des expériences de marque — alliant clarté, profondeur et précision émotionnelle.",
     "hero.startProject": "Démarrer un Projet", "hero.viewExpertise": "Voir l'Expertise", "hero.scroll": "Défiler pour explorer",
-    "about.label": "À Propos", "about.title": "Design, Technologie<br>&amp; Expérience",
+    "about.label": "À Propos", "about.title": "Design,<br>Technologie<br>&amp; Expérience",
     "about.p1": "Je suis Designer Web, Designer Graphique et Illustratrice, travaillant à l'intersection du design, de la technologie et de l'expérience numérique. J'ai obtenu mon diplôme de l'Université Hacettepe en 2014. Pendant mes études, j'ai participé au programme Erasmus et passé ma troisième année à l'ESA Saint-Luc en Belgique, en étudiant entièrement en français.",
     "about.p2": "J'ai commencé ma carrière dans des agences de publicité à Marmaris, me bâtissant de solides fondations en communication visuelle. Aujourd'hui, je me concentre sur le design web et les expériences web modernes. Je conçois et développe des produits numériques centrés sur l'utilisateur.",
     "appDesign.index": "02", "appDesign.title": "Design d'Application",
@@ -725,6 +740,54 @@ if (emberHost && window.innerWidth > 900 && !reduceMotion) {
   }
   requestAnimationFrame(tick);
 }
+
+// About — scroll-driven 3D typography tunnel.
+// Vanilla equivalent of Framer Motion's useScroll + useTransform: map the section's
+// scroll progress (0..1) to per-moment translateZ / translateY / opacity so each line
+// flies in from the vanishing point, locks readable in the centre, then passes the camera.
+(function () {
+  const section = document.getElementById('about');
+  if (!section) return;
+  const moments = [...section.querySelectorAll('.tunnel-moment')];
+  if (!moments.length) return;
+
+  if (reduceMotion) return; // CSS collapses the tunnel to a static readable stack
+
+  const PEAKS = [0.22, 0.5, 0.78]; // progress where each moment is centred & readable
+  const HALF = 0.24;   // half-width of each moment's window
+  const PLATEAU = 0.34; // |d| under this stays fully readable (no extreme distortion)
+  const Z_FAR = 760;   // translateZ coming from infinity (behind)
+  const Z_NEAR = 520;  // translateZ passing toward the viewer (in front)
+  const Y_SHIFT = 26;  // subtle vertical drift
+
+  let ticking = false;
+
+  function render() {
+    ticking = false;
+    const range = section.offsetHeight - window.innerHeight;
+    const progress = range > 0 ? Math.min(1, Math.max(0, -section.getBoundingClientRect().top / range)) : 0;
+
+    for (let i = 0; i < moments.length; i++) {
+      const el = moments[i];
+      const d = (progress - PEAKS[i]) / HALF; // -1 (far) .. 0 (centre) .. 1 (past)
+      const ad = Math.abs(d);
+      if (ad >= 1) { el.style.opacity = '0'; el.style.visibility = 'hidden'; continue; }
+      el.style.visibility = 'visible';
+
+      const z = (d <= 0 ? d * Z_FAR : d * Z_NEAR);
+      const y = d * -Y_SHIFT;
+      const opacity = ad <= PLATEAU ? 1 : Math.max(0, 1 - (ad - PLATEAU) / (1 - PLATEAU));
+
+      el.style.opacity = opacity.toFixed(3);
+      el.style.transform = `translate3d(0, ${y.toFixed(1)}px, ${z.toFixed(1)}px)`;
+    }
+  }
+
+  function onScroll() { if (!ticking) { ticking = true; requestAnimationFrame(render); } }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll);
+  render();
+})();
 
 document.documentElement.classList.add('js-on');
 </script>
