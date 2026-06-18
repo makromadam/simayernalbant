@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Sitemap for simayernalbant.com.
+     Note: EN / TR / FR are client-side language toggles on a single page, not separate
+     URLs, so only the canonical homepage is listed. If real language routes (/tr, /fr)
+     are added later, add them here with matching hreflang alternates. -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://simayernalbant.com/</loc>
+    <lastmod>2026-06-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+  </url>
+</urlset>
