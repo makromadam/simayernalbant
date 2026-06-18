@@ -279,9 +279,9 @@
 
   <!-- ===== HERO (Editorial Split, asymmetric 7/5) ===== -->
   <section id="hero" class="min-h-screen grid lg:grid-cols-12 items-center gap-10 lg:gap-8 pt-36 pb-24 relative">
-    <div class="lg:col-span-7 flex flex-col items-start gap-7">
+    <div class="order-2 lg:order-1 lg:col-span-7 flex flex-col items-start gap-7">
       <span class="pill-eyebrow reveal" data-i18n="hero.eyebrow"><span class="brand-dot"></span>Web · App · Branding</span>
-      <h1 class="hero-title reveal" data-i18n-html="hero.hello" style="transition-delay:.06s">DESIGNING<br><span class="accent">Perception</span></h1>
+      <h1 class="hero-title reveal order-first lg:order-none" data-i18n-html="hero.hello" style="transition-delay:.06s">DESIGNING<br><span class="accent">Perception</span></h1>
       <p class="font-body text-lg text-on-surface-variant max-w-md leading-relaxed reveal" data-i18n="hero.description" style="transition-delay:.12s">I design immersive websites, app interfaces, and brand experiences — combining clarity, depth, and emotional precision.</p>
       <div class="mt-2 flex flex-wrap gap-4 reveal" style="transition-delay:.18s">
         <a class="group btn-primary inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-full text-surface-deep font-mono text-[12px] tracking-[.14em] uppercase font-semibold" data-i18n="hero.startProject" href="#contact">Start a Project
@@ -291,7 +291,7 @@
       </div>
     </div>
 
-    <div class="lg:col-span-5 flex items-center justify-center lg:justify-start relative min-h-[40vh] lg:min-h-[60vh]">
+    <div class="order-1 lg:order-2 lg:col-span-5 flex items-center justify-center lg:justify-start relative min-h-[40vh] lg:min-h-[60vh]">
       <div class="reveal w-full max-w-lg" style="transition-delay:.1s">
         <div class="lg:scale-125 origin-left [perspective:1100px]">
           <div class="video-frame tilt-card">
@@ -326,17 +326,10 @@
     <div class="grid lg:grid-cols-12 gap-12 lg:gap-16 items-center">
       <div class="order-2 lg:order-1 lg:col-span-7 relative flex items-center justify-center [perspective:1100px]">
         <div class="w-full max-w-3xl mx-auto lg:-rotate-2 transition-transform duration-500 ease-fluid relative reveal">
-          <div class="bezel tilt-card">
-            <div class="bezel-core bezel-core-dark video-frame p-2 relative">
-              <div class="video-glow"></div>
-              <video autoplay loop muted playsinline preload="auto">
-                <source src="hand.mp4" type="video/mp4">
-              </video>
-            </div>
-          </div>
-          <div class="stat-card -bottom-5 -left-5 hidden sm:block">
-            <p class="font-serif text-3xl text-primary leading-none">+76%</p>
-            <p class="font-mono text-[10px] uppercase tracking-[.2em] text-on-surface-variant mt-1.5" data-i18n="appDesign.stat">Interaction Flow</p>
+          <div class="video-frame tilt-card">
+            <video autoplay loop muted playsinline preload="auto">
+              <source src="hand.mp4" type="video/mp4">
+            </video>
           </div>
         </div>
       </div>
@@ -372,17 +365,10 @@
       </div>
       <div class="lg:col-span-7 relative flex items-center justify-center [perspective:1100px]">
         <div class="w-full max-w-3xl mx-auto lg:rotate-2 transition-transform duration-500 ease-fluid relative reveal">
-          <div class="bezel tilt-card">
-            <div class="bezel-core bezel-core-dark video-frame p-2 relative">
-              <div class="video-glow"></div>
-              <video autoplay loop muted playsinline preload="auto">
-                <source src="brain.mp4" type="video/mp4">
-              </video>
-            </div>
-          </div>
-          <div class="stat-card -top-5 -right-5 hidden sm:block text-right">
-            <p class="font-serif text-3xl text-primary leading-none" data-i18n="webDesign.stat2val">100%</p>
-            <p class="font-mono text-[10px] uppercase tracking-[.2em] text-on-surface-variant mt-1.5" data-i18n="webDesign.stat2">Cognitive Sync</p>
+          <div class="video-frame tilt-card">
+            <video autoplay loop muted playsinline preload="auto">
+              <source src="brain.mp4" type="video/mp4">
+            </video>
           </div>
         </div>
       </div>
@@ -648,44 +634,31 @@ if (!reduceMotion && window.innerWidth > 900) {
   });
 }
 
-// Hero video: fast scroll-scrub on desktop (scrubbed by scroll, races through frames),
-// with a smooth fast autoplay-loop fallback on mobile, where frame-seeking stutters.
+// Hero video: scroll-scrub on every device (same behaviour on mobile + desktop).
+// SCRUB_SPEED controls how fast the clip flows relative to scrolling (lower = slower).
 const heroVideo = document.querySelector('#hero video');
 const heroSection = document.getElementById('hero');
 if (heroVideo && heroSection && !reduceMotion) {
+  const SCRUB_SPEED = 1.4;
+  heroVideo.loop = false;
   heroVideo.muted = true;
   heroVideo.playsInline = true;
-
-  if (window.innerWidth > 900) {
-    // Desktop: drive currentTime from scroll. SCRUB_SPEED > 1 makes the clip flow fast —
-    // it runs through all its frames within the first slice of the hero scroll.
-    const SCRUB_SPEED = 2.6;
-    heroVideo.loop = false;
-    heroVideo.pause();
-    let duration = 0, ticking = false;
-    function updateScrub() {
-      ticking = false;
-      if (!duration) return;
-      const rect = heroSection.getBoundingClientRect();
-      const raw = -rect.top / rect.height;
-      const t = Math.min(1, Math.max(0, raw * SCRUB_SPEED));
-      heroVideo.currentTime = t * duration;
-    }
-    function onMeta() { duration = heroVideo.duration || 0; updateScrub(); }
-    if (heroVideo.readyState >= 1 && heroVideo.duration) onMeta();
-    else heroVideo.addEventListener('loadedmetadata', onMeta);
-    const req = () => { if (!ticking) { ticking = true; requestAnimationFrame(updateScrub); } };
-    window.addEventListener('scroll', req, { passive: true });
-    window.addEventListener('resize', req);
-  } else {
-    // Mobile: keep it buttery — fast looping autoplay, no seeking.
-    heroVideo.loop = true;
-    const applyRate = () => { try { heroVideo.playbackRate = 1.5; } catch (e) {} };
-    const tryPlay = () => { const p = heroVideo.play(); if (p && p.catch) p.catch(() => {}); };
-    applyRate(); tryPlay();
-    heroVideo.addEventListener('loadedmetadata', applyRate);
-    heroVideo.addEventListener('play', applyRate);
+  heroVideo.pause();
+  let duration = 0, ticking = false;
+  function updateScrub() {
+    ticking = false;
+    if (!duration) return;
+    const rect = heroSection.getBoundingClientRect();
+    const raw = -rect.top / rect.height;
+    const t = Math.min(1, Math.max(0, raw * SCRUB_SPEED));
+    heroVideo.currentTime = t * duration;
   }
+  function onMeta() { duration = heroVideo.duration || 0; updateScrub(); }
+  if (heroVideo.readyState >= 1 && heroVideo.duration) onMeta();
+  else heroVideo.addEventListener('loadedmetadata', onMeta);
+  const req = () => { if (!ticking) { ticking = true; requestAnimationFrame(updateScrub); } };
+  window.addEventListener('scroll', req, { passive: true });
+  window.addEventListener('resize', req);
 }
 
 // Ambient embers — drift harmoniously from right to left across the black field, each on
