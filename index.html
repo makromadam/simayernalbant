@@ -233,6 +233,7 @@
     .reveal { transition: none; }
     .js-on .reveal { opacity:1; transform:none; filter:none; }
     #liquid-ether { display: none; }
+    .split-text .sc { opacity:1 !important; transform:none !important; transition:none !important; }
     .scroll-dot { animation: none; }
     html { scroll-behavior:auto; }
     /* About tunnel collapses to a calm, readable centered stack */
@@ -246,6 +247,11 @@
   .lang-pill.lang-on { background: linear-gradient(135deg, #ff8a3d, #ff6a1a); color: #fff; }
   .lang-plain { color: #9ca3af; }
   .lang-plain.lang-on { color: #fff; font-weight: 700; }
+  /* ===== SplitText reveal (per-character, on scroll into view) ===== */
+  .split-text .sw { display:inline-block; }
+  .split-text .sc { display:inline-block; opacity:0; transform:translateY(40px);
+    transition: opacity .8s cubic-bezier(.215,.61,.355,1), transform .8s cubic-bezier(.215,.61,.355,1); will-change:transform,opacity; }
+  .split-text.in .sc { opacity:1; transform:none; }
 </style>
 </head>
 <body class="font-body min-h-screen flex flex-col">
@@ -551,6 +557,7 @@ function setLanguage(lang) {
     el.innerHTML = v;
   });
   document.documentElement.lang = lang;
+  document.dispatchEvent(new Event('i18n:applied'));
 }
 
 document.querySelectorAll('.lang-toggle').forEach((t) =>
@@ -733,6 +740,60 @@ document.documentElement.classList.add('js-on');
   if (vidEl) vidEl.addEventListener('loadedmetadata', place);
 })();
 </script>
+<!-- ===== SplitText reveal on headings (vanilla port of reactbits.dev/text-animations/split-text) ===== -->
+<script>
+(function () {
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const STAGGER = 38; // ms between characters
+  function collect() {
+    const set = new Set();
+    const hero = document.getElementById('hero-name'); if (hero) set.add(hero);
+    document.querySelectorAll('section h2:not(.tunnel-title), footer h2, section h3, footer h3').forEach(h => set.add(h));
+    return [...set];
+  }
+  function splitInto(parent, out, idx) {
+    parent.childNodes.forEach(node => {
+      if (node.nodeType === 3) {
+        node.nodeValue.split(/(\s+)/).forEach(part => {
+          if (!part) return;
+          if (/^\s+$/.test(part)) { out.appendChild(document.createTextNode(part)); return; }
+          const word = document.createElement('span'); word.className = 'sw';
+          for (const ch of part) {
+            const c = document.createElement('span'); c.className = 'sc';
+            c.textContent = ch; c.style.transitionDelay = (idx.n * STAGGER) + 'ms'; idx.n++;
+            word.appendChild(c);
+          }
+          out.appendChild(word);
+        });
+      } else if (node.nodeType === 1) {
+        if (node.tagName === 'BR') { out.appendChild(document.createElement('br')); }
+        else { const w = node.cloneNode(false); splitInto(node, w, idx); out.appendChild(w); }
+      }
+    });
+  }
+  function splitElement(el) {
+    const idx = { n: 0 }, frag = document.createDocumentFragment();
+    splitInto(el, frag, idx);
+    el.textContent = ''; el.appendChild(frag);
+    el.classList.add('split-text');
+  }
+  const io = ('IntersectionObserver' in window) ? new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { threshold: 0.1, rootMargin: '0px 0px -8% 0px' }) : null;
+  function splitAll() {
+    collect().forEach(el => {
+      if (el.querySelector('.sc')) return;      // already split (e.g. hero name persists across language switches)
+      el.classList.remove('in');
+      splitElement(el);
+      if (reduce || !io) { el.classList.add('in'); return; }
+      io.observe(el);
+    });
+  }
+  splitAll();
+  document.addEventListener('i18n:applied', splitAll);   // re-split after a language change rewrites headings
+})();
+</script>
+
 <!-- ===== Liquid Ether animated background (orange) — vanilla port of reactbits.dev/backgrounds/liquid-ether ===== -->
 <script type="importmap">
 { "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js" } }
