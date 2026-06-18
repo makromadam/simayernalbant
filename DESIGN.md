@@ -7,7 +7,7 @@ colors:
   secondary: "#ffb066"
   glow-orange: "#FF6A1A"
   glow-amber: "#E8590C"
-  background: "#0a0704"
+  background: "#070502"
   surface-deep: "#070502"
   surface-container-lowest: "#0a0704"
   surface-container-low: "#141008"
@@ -22,19 +22,24 @@ colors:
   on-surface-variant: "#cabba9"
 typography:
   display:
-    fontFamily: "'Sora', sans-serif"
-    fontSize: "clamp(46px, 7.4vw, 96px)"
-    fontWeight: 800
-    lineHeight: 0.96
+    fontFamily: "'Clash Display', 'Sora', sans-serif"
+    fontSize: "clamp(44px, 7vw, 104px)"
+    fontWeight: 600
+    lineHeight: 0.98
     letterSpacing: "-0.02em"
   headline:
-    fontFamily: "'Sora', sans-serif"
+    fontFamily: "'Clash Display', 'Sora', sans-serif"
     fontSize: "36px"
-    fontWeight: 700
+    fontWeight: 600
     lineHeight: 1.15
+    letterSpacing: "-0.015em"
+  serif-accent:
+    fontFamily: "'Editorial New', Georgia, serif"
+    fontStyle: italic
+    fontWeight: 400
     letterSpacing: "-0.01em"
   body:
-    fontFamily: "'Inter', sans-serif"
+    fontFamily: "'Plus Jakarta Sans', system-ui, sans-serif"
     fontSize: "18px"
     fontWeight: 400
     lineHeight: 1.6
@@ -49,6 +54,7 @@ rounded:
   sm: "0.5rem"
   lg: "0.75rem"
   xl: "1.5rem"
+  bezel: "2rem"
   full: "9999px"
 spacing:
   base: "8px"
@@ -127,22 +133,24 @@ One hue family carries the entire system; everything else is a warm-black-to-bon
 
 ## 3. Typography
 
-**Display Font:** Sora (with sans-serif fallback)
-**Body Font:** Inter (with sans-serif fallback)
-**Label/Mono Font:** Geist Mono (with monospace fallback)
+**Display Font:** Clash Display (Sora fallback) — a wide, high-end grotesk, skill-recommended.
+**Serif Accent:** Editorial New, *italic* — the one "hot word" per headline only (Georgia fallback).
+**Body Font:** Plus Jakarta Sans (system-ui fallback) — replaces the skill-banned Inter.
+**Label/Mono Font:** Geist Mono (monospace fallback).
 
-**Character:** Sora is heavy, uppercase, and tight-tracked — it carries the cinematic weight. Inter stays quiet and highly readable wherever someone is actually expected to read a sentence. Geist Mono signals "system chrome" — nav, numerals, buttons, eyebrows — the same way timecode and lens data sit in the corner of a film frame.
+**Character:** Clash Display is wide, set in uppercase, and tightly tracked — it carries the cinematic weight at agency scale. The Editorial New serif italic appears exactly once per heading, in proper case, on the emphasized word (e.g. *Digital*, *Impossible*) — the classic luxury pairing of grotesk caps against a serif-italic lowercase, replacing the old gradient/text-glow span. Plus Jakarta Sans stays quiet and highly readable wherever someone is actually expected to read a sentence. Geist Mono signals "system chrome" — nav, numerals, buttons, eyebrows — the same way timecode and lens data sit in the corner of a film frame.
 
 ### Hierarchy
-- **Display** (800, `clamp(46px, 7.4vw, 96px)`, 0.96 line-height, -0.02em, uppercase): the hero headline only (`.hero-title`). The one place the system goes maximally loud.
-- **Headline** (700, 36px scaling to 48px at the `md` breakpoint — 60px for the climactic contact-section headline — 1.15 line-height, -0.01em, uppercase): every `section h2`.
+- **Display** (Clash Display 600, `clamp(44px, 7vw, 104px)`, 0.98 line-height, -0.02em, uppercase): the hero headline only (`.hero-title`). The one place the system goes maximally loud.
+- **Headline** (Clash Display 600, 36px scaling to 48px at the `md` breakpoint — 60px for the climactic contact-section headline — 1.15 line-height, -0.015em, uppercase): every `section h2`.
+- **Serif accent** (Editorial New 400 italic, proper case, inherits the headline size): exactly one emphasized word inside a Display or Headline (`.accent`). Never used for a whole heading and never for body copy.
 - **Body** (400, 18px primary / 16px base, 1.6 line-height, -0.01em): reading copy. 16px (`body-md`) is the page's typographic floor, set once on `<body>`; 18px (`body-lg`) is used for the one substantial paragraph of prose (the About/Design-Technology-Experience copy).
 - **Label** (500, 13px primary / 11px for the smallest chrome, 1.4 line-height, 0.12–0.16em tracking, uppercase): nav links, buttons, nav-cta, the language toggle, eyebrows, and section-index numerals (`02` / `03` / `04`).
 
 ### Named Rules
-**The Three-Voice Rule.** Sora speaks only for display/headline structure, Inter only for reading copy, Geist Mono only for chrome. None of the three ever covers for another — if a piece of UI needs a label treatment, it gets Geist Mono and uppercase tracking, not a small Sora heading.
+**The Voice Rule.** Clash Display speaks only for display/headline structure, Plus Jakarta Sans only for reading copy, Geist Mono only for chrome (nav, labels, numerals, buttons), and Editorial New *only* as the single serif-italic accent word inside a heading. None ever covers for another — if a piece of UI needs a label treatment, it gets Geist Mono and uppercase tracking, not a small Clash Display heading.
 
-**Known inconsistency:** the Tailwind config also declares fixed-size `display-2xl` (72px), `display-xl` (56px), `headline-lg` (40px), and `headline-lg-mobile` (30px) font-size tokens, but none are actually applied via utility class anywhere in the markup — the real display size comes from the bespoke `.hero-title` clamp, and the real headline size comes from Tailwind's default `text-4xl`/`md:text-5xl`/`md:text-6xl` scale plus the global `section h2` rule. Treat the declared `display-*`/`headline-lg*` Tailwind tokens as dead configuration until something actually consumes them.
+**Resolved inconsistency:** the earlier dead `display-2xl` / `display-xl` / `headline-lg` / `headline-lg-mobile` Tailwind font tokens have been removed from the config in the high-end redesign. Display size now comes solely from the `.hero-title` clamp; headline size from Tailwind's `text-4xl`/`md:text-5xl`/`md:text-6xl` scale plus the global `section h2` rule. The `fontFamily` map now declares only the four real roles (`display`, `serif`, `body`, `mono`).
 
 ## 4. Elevation
 
@@ -192,14 +200,26 @@ The Education & Past section's defining visual: a glowing core (Flare Peach → 
 ### Do:
 - **Do** keep every new accent color inside the Combustion Orange family (`primary` #ff8a3d / `primary-container` #ff6a1a) at a different lightness or opacity rather than introducing a new hue.
 - **Do** use a glow (colored or white, per the Elevation shadow vocabulary) as the only depth cue for anything meant to feel "raised" or "alive."
-- **Do** keep the three-typeface role split absolute: Sora for display/headline, Inter for reading copy, Geist Mono uppercase for all chrome (nav, labels, numerals, buttons).
-- **Do** add a `prefers-reduced-motion: reduce` alternative for every opacity/transform/blur-based reveal and for the `.ember` particle animation. PRODUCT.md commits this project to WCAG 2.1 AA, which requires it, and `index.html` currently has zero `prefers-reduced-motion` handling anywhere — this is an open gap, not a style choice.
+- **Do** keep the voice split absolute: Clash Display for display/headline, Plus Jakarta Sans for reading copy, Geist Mono uppercase for all chrome (nav, labels, numerals, buttons), Editorial New italic only as the single accent word per heading.
+- **Do** keep the `prefers-reduced-motion: reduce` alternative for every opacity/transform/blur-based reveal, the `.ember` particles, the scroll-cue dot, and `scroll-behavior`. PRODUCT.md commits this project to WCAG 2.1 AA, which requires it — this is now implemented in `index.html` and must stay.
 - **Do** treat the numbered section markers (`02` / `03` / `04`) as acceptable, per PRODUCT.md's Anti-references: they trace a real, ordered path through the portfolio (Expertise → Web → Education), not decorative scaffolding.
 
 ### Don't:
 - **Don't** add a tiny uppercase eyebrow to every section by reflex — PRODUCT.md names this directly as a generic AI-template tell. Use one only where it does real wayfinding work (as the existing eyebrows already do).
-- **Don't** fill headline text with a gradient (`background-clip: text`). The system's existing technique for a "hot" headline word — solid Bone White or Combustion Orange plus a `text-shadow` glow (`.text-glow-orange`, `.text-glow`) — is the correct, already-established way to add drama to type.
+- **Don't** fill headline text with a gradient (`background-clip: text`). The system's technique for a "hot" headline word — the Editorial New serif-italic `.accent` in Combustion Orange with a `text-shadow` glow — is the correct, established way to add drama to type.
 - **Don't** make glassmorphism (`backdrop-filter: blur`) the default surface treatment for every container. It's reserved for `glass-panel` contexts (cards floating over video/ambient glow); a plain `surface-container` flat fill is correct everywhere else.
 - **Don't** build identical icon-card grids or repeat the "hero metric" template (oversized stat + label, ×3). PRODUCT.md calls both out by name as anti-references for this brand.
-- **Don't** introduce a second shadow vocabulary (standard gray Material elevation steps). Every "raised" surface in this system goes through the Glow-Not-Shadow Rule instead.
-- **Don't** wire up the dead `display-2xl` / `display-xl` / `headline-lg` / `headline-lg-mobile` Tailwind tokens without also auditing whether `.hero-title` and the `text-4xl`/`md:text-5xl` pattern should be replaced by them — right now both systems exist and only one is real; adding a third sizing source would make it worse, not better.
+- **Don't** introduce a second shadow vocabulary (standard gray Material elevation steps). Every "raised" surface in this system goes through the Glow-Not-Shadow Rule, now expressed through the double-bezel (§7).
+- **Don't** re-add the removed `display-*` / `headline-lg*` Tailwind tokens, and **don't** reintroduce thick-stroke icon fonts (Material Symbols) or identical icon-card grids — they were deliberately removed in the high-end redesign in favour of inline SVG and the editorial spec-list (§7).
+
+## 7. High-End Layer (taste-skill: `high-end-visual-design`)
+
+The redesign applies the taste-skill's high-end directives on top of the Combustion system above, without abandoning any of it (single accent hue, glow-not-shadow, the orbit, the video assets, EN/TR/FR parity, WCAG AA all preserved).
+
+- **Double-bezel containers (`.bezel` + `.bezel-core`).** "Machined-hardware" nesting: an outer hairline shell (`1px rgba(255,150,86,.14)`, `2rem` radius, `6px` pad) wrapping an inner core with a concentric `calc(2rem - 6px)` radius and an `inset 0 1px 1px rgba(255,255,255,.14)` top highlight. Used for the about panel and the video frames (`.bezel-core-dark` keeps a near-black core so `mix-blend-mode: screen` stays clean). This is the new structural expression of the Glow-Not-Shadow Rule.
+- **One fluid easing.** `--ease-fluid: cubic-bezier(0.32, 0.72, 0, 1)` replaces all `linear` / `ease-in-out`. Reveals run ~900ms.
+- **IntersectionObserver reveals.** `.reveal` enters from `translateY(64px) blur(12px) opacity:0` → cleared, via `IntersectionObserver` (not scroll listeners), gated behind `.js-on` for no-JS visibility.
+- **Editorial spec-list, not icon grids.** Each Expertise capability is a `.spec-row` (mono numeral + label + hairline divider, hover slides right) — replacing the banned identical icon-card grids and Material icons. All icons are now inline thin-stroke SVG (CTA arrows, social logos, the morphing hamburger).
+- **Layout patterns.** Hero and About are asymmetric Editorial Splits (`lg:grid-cols-12`, 7/5); Expertise videos carry a subtle Z-axis rotation (`lg:-rotate-2` / `lg:rotate-2`, reset on mobile).
+- **Atmosphere.** A fixed radial-mesh background (`.mesh`) plus a low-opacity film-grain overlay (`.grain`, `opacity .05`, `mix-blend overlay`) give Editorial-Luxury texture; the ambient-glow blobs and embers remain.
+- **Pill eyebrow.** Eyebrows use the skill's pill badge (`rounded-full px-3.5 py-1.5`, `tracking .2em`) — still only where they do real wayfinding, per PRODUCT.md.
