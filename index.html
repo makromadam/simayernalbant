@@ -172,6 +172,8 @@
   .mobile-menu:not([hidden]) a { opacity:1; transform:none; }
   .mobile-menu:not([hidden]) a:nth-child(1){ transition-delay:.06s } .mobile-menu:not([hidden]) a:nth-child(2){ transition-delay:.11s }
   .mobile-menu:not([hidden]) a:nth-child(3){ transition-delay:.16s } .mobile-menu:not([hidden]) a:nth-child(4){ transition-delay:.21s }
+  /* CTA pill inside the mobile menu — opt out of the divider/full-width link styling */
+  .mobile-menu a.mobile-cta { border-bottom:0; padding:13px 22px; justify-self:stretch; border:1px solid rgba(255,150,86,.35); transition-delay:.26s; }
   .mobile-menu[hidden] { display: none; }
 
   /* Hamburger morph */
@@ -197,9 +199,14 @@
     box-shadow: inset 0 1px 1px rgba(255,255,255,.1), 0 24px 60px rgba(0,0,0,.4); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); }
   .orbit-lines { position:absolute; inset:0; width:100%; height:100%; }
   @media (max-width: 900px) {
-    .orbit-wrap { aspect-ratio:auto; max-width:100%; display:grid; gap:14px; }
+    .orbit-wrap { aspect-ratio:auto; max-width:540px; display:grid; gap:14px; }
     .orbit-ring, .orbit-core, .orbit-lines { display:none; }
     .orbit-card { position:static; transform:none; width:100%; }
+  }
+  /* Tablet: use the extra width with a 2-up card grid; last (odd) card spans full width */
+  @media (min-width: 600px) and (max-width: 900px) {
+    .orbit-wrap { max-width:720px; grid-template-columns: repeat(2, 1fr); gap:16px; }
+    .orbit-card:last-child { grid-column: 1 / -1; }
   }
 
   /* ===== Footer (no background glow — keep it black) ===== */
@@ -229,7 +236,7 @@
   @media (prefers-reduced-motion: reduce) {
     .reveal { transition: none; }
     .js-on .reveal { opacity:1; transform:none; filter:none; }
-    .split-text .sc { opacity:1 !important; transform:none !important; transition:none !important; }
+    .blur-text .bw { opacity:1 !important; transform:none !important; filter:none !important; transition:none !important; }
     .scroll-dot { animation: none; }
     html { scroll-behavior:auto; }
     /* About tunnel collapses to a calm, readable centered stack */
@@ -243,11 +250,12 @@
   .lang-pill.lang-on { background: linear-gradient(135deg, #ff8a3d, #ff6a1a); color: #fff; }
   .lang-plain { color: #9ca3af; }
   .lang-plain.lang-on { color: #fff; font-weight: 700; }
-  /* ===== SplitText reveal (per-character, on scroll into view) ===== */
-  .split-text .sw { display:inline-block; }
-  .split-text .sc { display:inline-block; opacity:0; transform:translateY(40px);
-    transition: opacity .8s cubic-bezier(.215,.61,.355,1), transform .8s cubic-bezier(.215,.61,.355,1); will-change:transform,opacity; }
-  .split-text.in .sc { opacity:1; transform:none; }
+  /* ===== BlurText reveal on headings (vanilla port of reactbits.dev/text-animations/blur-text) ===== */
+  /* Each word starts blurred + lifted from the top, then resolves sharp — staggered per word. */
+  .blur-text .bw { display:inline-block; will-change:transform,opacity,filter;
+    opacity:0; filter:blur(10px); transform:translateY(-0.42em);
+    transition: opacity .6s var(--ease-fluid), filter .6s var(--ease-fluid), transform .6s var(--ease-fluid); }
+  .blur-text.in .bw { opacity:1; filter:blur(0); transform:none; }
 
   /* ===== Folder gallery stage (scroll-revealed, after the About paragraphs) ===== */
   .folder-stage { position: relative; height: 230vh; }
@@ -350,7 +358,7 @@
       <a class="nav-link hover:text-primary transition-colors text-white" data-i18n="nav.resume" href="#education">Education</a>
       <a class="nav-link hover:text-primary transition-colors text-white" data-i18n="nav.behance" href="https://www.behance.net/simayernalbant" target="_blank" rel="noopener">Behance</a>
     </div>
-    <div class="hidden md:flex items-center gap-5">
+    <div class="hidden lg:flex items-center gap-5">
       <div class="flex items-center bg-black/40 rounded-full p-1 border border-white/10">
         <button class="lang-toggle lang-pill lang-on px-3 py-0.5 rounded-full font-mono text-[11px] tracking-[.16em]" data-lang="en" aria-pressed="true">EN</button>
         <button class="lang-toggle lang-pill px-3 py-0.5 rounded-full font-mono text-[11px] tracking-[.16em]" data-lang="tr" aria-pressed="false">TR</button>
@@ -369,11 +377,16 @@
     <a data-i18n="nav.expertise" href="#app-design">Expertise</a>
     <a data-i18n="nav.resume" href="#education">Education</a>
     <a data-i18n="nav.behance" href="https://www.behance.net/simayernalbant" target="_blank" rel="noopener">Behance</a>
-    <div class="flex gap-3 pt-3">
-      <button class="lang-toggle lang-plain lang-on" data-lang="en" aria-pressed="true">EN</button>
-      <button class="lang-toggle lang-plain" data-lang="tr" aria-pressed="false">TR</button>
-      <button class="lang-toggle lang-plain" data-lang="fr" aria-pressed="false">FR</button>
+    <div class="flex items-center justify-between gap-3 pt-3">
+      <div class="flex items-center bg-black/40 rounded-full p-1 border border-white/10">
+        <button class="lang-toggle lang-pill lang-on px-3 py-0.5 rounded-full font-mono text-[11px] tracking-[.16em]" data-lang="en" aria-pressed="true">EN</button>
+        <button class="lang-toggle lang-pill px-3 py-0.5 rounded-full font-mono text-[11px] tracking-[.16em]" data-lang="tr" aria-pressed="false">TR</button>
+        <button class="lang-toggle lang-pill px-3 py-0.5 rounded-full font-mono text-[11px] tracking-[.16em]" data-lang="fr" aria-pressed="false">FR</button>
+      </div>
     </div>
+    <a class="group nav-cta mobile-cta mt-3 inline-flex items-center justify-center gap-2 rounded-full text-white font-mono text-[12px] tracking-[.14em] uppercase" data-i18n="nav.getInTouch" href="#contact">Let's Talk
+      <svg class="btn-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg>
+    </a>
   </div>
 </nav>
 
@@ -392,8 +405,8 @@
     <!-- Name, centred over the eye -->
     <h1 id="hero-name" class="hero-name">SİMAY<br>ERNALBANT</h1>
 
-    <div class="hidden lg:flex absolute bottom-6 left-1/2 -translate-x-1/2 flex-col items-center gap-2 text-on-surface-variant z-10">
-      <span class="font-mono text-[11px] uppercase tracking-[.22em]" data-i18n="hero.scroll">Scroll to explore</span>
+    <div class="flex absolute bottom-7 lg:bottom-6 left-1/2 -translate-x-1/2 flex-col items-center gap-2 text-on-surface-variant z-10">
+      <span class="font-mono text-[10px] lg:text-[11px] uppercase tracking-[.22em]" data-i18n="hero.scroll">Scroll to explore</span>
       <span class="w-5 h-8 rounded-full border border-white/20 flex justify-center pt-1"><span class="w-1 h-1 rounded-full bg-orange-500 scroll-dot"></span></span>
     </div>
   </section>
@@ -848,32 +861,35 @@ document.documentElement.classList.add('js-on');
   }
   place();
   window.addEventListener('resize', place);
-  if (vidEl) vidEl.addEventListener('loadedmetadata', place);
+  window.addEventListener('orientationchange', place);
+  window.addEventListener('load', place);
+  if (vidEl) { vidEl.addEventListener('loadedmetadata', place); vidEl.addEventListener('loadeddata', place); }
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(place);
+  // Re-run a few times to catch late layout shifts (async Tailwind CDN, fonts, video metadata)
+  [120, 350, 800, 1600].forEach((t) => setTimeout(place, t));
 })();
 </script>
-<!-- ===== SplitText reveal on headings (vanilla port of reactbits.dev/text-animations/split-text) ===== -->
+<!-- ===== BlurText reveal on headings (vanilla port of reactbits.dev/text-animations/blur-text) ===== -->
 <script>
 (function () {
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const STAGGER = 38; // ms between characters
+  const STAGGER = 90; // ms between words
   function collect() {
     const set = new Set();
     const hero = document.getElementById('hero-name'); if (hero) set.add(hero);
     document.querySelectorAll('section h2:not(.tunnel-title), footer h2, section h3, footer h3').forEach(h => set.add(h));
     return [...set];
   }
+  // Split into per-word spans (reactbits BlurText default), preserving spaces, <br> and nested
+  // styled elements (e.g. the .accent span) so each word can blur in on its own delay.
   function splitInto(parent, out, idx) {
     parent.childNodes.forEach(node => {
       if (node.nodeType === 3) {
         node.nodeValue.split(/(\s+)/).forEach(part => {
           if (!part) return;
           if (/^\s+$/.test(part)) { out.appendChild(document.createTextNode(part)); return; }
-          const word = document.createElement('span'); word.className = 'sw';
-          for (const ch of part) {
-            const c = document.createElement('span'); c.className = 'sc';
-            c.textContent = ch; c.style.transitionDelay = (idx.n * STAGGER) + 'ms'; idx.n++;
-            word.appendChild(c);
-          }
+          const word = document.createElement('span'); word.className = 'bw';
+          word.textContent = part; word.style.transitionDelay = (idx.n * STAGGER) + 'ms'; idx.n++;
           out.appendChild(word);
         });
       } else if (node.nodeType === 1) {
@@ -886,14 +902,14 @@ document.documentElement.classList.add('js-on');
     const idx = { n: 0 }, frag = document.createDocumentFragment();
     splitInto(el, frag, idx);
     el.textContent = ''; el.appendChild(frag);
-    el.classList.add('split-text');
+    el.classList.add('blur-text');
   }
   const io = ('IntersectionObserver' in window) ? new IntersectionObserver((entries) => {
     entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
   }, { threshold: 0.1, rootMargin: '0px 0px -8% 0px' }) : null;
   function splitAll() {
     collect().forEach(el => {
-      if (el.querySelector('.sc')) return;      // already split (e.g. hero name persists across language switches)
+      if (el.querySelector('.bw')) return;       // already split (e.g. hero name persists across language switches)
       el.classList.remove('in');
       splitElement(el);
       if (reduce || !io) { el.classList.add('in'); return; }
