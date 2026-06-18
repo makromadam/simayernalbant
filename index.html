@@ -112,6 +112,19 @@
   .hero-title { font-family:"Clash Display","Sora",sans-serif; font-weight:600; font-size:clamp(44px, 7vw, 104px); line-height:.98; letter-spacing:-.02em; text-transform:uppercase; color:#f3ece4; }
   section h2 { font-family:"Clash Display","Sora",sans-serif !important; font-weight:600; letter-spacing:-.015em; text-transform:uppercase; color:#f3ece4; }
 
+  /* ===== Hero full-bleed cinematic background video ===== */
+  /* Breaks out of the centered max-width container to cover the full viewport width. */
+  .hero-bg { position:absolute; top:0; left:50%; transform:translateX(-50%); width:100vw; height:100%; z-index:0; overflow:hidden; }
+  .hero-bg video { width:100%; height:100%; object-fit:cover; display:block; }
+  /* Black gradient framing: edges fade into the pure-black page; soft centre scrim keeps text legible. */
+  .hero-mask { position:absolute; inset:0; pointer-events:none;
+    background:
+      radial-gradient(ellipse 80% 70% at 50% 48%, rgba(0,0,0,.50) 0%, rgba(0,0,0,.12) 46%, rgba(0,0,0,0) 76%),
+      linear-gradient(to bottom, #000 0%, rgba(0,0,0,0) 24%, rgba(0,0,0,0) 68%, #000 100%),
+      linear-gradient(to right, #000 0%, rgba(0,0,0,0) 13%, rgba(0,0,0,0) 87%, #000 100%); }
+  #hero .hero-title { text-shadow: 0 2px 36px rgba(0,0,0,.62); }
+  #hero .hero-copy { text-shadow: 0 1px 20px rgba(0,0,0,.7); }
+
   /* Pill eyebrow (skill spec) — used only where it does real wayfinding, not on every section */
   .pill-eyebrow { display:inline-flex; align-items:center; gap:9px; border-radius:9999px; padding:6px 14px;
     font:500 10px/1 "Geist Mono", monospace; letter-spacing:.2em; text-transform:uppercase; color:#cabba9;
@@ -277,13 +290,21 @@
 
 <main class="flex-grow w-full mx-auto px-6 md:px-16 relative z-10" style="max-width:1440px">
 
-  <!-- ===== HERO (Editorial Split, asymmetric 7/5) ===== -->
-  <section id="hero" class="min-h-screen grid lg:grid-cols-12 items-center gap-10 lg:gap-8 pt-36 pb-24 relative">
-    <div class="order-2 lg:order-1 lg:col-span-7 flex flex-col items-start gap-7">
+  <!-- ===== HERO (full-bleed cinematic video, centered content) ===== -->
+  <section id="hero" class="min-h-screen flex flex-col items-center justify-center text-center pt-36 pb-24 relative">
+    <!-- Full-bleed background video with black gradient framing -->
+    <div class="hero-bg" aria-hidden="true">
+      <video autoplay loop muted playsinline preload="auto">
+        <source src="hero.mp4" type="video/mp4">
+      </video>
+      <div class="hero-mask"></div>
+    </div>
+
+    <div class="relative z-10 flex flex-col items-center gap-7 max-w-3xl mx-auto">
       <span class="pill-eyebrow reveal" data-i18n="hero.eyebrow"><span class="brand-dot"></span>Web · App · Branding</span>
-      <h1 class="hero-title reveal order-first lg:order-none" data-i18n-html="hero.hello" style="transition-delay:.06s">UX/UI<br><span class="accent">Designer</span></h1>
-      <p class="font-body text-lg text-on-surface-variant max-w-md leading-relaxed reveal" data-i18n="hero.description" style="transition-delay:.12s">I craft digital worlds where strategy, motion, and visual emotion work as one.</p>
-      <div class="mt-2 flex flex-wrap gap-4 reveal" style="transition-delay:.18s">
+      <h1 class="hero-title reveal" data-i18n-html="hero.hello" style="transition-delay:.06s">UX/UI<br><span class="accent">Designer</span></h1>
+      <p class="hero-copy font-body text-lg text-on-surface-variant max-w-md mx-auto leading-relaxed reveal" data-i18n="hero.description" style="transition-delay:.12s">I craft digital worlds where strategy, motion, and visual emotion work as one.</p>
+      <div class="mt-2 flex flex-wrap justify-center gap-4 reveal" style="transition-delay:.18s">
         <a class="group btn-primary inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-full text-surface-deep font-mono text-[12px] tracking-[.14em] uppercase font-semibold" data-i18n="hero.startProject" href="#contact">Start a Project
           <svg class="btn-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg>
         </a>
@@ -291,19 +312,7 @@
       </div>
     </div>
 
-    <div class="order-1 lg:order-2 lg:col-span-5 flex items-center justify-center lg:justify-start relative min-h-[40vh] lg:min-h-[60vh]">
-      <div class="reveal w-full max-w-lg" style="transition-delay:.1s">
-        <div class="lg:scale-125 origin-left [perspective:1100px]">
-          <div class="video-frame tilt-card">
-            <video autoplay loop muted playsinline preload="auto">
-              <source src="head.mp4" type="video/mp4">
-            </video>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="hidden lg:flex absolute bottom-6 left-1/2 -translate-x-1/2 flex-col items-center gap-2 text-on-surface-variant">
+    <div class="hidden lg:flex absolute bottom-6 left-1/2 -translate-x-1/2 flex-col items-center gap-2 text-on-surface-variant z-10">
       <span class="font-mono text-[11px] uppercase tracking-[.22em]" data-i18n="hero.scroll">Scroll to explore</span>
       <span class="w-5 h-8 rounded-full border border-white/20 flex justify-center pt-1"><span class="w-1 h-1 rounded-full bg-orange-500 scroll-dot"></span></span>
     </div>
@@ -634,31 +643,14 @@ if (!reduceMotion && window.innerWidth > 900) {
   });
 }
 
-// Hero video: scroll-scrub on every device (same behaviour on mobile + desktop).
-// SCRUB_SPEED controls how fast the clip flows relative to scrolling (lower = slower).
+// Hero background video: continuous muted loop covering the landing section.
 const heroVideo = document.querySelector('#hero video');
-const heroSection = document.getElementById('hero');
-if (heroVideo && heroSection && !reduceMotion) {
-  const SCRUB_SPEED = 1.4;
-  heroVideo.loop = false;
+if (heroVideo) {
   heroVideo.muted = true;
   heroVideo.playsInline = true;
-  heroVideo.pause();
-  let duration = 0, ticking = false;
-  function updateScrub() {
-    ticking = false;
-    if (!duration) return;
-    const rect = heroSection.getBoundingClientRect();
-    const raw = -rect.top / rect.height;
-    const t = Math.min(1, Math.max(0, raw * SCRUB_SPEED));
-    heroVideo.currentTime = t * duration;
-  }
-  function onMeta() { duration = heroVideo.duration || 0; updateScrub(); }
-  if (heroVideo.readyState >= 1 && heroVideo.duration) onMeta();
-  else heroVideo.addEventListener('loadedmetadata', onMeta);
-  const req = () => { if (!ticking) { ticking = true; requestAnimationFrame(updateScrub); } };
-  window.addEventListener('scroll', req, { passive: true });
-  window.addEventListener('resize', req);
+  const tryPlay = () => { const p = heroVideo.play(); if (p && p.catch) p.catch(() => {}); };
+  if (heroVideo.readyState >= 2) tryPlay();
+  else heroVideo.addEventListener('canplay', tryPlay, { once: true });
 }
 
 // Ambient embers — drift harmoniously from right to left across the black field, each on
