@@ -122,10 +122,11 @@
       radial-gradient(ellipse 72% 62% at 50% 48%, rgba(0,0,0,.45) 0%, rgba(0,0,0,.12) 45%, rgba(0,0,0,0) 75%),
       linear-gradient(to bottom, #000 0%, rgba(0,0,0,0) 24%, rgba(0,0,0,0) 68%, #000 100%),
       linear-gradient(to right, #000 0%, rgba(0,0,0,0) 13%, rgba(0,0,0,0) 87%, #000 100%); }
-  /* Rotating 3D logo, centred over the eye pupil (JS fine-tunes the exact position) */
-  .hero-logo { position:absolute; top:48%; left:50%; transform:translate(-50%,-50%);
-    width:clamp(200px, 38vmin, 440px); height:clamp(200px, 38vmin, 440px); z-index:10; touch-action:pan-y; }
-  .hero-logo canvas { display:block; width:100% !important; height:100% !important; outline:none; }
+  /* Name, centred over the eye (JS fine-tunes the exact position) */
+  .hero-name { position:absolute; top:48%; left:50%; transform:translate(-50%,-50%); margin:0; z-index:10;
+    text-align:center; color:#fff; font-family:"Clash Display","Sora",sans-serif; font-weight:600;
+    text-transform:uppercase; font-size:clamp(44px, 8vw, 108px); line-height:.95; letter-spacing:.015em;
+    white-space:nowrap; pointer-events:none; text-shadow:0 2px 40px rgba(0,0,0,.72), 0 0 22px rgba(0,0,0,.5); }
 
   /* Pill eyebrow (skill spec) — used only where it does real wayfinding, not on every section */
   .pill-eyebrow { display:inline-flex; align-items:center; gap:9px; border-radius:9999px; padding:6px 14px;
@@ -243,15 +244,6 @@
   .lang-plain { color: #9ca3af; }
   .lang-plain.lang-on { color: #fff; font-weight: 700; }
 </style>
-<!-- Three.js for the rotating 3D hero logo -->
-<script type="importmap">
-{
-  "imports": {
-    "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
-    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
-  }
-}
-</script>
 </head>
 <body class="font-body min-h-screen flex flex-col">
 
@@ -311,8 +303,8 @@
       <div class="hero-mask"></div>
     </div>
 
-    <!-- Rotating 3D logo, centred over the eye pupil -->
-    <div id="hero-logo" class="hero-logo" role="img" aria-label="Simay Ernalbant logo"></div>
+    <!-- Name, centred over the eye -->
+    <h1 id="hero-name" class="hero-name">SİMAY<br>ERNALBANT</h1>
 
     <div class="hidden lg:flex absolute bottom-6 left-1/2 -translate-x-1/2 flex-col items-center gap-2 text-on-surface-variant z-10">
       <span class="font-mono text-[11px] uppercase tracking-[.22em]" data-i18n="hero.scroll">Scroll to explore</span>
@@ -786,134 +778,28 @@ if (emberHost && window.innerWidth > 900 && !reduceMotion) {
 document.documentElement.classList.add('js-on');
 </script>
 
-<!-- ===== Rotating 3D hero logo (model.glb) ===== -->
-<script type="module">
-import * as THREE from 'three';
-import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
-import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
-import { MeshoptDecoder } from 'three/addons/libs/meshopt_decoder.module.js';
-
-const mount = document.getElementById('hero-logo');
-if (mount) {
-  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  let w = mount.clientWidth || 1, h = mount.clientHeight || 1;
-
-  // Align the logo exactly over the eye pupil, accounting for the video's object-fit:cover crop
-  const PUPIL = { x: 0.508, y: 0.485 };
+<!-- Name positioned exactly over the eye -->
+<script>
+(function () {
+  const el = document.getElementById('hero-name');
   const heroEl = document.getElementById('hero');
   const bgEl = document.querySelector('#hero .hero-bg');
   const vidEl = document.querySelector('#hero video');
-  function placeLogo() {
-    if (!heroEl || !bgEl) return;
+  if (!el || !heroEl || !bgEl) return;
+  const PUPIL = { x: 0.508, y: 0.485 };            // eye-pupil position within the video frame
+  function place() {
     const cw = bgEl.clientWidth, ch = bgEl.clientHeight;
     const vw = (vidEl && vidEl.videoWidth) || 1600, vh = (vidEl && vidEl.videoHeight) || 920;
     const scale = Math.max(cw / vw, ch / vh), dw = vw * scale, dh = vh * scale;
     const px = (cw - dw) / 2 + PUPIL.x * dw, py = (ch - dh) / 2 + PUPIL.y * dh;
-    const bgRect = bgEl.getBoundingClientRect(), heroRect = heroEl.getBoundingClientRect();
-    mount.style.left = (bgRect.left - heroRect.left + px) + 'px';
-    mount.style.top  = (bgRect.top  - heroRect.top  + py) + 'px';
+    const br = bgEl.getBoundingClientRect(), hr = heroEl.getBoundingClientRect();
+    el.style.left = (br.left - hr.left + px) + 'px';
+    el.style.top  = (br.top  - hr.top  + py) + 'px';
   }
-  placeLogo();
-  window.addEventListener('resize', placeLogo);
-  if (vidEl) vidEl.addEventListener('loadedmetadata', placeLogo);
-
-  const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));   // cap DPR for performance
-  renderer.setSize(w, h);
-  renderer.outputColorSpace = THREE.SRGBColorSpace;
-  renderer.toneMapping = THREE.ACESFilmicToneMapping;
-  renderer.toneMappingExposure = 1.05;
-  mount.appendChild(renderer.domElement);
-
-  const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(35, w / h, 0.1, 100);
-  camera.position.set(0, 0, 4.2);
-
-  // Neutral studio environment + accent lights so PBR materials read well
-  const pmrem = new THREE.PMREMGenerator(renderer);
-  scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
-  const key = new THREE.DirectionalLight(0xffffff, 2.2); key.position.set(2, 3, 4); scene.add(key);
-  const rim = new THREE.DirectionalLight(0xff8a3d, 1.5); rim.position.set(-3, -1, -2); scene.add(rim);
-  scene.add(new THREE.AmbientLight(0xffffff, 0.35));
-
-  const pivot = new THREE.Group();
-  scene.add(pivot);
-
-  const loader = new GLTFLoader();
-  loader.setMeshoptDecoder(MeshoptDecoder);            // model.glb is meshopt-compressed
-  loader.load('model.glb', (gltf) => {
-    const model = gltf.scene;
-    model.traverse((o) => {
-      if (o.isMesh) {
-        if (!o.geometry.attributes.normal) o.geometry.computeVertexNormals();  // normals baked out for size
-        o.material = new THREE.MeshStandardMaterial({ color: 0xff7a29, metalness: 0.45, roughness: 0.3,
-          emissive: 0xff5a10, emissiveIntensity: 0.2, envMapIntensity: 1.1 });  // brand primary orange
-        o.frustumCulled = false;
-      }
-    });
-    const box = new THREE.Box3().setFromObject(model);
-    const size = box.getSize(new THREE.Vector3());
-    const center = box.getCenter(new THREE.Vector3());
-    model.position.sub(center);                         // recenter on origin
-    const maxDim = Math.max(size.x, size.y, size.z) || 1;
-    model.scale.setScalar(2.1 / maxDim);               // normalize size (with frame margin)
-    pivot.rotation.y = Math.PI / 2;                     // start face-on (correct, non-mirrored side)
-    pivot.add(model);
-    start();
-  }, undefined, () => { /* missing/invalid model.glb: video simply shows through */ });
-
-  // Rotation speed (rad/s): gentle clockwise idle, faster while hovered / touched
-  const BASE = reduce ? 0 : 0.5, BOOST = 2.6;
-  let target = BASE, speed = BASE;
-  const tilt = { x: 0, y: 0 }, tiltTarget = { x: 0, y: 0 };
-  const setBoost = (on) => { target = on ? BOOST : BASE; start(); };
-
-  mount.addEventListener('pointerenter', () => setBoost(true));
-  mount.addEventListener('pointerleave', () => { setBoost(false); tiltTarget.x = 0; tiltTarget.y = 0; });
-  mount.addEventListener('pointermove', (e) => {
-    const r = mount.getBoundingClientRect();
-    tiltTarget.y = (((e.clientX - r.left) / r.width) * 2 - 1) * 0.35;
-    tiltTarget.x = (((e.clientY - r.top) / r.height) * 2 - 1) * 0.22;
-    start();
-  });
-  mount.addEventListener('pointerdown', () => setBoost(true), { passive: true });
-  mount.addEventListener('touchstart', () => setBoost(true), { passive: true });
-  mount.addEventListener('touchend', () => setBoost(false), { passive: true });
-
-  // Only render while the hero is on-screen and the tab is visible
-  let onScreen = true, running = false, last = 0;
-  if ('IntersectionObserver' in window) {
-    new IntersectionObserver((es) => { onScreen = es[0].isIntersecting; if (onScreen) start(); }, { threshold: 0.01 })
-      .observe(document.getElementById('hero'));
-  }
-  document.addEventListener('visibilitychange', () => { if (!document.hidden && onScreen) start(); });
-
-  window.addEventListener('resize', () => {
-    w = mount.clientWidth || 1; h = mount.clientHeight || 1;
-    camera.aspect = w / h; camera.updateProjectionMatrix(); renderer.setSize(w, h);
-    if (!running) renderer.render(scene, camera);
-  });
-
-  function start() {
-    if (running || !onScreen || document.hidden) return;
-    running = true; last = performance.now();
-    const loop = (now) => {
-      const dt = Math.min(0.05, (now - last) / 1000); last = now;
-      speed += (target - speed) * Math.min(1, dt * 6);
-      tilt.x += (tiltTarget.x - tilt.x) * Math.min(1, dt * 5);
-      tilt.y += (tiltTarget.y - tilt.y) * Math.min(1, dt * 5);
-      pivot.rotation.y -= speed * dt;        // clockwise around its own vertical axis
-      pivot.rotation.x = tilt.x;
-      pivot.rotation.z = tilt.y * 0.15;
-      renderer.render(scene, camera);
-      const settling = Math.abs(target - speed) > 1e-3 ||
-        Math.abs(tiltTarget.x - tilt.x) > 1e-3 || Math.abs(tiltTarget.y - tilt.y) > 1e-3;
-      if (onScreen && !document.hidden && (speed > 1e-4 || settling)) requestAnimationFrame(loop);
-      else running = false;
-    };
-    requestAnimationFrame(loop);
-  }
-}
+  place();
+  window.addEventListener('resize', place);
+  if (vidEl) vidEl.addEventListener('loadedmetadata', place);
+})();
 </script>
 </body>
 </html>
