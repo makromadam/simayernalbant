@@ -7,7 +7,7 @@ colors:
   secondary: "#ffb066"
   glow-orange: "#FF6A1A"
   glow-amber: "#E8590C"
-  background: "#070502"
+  background: "#000000"
   surface-deep: "#070502"
   surface-container-lowest: "#0a0704"
   surface-container-low: "#141008"
@@ -216,10 +216,11 @@ The Education & Past section's defining visual: a glowing core (Flare Peach → 
 
 The redesign applies the taste-skill's high-end directives on top of the Combustion system above, without abandoning any of it (single accent hue, glow-not-shadow, the orbit, the video assets, EN/TR/FR parity, WCAG AA all preserved).
 
-- **Double-bezel containers (`.bezel` + `.bezel-core`).** "Machined-hardware" nesting: an outer hairline shell (`1px rgba(255,150,86,.14)`, `2rem` radius, `6px` pad) wrapping an inner core with a concentric `calc(2rem - 6px)` radius and an `inset 0 1px 1px rgba(255,255,255,.14)` top highlight. Used for the about panel and the video frames (`.bezel-core-dark` keeps a near-black core so `mix-blend-mode: screen` stays clean). This is the new structural expression of the Glow-Not-Shadow Rule.
+- **Double-bezel containers (`.bezel` + `.bezel-core`).** "Machined-hardware" nesting: an outer hairline shell (`1px rgba(255,150,86,.14)`, `2rem` radius, `6px` pad) wrapping an inner core with a concentric `calc(2rem - 6px)` radius and an `inset 0 1px 1px rgba(255,255,255,.14)` top highlight. Used for the about panel and the App/Web video frames (`.bezel-core-dark` keeps a near-black core so `mix-blend-mode: screen` stays clean); the hero video is deliberately frameless (see below). This is the new structural expression of the Glow-Not-Shadow Rule.
 - **One fluid easing.** `--ease-fluid: cubic-bezier(0.32, 0.72, 0, 1)` replaces all `linear` / `ease-in-out`. Reveals run ~900ms.
 - **IntersectionObserver reveals.** `.reveal` enters from `translateY(64px) blur(12px) opacity:0` → cleared, via `IntersectionObserver` (not scroll listeners), gated behind `.js-on` for no-JS visibility.
 - **Editorial spec-list, not icon grids.** Each Expertise capability is a `.spec-row` (mono numeral + label + hairline divider, hover slides right) — replacing the banned identical icon-card grids and Material icons. All icons are now inline thin-stroke SVG (CTA arrows, social logos, the morphing hamburger).
 - **Layout patterns.** Hero and About are asymmetric Editorial Splits (`lg:grid-cols-12`, 7/5); Expertise videos carry a subtle Z-axis rotation (`lg:-rotate-2` / `lg:rotate-2`, reset on mobile).
-- **Atmosphere.** A fixed radial-mesh background (`.mesh`) plus a low-opacity film-grain overlay (`.grain`, `opacity .05`, `mix-blend overlay`) give Editorial-Luxury texture; the ambient-glow blobs and embers remain.
+- **Atmosphere.** The page sits on a **pure-black (`#000`)** field with **no orange glow** on the background or behind the hero video — the radial-mesh, ambient-glow blobs, film-grain and footer glow were all removed per brief. Life comes from the embers, which drift **harmoniously right-to-left**, each on its own sine wave, and **recoil from the cursor**, plus the glowing video content itself.
+- **Hero video.** Frameless (no bezel, no `.video-glow`), enlarged **1.5×** on desktop (`lg:scale-150 origin-left`), sitting directly on black via `mix-blend-mode: screen`. The App/Web videos keep their bezel frames.
 - **Pill eyebrow.** Eyebrows use the skill's pill badge (`rounded-full px-3.5 py-1.5`, `tracking .2em`) — still only where they do real wayfinding, per PRODUCT.md.
