@@ -791,6 +791,7 @@ document.documentElement.classList.add('js-on');
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+import { MeshoptDecoder } from 'three/addons/libs/meshopt_decoder.module.js';
 
 const mount = document.getElementById('hero-logo');
 if (mount) {
@@ -820,14 +821,22 @@ if (mount) {
   scene.add(pivot);
 
   const loader = new GLTFLoader();
+  loader.setMeshoptDecoder(MeshoptDecoder);            // model.glb is meshopt-compressed
   loader.load('model.glb', (gltf) => {
     const model = gltf.scene;
+    model.traverse((o) => {
+      if (o.isMesh) {
+        if (!o.geometry.attributes.normal) o.geometry.computeVertexNormals();  // normals baked out for size
+        o.frustumCulled = false;
+      }
+    });
     const box = new THREE.Box3().setFromObject(model);
     const size = box.getSize(new THREE.Vector3());
     const center = box.getCenter(new THREE.Vector3());
     model.position.sub(center);                         // recenter on origin
     const maxDim = Math.max(size.x, size.y, size.z) || 1;
-    model.scale.setScalar(2.3 / maxDim);               // normalize size
+    model.scale.setScalar(2.1 / maxDim);               // normalize size (with frame margin)
+    pivot.rotation.y = Math.PI / 2;                     // start face-on (correct, non-mirrored side)
     pivot.add(model);
     start();
   }, undefined, () => { /* missing/invalid model.glb: video simply shows through */ });
