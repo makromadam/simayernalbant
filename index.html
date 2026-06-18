@@ -114,16 +114,18 @@
 
   /* ===== Hero full-bleed cinematic background video ===== */
   /* Breaks out of the centered max-width container to cover the full viewport width. */
-  .hero-bg { position:absolute; top:0; left:50%; transform:translateX(-50%); width:100vw; height:100%; z-index:0; overflow:hidden; }
+  .hero-bg { position:absolute; top:0; bottom:0; left:50%; transform:translateX(-50%); width:100vw; z-index:0; overflow:hidden; }
   .hero-bg video { width:100%; height:100%; object-fit:cover; display:block; }
-  /* Black gradient framing: edges fade into the pure-black page; soft centre scrim keeps text legible. */
+  /* Black gradient framing: edges fade into the pure-black page; soft centre scrim helps the logo read. */
   .hero-mask { position:absolute; inset:0; pointer-events:none;
     background:
-      radial-gradient(ellipse 80% 70% at 50% 48%, rgba(0,0,0,.50) 0%, rgba(0,0,0,.12) 46%, rgba(0,0,0,0) 76%),
+      radial-gradient(ellipse 80% 70% at 50% 50%, rgba(0,0,0,.34) 0%, rgba(0,0,0,.08) 46%, rgba(0,0,0,0) 76%),
       linear-gradient(to bottom, #000 0%, rgba(0,0,0,0) 24%, rgba(0,0,0,0) 68%, #000 100%),
       linear-gradient(to right, #000 0%, rgba(0,0,0,0) 13%, rgba(0,0,0,0) 87%, #000 100%); }
-  #hero .hero-title { text-shadow: 0 2px 36px rgba(0,0,0,.62); }
-  #hero .hero-copy { text-shadow: 0 1px 20px rgba(0,0,0,.7); }
+  /* Rotating 3D logo, centred over the eye pupil */
+  .hero-logo { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+    width:clamp(200px, 38vmin, 440px); height:clamp(200px, 38vmin, 440px); z-index:10; touch-action:pan-y; }
+  .hero-logo canvas { display:block; width:100% !important; height:100% !important; outline:none; }
 
   /* Pill eyebrow (skill spec) — used only where it does real wayfinding, not on every section */
   .pill-eyebrow { display:inline-flex; align-items:center; gap:9px; border-radius:9999px; padding:6px 14px;
@@ -241,6 +243,15 @@
   .lang-plain { color: #9ca3af; }
   .lang-plain.lang-on { color: #fff; font-weight: 700; }
 </style>
+<!-- Three.js for the rotating 3D hero logo -->
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+  }
+}
+</script>
 </head>
 <body class="font-body min-h-screen flex flex-col">
 
@@ -290,27 +301,18 @@
 
 <main class="flex-grow w-full mx-auto px-6 md:px-16 relative z-10" style="max-width:1440px">
 
-  <!-- ===== HERO (full-bleed cinematic video, centered content) ===== -->
-  <section id="hero" class="min-h-screen flex flex-col items-center justify-center text-center pt-36 pb-24 relative">
+  <!-- ===== HERO (full-bleed cinematic video + centred rotating 3D logo) ===== -->
+  <section id="hero" class="min-h-screen flex flex-col items-center justify-center relative">
     <!-- Full-bleed background video with black gradient framing -->
     <div class="hero-bg" aria-hidden="true">
-      <video autoplay loop muted playsinline preload="auto">
+      <video autoplay loop muted playsinline preload="auto" poster="hero-poster.jpg">
         <source src="hero.mp4" type="video/mp4">
       </video>
       <div class="hero-mask"></div>
     </div>
 
-    <div class="relative z-10 flex flex-col items-center gap-7 max-w-3xl mx-auto">
-      <span class="pill-eyebrow reveal" data-i18n="hero.eyebrow"><span class="brand-dot"></span>Web · App · Branding</span>
-      <h1 class="hero-title reveal" data-i18n-html="hero.hello" style="transition-delay:.06s">UX/UI<br><span class="accent">Designer</span></h1>
-      <p class="hero-copy font-body text-lg text-on-surface-variant max-w-md mx-auto leading-relaxed reveal" data-i18n="hero.description" style="transition-delay:.12s">I craft digital worlds where strategy, motion, and visual emotion work as one.</p>
-      <div class="mt-2 flex flex-wrap justify-center gap-4 reveal" style="transition-delay:.18s">
-        <a class="group btn-primary inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-full text-surface-deep font-mono text-[12px] tracking-[.14em] uppercase font-semibold" data-i18n="hero.startProject" href="#contact">Start a Project
-          <svg class="btn-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg>
-        </a>
-        <a class="btn-outline inline-flex items-center justify-center px-8 py-3.5 rounded-full text-white font-mono text-[12px] tracking-[.14em] uppercase" data-i18n="hero.viewExpertise" href="#app-design">View Expertise</a>
-      </div>
-    </div>
+    <!-- Rotating 3D logo, centred over the eye pupil -->
+    <div id="hero-logo" class="hero-logo" role="img" aria-label="Simay Ernalbant logo"></div>
 
     <div class="hidden lg:flex absolute bottom-6 left-1/2 -translate-x-1/2 flex-col items-center gap-2 text-on-surface-variant z-10">
       <span class="font-mono text-[11px] uppercase tracking-[.22em]" data-i18n="hero.scroll">Scroll to explore</span>
@@ -646,11 +648,20 @@ if (!reduceMotion && window.innerWidth > 900) {
 // Hero background video: continuous muted loop covering the landing section.
 const heroVideo = document.querySelector('#hero video');
 if (heroVideo) {
-  heroVideo.muted = true;
-  heroVideo.playsInline = true;
+  heroVideo.muted = true; heroVideo.defaultMuted = true;
+  heroVideo.playsInline = true; heroVideo.loop = true;
   const tryPlay = () => { const p = heroVideo.play(); if (p && p.catch) p.catch(() => {}); };
-  if (heroVideo.readyState >= 2) tryPlay();
-  else heroVideo.addEventListener('canplay', tryPlay, { once: true });
+  tryPlay();
+  ['loadeddata', 'canplay'].forEach(ev => heroVideo.addEventListener(ev, tryPlay, { once: true }));
+  // Guarantee looping even if the loop attribute is dropped on some browsers
+  heroVideo.addEventListener('ended', () => { heroVideo.currentTime = 0; tryPlay(); });
+  // Pause when off-screen to save CPU/battery, resume when back in view
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver((es) => { es[0].isIntersecting ? tryPlay() : heroVideo.pause(); }, { threshold: 0.05 }).observe(heroVideo);
+  }
+  // If autoplay is blocked, start playback on the first user interaction
+  const kick = () => { tryPlay(); ['pointerdown', 'touchstart', 'scroll', 'keydown'].forEach(e => window.removeEventListener(e, kick)); };
+  ['pointerdown', 'touchstart', 'scroll', 'keydown'].forEach(e => window.addEventListener(e, kick, { passive: true }));
 }
 
 // Ambient embers — drift harmoniously from right to left across the black field, each on
@@ -773,6 +784,106 @@ if (emberHost && window.innerWidth > 900 && !reduceMotion) {
 })();
 
 document.documentElement.classList.add('js-on');
+</script>
+
+<!-- ===== Rotating 3D hero logo (model.glb) ===== -->
+<script type="module">
+import * as THREE from 'three';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+
+const mount = document.getElementById('hero-logo');
+if (mount) {
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let w = mount.clientWidth || 1, h = mount.clientHeight || 1;
+
+  const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));   // cap DPR for performance
+  renderer.setSize(w, h);
+  renderer.outputColorSpace = THREE.SRGBColorSpace;
+  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  renderer.toneMappingExposure = 1.05;
+  mount.appendChild(renderer.domElement);
+
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(35, w / h, 0.1, 100);
+  camera.position.set(0, 0, 4.2);
+
+  // Neutral studio environment + accent lights so PBR materials read well
+  const pmrem = new THREE.PMREMGenerator(renderer);
+  scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
+  const key = new THREE.DirectionalLight(0xffffff, 2.2); key.position.set(2, 3, 4); scene.add(key);
+  const rim = new THREE.DirectionalLight(0xff8a3d, 1.5); rim.position.set(-3, -1, -2); scene.add(rim);
+  scene.add(new THREE.AmbientLight(0xffffff, 0.35));
+
+  const pivot = new THREE.Group();
+  scene.add(pivot);
+
+  const loader = new GLTFLoader();
+  loader.load('model.glb', (gltf) => {
+    const model = gltf.scene;
+    const box = new THREE.Box3().setFromObject(model);
+    const size = box.getSize(new THREE.Vector3());
+    const center = box.getCenter(new THREE.Vector3());
+    model.position.sub(center);                         // recenter on origin
+    const maxDim = Math.max(size.x, size.y, size.z) || 1;
+    model.scale.setScalar(2.3 / maxDim);               // normalize size
+    pivot.add(model);
+    start();
+  }, undefined, () => { /* missing/invalid model.glb: video simply shows through */ });
+
+  // Rotation speed (rad/s): gentle clockwise idle, faster while hovered / touched
+  const BASE = reduce ? 0 : 0.5, BOOST = 2.6;
+  let target = BASE, speed = BASE;
+  const tilt = { x: 0, y: 0 }, tiltTarget = { x: 0, y: 0 };
+  const setBoost = (on) => { target = on ? BOOST : BASE; start(); };
+
+  mount.addEventListener('pointerenter', () => setBoost(true));
+  mount.addEventListener('pointerleave', () => { setBoost(false); tiltTarget.x = 0; tiltTarget.y = 0; });
+  mount.addEventListener('pointermove', (e) => {
+    const r = mount.getBoundingClientRect();
+    tiltTarget.y = (((e.clientX - r.left) / r.width) * 2 - 1) * 0.35;
+    tiltTarget.x = (((e.clientY - r.top) / r.height) * 2 - 1) * 0.22;
+    start();
+  });
+  mount.addEventListener('pointerdown', () => setBoost(true), { passive: true });
+  mount.addEventListener('touchstart', () => setBoost(true), { passive: true });
+  mount.addEventListener('touchend', () => setBoost(false), { passive: true });
+
+  // Only render while the hero is on-screen and the tab is visible
+  let onScreen = true, running = false, last = 0;
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver((es) => { onScreen = es[0].isIntersecting; if (onScreen) start(); }, { threshold: 0.01 })
+      .observe(document.getElementById('hero'));
+  }
+  document.addEventListener('visibilitychange', () => { if (!document.hidden && onScreen) start(); });
+
+  window.addEventListener('resize', () => {
+    w = mount.clientWidth || 1; h = mount.clientHeight || 1;
+    camera.aspect = w / h; camera.updateProjectionMatrix(); renderer.setSize(w, h);
+    if (!running) renderer.render(scene, camera);
+  });
+
+  function start() {
+    if (running || !onScreen || document.hidden) return;
+    running = true; last = performance.now();
+    const loop = (now) => {
+      const dt = Math.min(0.05, (now - last) / 1000); last = now;
+      speed += (target - speed) * Math.min(1, dt * 6);
+      tilt.x += (tiltTarget.x - tilt.x) * Math.min(1, dt * 5);
+      tilt.y += (tiltTarget.y - tilt.y) * Math.min(1, dt * 5);
+      pivot.rotation.y -= speed * dt;        // clockwise around its own vertical axis
+      pivot.rotation.x = tilt.x;
+      pivot.rotation.z = tilt.y * 0.15;
+      renderer.render(scene, camera);
+      const settling = Math.abs(target - speed) > 1e-3 ||
+        Math.abs(tiltTarget.x - tilt.x) > 1e-3 || Math.abs(tiltTarget.y - tilt.y) > 1e-3;
+      if (onScreen && !document.hidden && (speed > 1e-4 || settling)) requestAnimationFrame(loop);
+      else running = false;
+    };
+    requestAnimationFrame(loop);
+  }
+}
 </script>
 </body>
 </html>
