@@ -29,18 +29,18 @@ const translations = eval('(' + tMatch[1] + ')');
 const META = {
   tr: {
     htmlLang: 'tr',
-    title: 'Simay Ernalbant — Web, Uygulama ve UX/UI Tasarımcısı',
-    description: 'Simay Ernalbant; hareket, sadelik ve modern teknolojiyle sinematik, duyarlı ve kullanıcı odaklı dijital deneyimler tasarlayan bir web, uygulama ve marka tasarımcısıdır.',
-    ogDescription: 'Sinematik, duyarlı ve kullanıcı odaklı dijital deneyimler tasarlayan web, uygulama ve marka tasarımcısı.',
+    title: 'Simay Ernalbant | UX/UI ve Etkileşimli Web Tasarımcısı',
+    description: 'Hareket, 3D ve yeni nesil teknolojiyle tasarlanan sürükleyici web siteleri — UX/UI ve etkileşimli web tasarımcısı Simay Ernalbant.',
+    ogDescription: 'Hareket, 3D ve yeni nesil teknolojiyle tasarlanan sürükleyici web siteleri — UX/UI ve etkileşimli web tasarımcısı Simay Ernalbant.',
     url: `${SITE}/tr/`,
     ogLocale: 'tr_TR',
     ogAlternates: ['en_US', 'fr_FR'],
   },
   fr: {
     htmlLang: 'fr',
-    title: 'Simay Ernalbant — Designer Web, App &amp; UX/UI',
-    description: "Simay Ernalbant est une designer web, app et branding qui crée des expériences numériques cinématographiques, responsives et centrées sur l'utilisateur, avec mouvement, clarté et technologie moderne.",
-    ogDescription: "Designer web, app et branding créant des expériences numériques cinématographiques, responsives et centrées sur l'utilisateur.",
+    title: 'Simay Ernalbant | Designer UX/UI &amp; Web Interactif',
+    description: "Sites web immersifs créés avec le mouvement, la 3D et les technologies émergentes par Simay Ernalbant, designer UX/UI et web interactif.",
+    ogDescription: "Sites web immersifs créés avec le mouvement, la 3D et les technologies émergentes par Simay Ernalbant, designer UX/UI et web interactif.",
     url: `${SITE}/fr/`,
     ogLocale: 'fr_FR',
     ogAlternates: ['en_US', 'tr_TR'],
@@ -68,8 +68,9 @@ function localize(lang) {
   for (const [key, val] of Object.entries(dict)) {
     const textRe = new RegExp(`(data-i18n="${key.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}"[^>]*>)[^<]*`, 'g');
     out = out.replace(textRe, (_m, open) => open + escText(val));
-    const htmlRe = new RegExp(`(data-i18n-html="${key.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}"[^>]*>)[\\s\\S]*?(</h2>)`, 'g');
-    out = out.replace(htmlRe, (_m, open, close) => open + val + close);
+    // Tag-generic: capture the element's own tag name so any wrapper (h2, p, …) is matched.
+    const htmlRe = new RegExp(`(<(\\w+)[^>]*\\bdata-i18n-html="${key.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}"[^>]*>)[\\s\\S]*?(</\\2>)`, 'g');
+    out = out.replace(htmlRe, (_m, open, _tag, close) => open + val + close);
   }
 
   // 3) Active language pill (desktop + mobile share the same markup → replace all).
@@ -81,19 +82,19 @@ function localize(lang) {
     `lang-toggle lang-pill lang-on px-3 py-0.5 rounded-full font-mono text-[11px] tracking-[.16em]" data-lang="${lang}" aria-pressed="true"`);
 
   // 4) <head> metadata that must differ per route.
-  out = out.replace('<title>Simay Ernalbant — Web, App &amp; UX/UI Designer</title>', `<title>${meta.title}</title>`);
+  out = out.replace('<title>Simay Ernalbant | UX/UI &amp; Interactive Web Designer</title>', `<title>${meta.title}</title>`);
   out = out.replace(
-    '<meta name="description" content="Simay Ernalbant is a web, app and branding designer crafting cinematic, responsive and user-centered digital experiences with motion, clarity and modern technology."/>',
+    '<meta name="description" content="Immersive websites crafted with motion, 3D and emerging technology by Simay Ernalbant, UX/UI and interactive web designer."/>',
     `<meta name="description" content="${meta.description}"/>`);
   out = out.replace('<link rel="canonical" href="https://simayernalbant.com/"/>', `<link rel="canonical" href="${meta.url}"/>`);
   out = out.replace('<meta property="og:url" content="https://simayernalbant.com/"/>', `<meta property="og:url" content="${meta.url}"/>`);
-  out = out.replace('<meta property="og:title" content="Simay Ernalbant — Web, App &amp; UX/UI Designer"/>', `<meta property="og:title" content="${meta.title}"/>`);
+  out = out.replace('<meta property="og:title" content="Simay Ernalbant | UX/UI &amp; Interactive Web Designer"/>', `<meta property="og:title" content="${meta.title}"/>`);
   out = out.replace(
-    '<meta property="og:description" content="Web, app and branding designer crafting cinematic, responsive and user-centered digital experiences."/>',
+    '<meta property="og:description" content="Immersive websites crafted with motion, 3D and emerging technology by Simay Ernalbant, UX/UI and interactive web designer."/>',
     `<meta property="og:description" content="${meta.ogDescription}"/>`);
-  out = out.replace('<meta name="twitter:title" content="Simay Ernalbant — Web, App &amp; UX/UI Designer"/>', `<meta name="twitter:title" content="${meta.title}"/>`);
+  out = out.replace('<meta name="twitter:title" content="Simay Ernalbant | UX/UI &amp; Interactive Web Designer"/>', `<meta name="twitter:title" content="${meta.title}"/>`);
   out = out.replace(
-    '<meta name="twitter:description" content="Web, app and branding designer crafting cinematic, responsive and user-centered digital experiences."/>',
+    '<meta name="twitter:description" content="Immersive websites crafted with motion, 3D and emerging technology by Simay Ernalbant, UX/UI and interactive web designer."/>',
     `<meta name="twitter:description" content="${meta.ogDescription}"/>`);
 
   // Open Graph locale block (own locale first, then alternates).
