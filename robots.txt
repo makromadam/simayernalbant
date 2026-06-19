@@ -1,0 +1,11 @@
+# robots.txt — simayernalbant.com
+# Allow all well-behaved crawlers full access to the site.
+User-agent: *
+Allow: /
+
+# Keep internal project files out of search indexes (not part of the public site).
+Disallow: /reference.png
+Disallow: /DESIGN.md
+Disallow: /PRODUCT.md
+
+Sitemap: https://simayernalbant.com/sitemap.xml
