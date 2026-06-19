@@ -1,13 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Sitemap for simayernalbant.com.
-     Note: EN / TR / FR are client-side language toggles on a single page, not separate
-     URLs, so only the canonical homepage is listed. If real language routes (/tr, /fr)
-     are added later, add them here with matching hreflang alternates. -->
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+     Three real language routes (EN /, TR /tr/, FR /fr/), each declaring the full
+     set of hreflang alternates so Google serves the right language per region. -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://simayernalbant.com/</loc>
-    <lastmod>2026-06-18</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://simayernalbant.com/"/>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://simayernalbant.com/tr/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://simayernalbant.com/fr/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://simayernalbant.com/"/>
+    <lastmod>2026-06-19</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://simayernalbant.com/tr/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://simayernalbant.com/"/>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://simayernalbant.com/tr/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://simayernalbant.com/fr/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://simayernalbant.com/"/>
+    <lastmod>2026-06-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://simayernalbant.com/fr/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://simayernalbant.com/"/>
+    <xhtml:link rel="alternate" hreflang="tr" href="https://simayernalbant.com/tr/"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://simayernalbant.com/fr/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://simayernalbant.com/"/>
+    <lastmod>2026-06-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
   </url>
 </urlset>
