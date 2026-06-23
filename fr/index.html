@@ -3,7 +3,27 @@
 <html class="dark scroll-smooth" lang="fr">
 <head>
 <meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+
+<!-- ===== Apple-device detection (runs before first paint) =====
+     iPhone / iPad / iPod (incl. iPadOS 13+ that reports as a Mac) get an
+     `is-ios` class so a lighter, conflict-free variant of the heavy effects
+     (mix-blend video, stacked backdrop-filters, animated blur, 100vh) loads.
+     Any Apple device also gets `is-apple`. -->
+<script>
+(function () {
+  var ua = navigator.userAgent || '';
+  var platform = navigator.platform || '';
+  var maxTouch = navigator.maxTouchPoints || 0;
+  var isIOS = /iPad|iPhone|iPod/.test(ua) ||
+              (platform === 'MacIntel' && maxTouch > 1); // iPadOS 13+ masquerades as macOS
+  var isApple = isIOS || platform === 'MacIntel' || /Macintosh|Mac OS X/.test(ua);
+  var d = document.documentElement;
+  if (isIOS) d.classList.add('is-ios');
+  if (/iPhone|iPod/.test(ua)) d.classList.add('is-iphone');
+  if (isApple) d.classList.add('is-apple');
+})();
+</script>
 
 <!-- ===== Core SEO ===== -->
 <title>Simay Ernalbant | Designer UX/UI &amp; Web Interactif</title>
@@ -449,6 +469,59 @@
     .folder-scene { opacity: 1 !important; transform: none !important; transition: none; }
     .folder, .paper, .folder__front, #lightbox, .lightbox__frame { transition: none !important; }
   }
+
+  /* ============================================================
+     APPLE / iOS OPTIMIZED VARIANT  (html.is-ios)
+     iPhone & iPad Safari freeze ("donma") and clash ("çakışma")
+     on the heavy effects this site uses. Detected at runtime, we
+     swap them for cheap, stable equivalents — same look, no jank.
+     macOS desktop Safari keeps the full experience.
+     ============================================================ */
+
+  /* 1) mix-blend-mode on <video> is the #1 compositor freeze on iOS,
+        and when it fails the video renders as a black box over the
+        content (the visible "çakışma"). Render the clip normally
+        inside its dark frame instead. */
+  html.is-ios .video-frame video { mix-blend-mode: normal; }
+  html.is-ios .video-frame { background:#080503; border-radius: inherit; }
+  html.is-ios .video-glow { opacity:.5; filter:blur(28px); }
+
+  /* 2) Stacked backdrop-filters stall the iOS compositor on scroll.
+        Drop the blur and pay it back with near-solid glass. */
+  html.is-ios #topnav,
+  html.is-ios #topnav.nav-scrolled,
+  html.is-ios .bezel-core,
+  html.is-ios .mobile-menu,
+  html.is-ios .stat-card,
+  html.is-ios .orbit-card,
+  html.is-ios #lightbox,
+  html.is-ios .lightbox__close {
+    backdrop-filter: none !important; -webkit-backdrop-filter: none !important;
+  }
+  html.is-ios #topnav { background: rgba(10,7,4,.9); }
+  html.is-ios #topnav.nav-scrolled { background: rgba(8,6,3,.96); }
+  html.is-ios .bezel-core { background: linear-gradient(145deg, rgba(28,20,11,.96), rgba(8,6,3,.93)); }
+  html.is-ios .mobile-menu { background: rgba(8,6,3,.97); }
+  html.is-ios .stat-card { background: linear-gradient(145deg, rgba(28,20,11,.97), rgba(8,6,3,.95)); }
+  html.is-ios .orbit-card { background: linear-gradient(145deg, rgba(28,20,11,.96), rgba(8,6,3,.93)); }
+  html.is-ios #lightbox { background: rgba(2,2,2,.97); }
+
+  /* 3) Animated blur on every reveal / word is very expensive on iOS.
+        Keep the opacity + translate motion, drop the filter blur. */
+  html.is-ios .reveal { will-change: opacity, transform; }
+  html.is-ios .js-on .reveal { filter: none; }
+  html.is-ios .js-on .reveal.in { filter: none; }
+  html.is-ios .blur-text .bw { filter: none; }
+  html.is-ios .about-dots { animation: none; }
+
+  /* 4) 100vh fights Safari's dynamic toolbar → the sticky panels jump
+        and overlap. Small-viewport units stay fixed = no conflict. */
+  html.is-ios .about-sticky,
+  html.is-ios .folder-sticky { height: 100svh; }
+
+  /* 5) No mouse on touch — kill the custom cursor entirely. */
+  html.is-ios, html.is-ios * { cursor: auto !important; }
+  html.is-ios #cursor { display: none !important; }
 </style>
 </head>
 <body class="font-body min-h-screen flex flex-col">
@@ -937,11 +1010,14 @@ if (frameVideos.length && 'IntersectionObserver' in window) {
 
   if (reduceMotion) return; // CSS collapses the tunnel to a static readable stack
 
+  const isIOS = document.documentElement.classList.contains('is-ios');
   const PEAKS = [0.22, 0.5, 0.78]; // progress where each moment is centred & readable
   const HALF = 0.24;   // half-width of each moment's window
   const PLATEAU = 0.34; // |d| under this stays fully readable (no extreme distortion)
-  const Z_FAR = 760;   // translateZ coming from infinity (behind)
-  const Z_NEAR = 520;  // translateZ passing toward the viewer (in front)
+  // Shallower depth on iOS keeps the tunnel effect but cuts the perspective
+  // overdraw that stalls Apple's mobile compositor on scroll.
+  const Z_FAR = isIOS ? 320 : 760;   // translateZ coming from infinity (behind)
+  const Z_NEAR = isIOS ? 240 : 520;  // translateZ passing toward the viewer (in front)
   const Y_SHIFT = 26;  // subtle vertical drift
 
   let ticking = false;
